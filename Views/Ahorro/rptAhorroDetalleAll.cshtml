@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "Reporte Detalle de Ahorro";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+
+<p>
+    <a class="btn btn-warning" href="@Url.Action("Historial_Ahorros","Ahorro", new {socio=Request.QueryString["socio"]})">Atrás</a>
+</p>
+
+
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "ViewerRptDetalleAhorroAll";
+}).Bind(Model).GetHtml()

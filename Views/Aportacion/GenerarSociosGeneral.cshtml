@@ -1,0 +1,328 @@
+﻿@model CoopJFK.Models.APORTACION
+
+@{
+    ViewBag.Title = "Aportaciones";
+}
+
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title"></h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Aportaciones</li>
+            <li class="active">Generar Deducciones</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<style type="text/css">
+    .options {
+        padding: 20px;
+        margin-top: 20px;
+        background-color: rgba(191, 191, 191, 0.15);
+        position: relative;
+    }
+
+    .caption {
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    .option {
+        margin-top: 10px;
+    }
+
+    .checkboxes-mode {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+    }
+
+    .option > .dx-selectbox {
+        width: 150px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .option > span {
+        margin-right: 10px;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                @using (Html.BeginForm())
+                {
+
+
+                <div class="form-horizontal">
+                    <h4>GENERAR DEDUCCION DE APORTACIONES (TODOS LOS SOCIOS)</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        <div class="col-md-offset-10 col-md-4">
+
+                            <input id="submit" type="button" value="Generar" class="btn btn-info" /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-warning" })
+                        </div>
+                        <div class="col-md-2">
+                            @Html.Label("Año :")
+                            @Html.TextBoxFor(model => model.ANIO, new { @class = "form-control", placeholder = "#Año" })
+                            <span class="error">El año es requerido</span>
+                        </div>
+
+                    </div>
+                    <span class="error">Debe seleccionar al menos un socio</span>
+                    <div id="containeraportacionesall"></div>
+
+
+
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        var myGrid = null;
+        $(document).ready(function () {
+            CargarGrid();
+
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+
+                if ($('#ANIO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#ANIO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#ANIO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                var selectedRowsData = myGrid.getSelectedRowsData();
+
+                if (selectedRowsData.length == 0)
+                {
+                    isAllValid = false;
+                    $('#containeraportacionesall').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#containeraportacionesall').siblings('span.error').css('visibility', 'hidden');
+                }
+               
+                if (isAllValid)
+                {
+                     console.log(selectedRowsData);
+                  
+                    var data = {
+                        anios: $('#ANIO').val().trim(),
+                        aportacion: selectedRowsData
+                       
+
+                    }
+
+                    $(this).val('Procesando...');
+
+                    $.ajax({
+                        url: '/Aportacion/Aportaciones',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Aportaciones generadas para el año digitado',
+                                    showConfirmButton: true
+
+                                })
+                                CargarGrid();
+                                // window.location.href = '/Periodo/Index';
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+                            $('#submit').val('Generar');
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente.',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#submit').val('Generar');
+                        }
+                    });
+                }
+
+            });
+         
+        });
+        
+        //var groupCellTemplate = function (groupCell, info) {
+        //    $('<div>')
+        //        .appendTo(groupCell)
+        //        .dxCheckBox({
+        //            text: info.text,
+        //            onValueChanged: function (e) {
+        //                var keys = [];
+        //                for (var i = 0; i < info.data.items.length; i++)
+        //                    keys.push(info.data.items[i].ProductID);
+        //                if (e.value)
+        //                    myGrid.selectRows(keys, true);
+        //                else
+        //                    myGrid.deselectRows(keys);
+        //            }
+        //        })
+        //};
+
+        function CargarGrid() {
+            var apor = get('aportacion');
+
+            function get(name) {
+                if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))
+                    return decodeURIComponent(name[1]);
+            };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetSocioAportaciones")',
+                dataType: "json",
+                data: { aportacion: apor },
+                success: function (data) {
+                   
+                   var fillData = data.aportacion;
+                    console.log(fillData)
+                myGrid = $("#containeraportacionesall").dxDataGrid({
+                        dataSource: {
+                            store: {
+                                type: 'array',
+                                key: "ID",
+                                data: fillData
+                            }
+                        },
+
+                    columns: [{ dataField: 'SOCIO', caption: 'No. Socio' }, { dataField: 'NO_EMPLEADO', caption: 'No. de Empleado' }, { dataField: 'NOMBRES', caption: 'Nombres y apellidos' } ,
+                        { dataField: 'PERIODO_INGRESO', caption: 'Periodo de Ingreso' }, { dataField: 'FECHA_INGRESO', caption: 'Fecha de Ingreso' }, { dataField: 'TIPO_DEDUCCION', caption: 'Tipo de deducción' } ],
+                        allowColumnResizing: true,
+                        allowColumnReordering: true,
+                        cellHintEnabled: true,
+                        columnAutoWidth: true,
+                        showWhenGrouped: true,
+                        grouping: {
+                            contextMenuEnabled: false,
+                            expandMode: 'buttonClick'
+                        },
+                        groupPanel: {
+                            visible: false // enables grouping using the group panel
+                        },
+                        searchPanel: {
+                            visible: true,
+                            width: 240,
+                            placeholder: "Search...",
+                            highlightSearchText: true,
+                            searchVisibleColumnsOnly: true
+                        },
+                        headerFilter: {
+                            visible: true
+                        },
+                        rowAlternationEnabled: true,
+                        scrolling: {
+                            showScrollbar: 'always',
+                            scrollByThumb: true
+                        },
+                        selection: {
+                            mode: 'multiple',
+                            allowSelectAll: true,
+                            showCheckBoxesMode: 'always'
+                        },
+                        sorting: {
+                            mode: 'multiple'
+                        },
+                        width: '100%',
+                        height: '350px',
+
+                        onInitialized: function (e) {
+                            e.component.selectAll();
+                        }
+                    }).dxDataGrid("instance");
+                }, error: function (xhr, status, error) {
+                    alert(status);
+                }
+            });
+
+        }
+
+       
+       
+
+
+    </script>
+
+}
+
+    <style>
+        /*Adding some css for looks good*/
+        span.error {
+            display: block;
+            visibility: hidden;
+            color: red;
+            font-size: 90%;
+        }
+
+
+        /*css for table*/
+        .container td {
+            vertical-align: top;
+        }
+
+        .tablecontainer table {
+            width: 80%;
+            border-collapse: collapse;
+            border-top: 1px solid #BFAEAE;
+            border-right: 1px solid #BFAEAE;
+            margin: auto;
+        }
+
+        .tablecontainer th {
+            border-bottom: 2px solid #BFAEAE !important;
+        }
+
+        .tablecontainer th, .tablecontainer td {
+            text-align: left;
+            border-left: 1px solid #BFAEAE;
+            padding: 5px;
+            border-bottom: 1px solid #BFAEAE;
+        }
+
+        .ui-widget {
+            font-size: 12px !important;
+        }
+
+        table.space {
+            border: 0px solid black;
+            border-spacing: 8px 2px;
+            border-collapse: separate;
+            margin: auto;
+        }
+    </style>

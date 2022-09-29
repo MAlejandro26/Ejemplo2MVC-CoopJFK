@@ -1,0 +1,186 @@
+﻿@model CoopJFK.Models.CAJA
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CAJA</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TIPO_CAMBIO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TIPO_CAMBIO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CORDOBA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CORDOBA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DOLAR)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DOLAR)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NUMERO_DEPOSITO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NUMERO_DEPOSITO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_DEPOSITO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_DEPOSITO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_RECEPCION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_RECEPCION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_TRANSACCION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_TRANSACCION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CONCEPTO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CONCEPTO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ANULADA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ANULADA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USUARIO_ANULACION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USUARIO_ANULACION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_ANULACION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_ANULACION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USUARIO_CREACION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USUARIO_CREACION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_CREACION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_CREACION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USUARIO_MODIFICACION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USUARIO_MODIFICACION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_MODIFICACION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_MODIFICACION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NOMBRE_FALLECIDO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NOMBRE_FALLECIDO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_OCURRENCIA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_OCURRENCIA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PARENTESCO1.DESCRIPCION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PARENTESCO1.DESCRIPCION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TIPO_FONDO.DESCRIPCION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TIPO_FONDO.DESCRIPCION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TRANSACCION_CAJA.DESCRIPCION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TRANSACCION_CAJA.DESCRIPCION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PERSONA.NO_EMPLEADO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PERSONA.NO_EMPLEADO)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

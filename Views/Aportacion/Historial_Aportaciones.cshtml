@@ -1,0 +1,126 @@
+﻿@model CoopJFK.Models.ViewModels.Hist_AportacionesViewModels
+@{
+    ViewBag.Title = "Historial de Aportaciones";
+}
+<script src="~/Scripts/select2.min.js"></script>
+<link href="~/Content/select2/css/select2.min.css" rel="stylesheet" />
+
+<script src="~/Scripts/mask.js"></script>
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title"></h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Aportaciones</li>
+            <li class="active">Historial de Aportaciones</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                @using (Html.BeginForm("Historial_Aportaciones", "Aportacion", null, FormMethod.Post, null))
+                {
+                    <div class="form-horizontal">
+                        <h4>Historial de Aportaciones</h4>
+                        <hr />
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                @Html.Label("Pp Inicio")
+                                @Html.TextBoxFor(model => model.PpInicio, new { @class = "form-control" })
+                                @*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpInicio">*@
+                                <span class="error">El periodo de pago es Obligatorio</span>
+                            </div>
+                            <div class="col-md-2">
+                                @Html.Label("Pp Fin")
+                                @Html.TextBoxFor(model => model.PpFin, new { @class = "form-control" })
+                                @*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpFin">*@
+                                <span class="error">El periodo de pago es Obligatorio</span>
+                            </div>
+                            <div class="col-md-2">
+                                @Html.Label("Tipo Pago")
+                                @Html.DropDownList("pago", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-6">
+                                @Html.Label("Socio")
+                                @Html.DropDownList("socio", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-10">
+
+                                <input type="submit" value="Reporte" class="btn btn-info" /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-warning" })
+                                
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#socio").select2({
+            placeholder: "Seleccione al socio",
+            allowClear: true,
+
+        });
+
+
+    });
+
+</script>
+
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>
+

@@ -1,0 +1,90 @@
+﻿@model CoopJFK.Models.ARQUEO
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ARQUEO</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CAJA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CAJA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USUARIO_APERTURA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USUARIO_APERTURA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_APERTURA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_APERTURA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USUARIO_CIERRE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USUARIO_CIERRE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_CIERRE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_CIERRE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USUARIO_CREACION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USUARIO_CREACION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_CREACION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_CREACION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USUARIO_MODIFICACION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USUARIO_MODIFICACION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_MODIFICACION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_MODIFICACION)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

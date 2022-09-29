@@ -1,0 +1,439 @@
+﻿@model CoopJFK.Models.ViewModels.PeriodoViewModels
+
+@{
+    ViewBag.Title = "Create";
+}
+@*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+@*<script src="~/Scripts/gijgo/combined/gijgo.min.js"></script>
+    <link href="~/Content/gijgo/combined/gijgo.min.css" rel="stylesheet" />*@
+<script src="~/Scripts/jquery-ui-1.10.2.js"></script>
+<script src="~/Scripts/mask.js"></script>
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title"></h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Administración</li>
+            <li class="active">Periodos de Pago</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+
+                @using (Html.BeginForm())
+                {
+
+
+                <div class="form-horizontal">
+                    <h4>Crear Periodo</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.TIPO_PAGO, "Tipo de Pago")
+                            @Html.DropDownList("TIPO_PAGO", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+
+                            <span class="error">El tipo de pago es obligatorio</span>
+                        </div>
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.ESTADO, "Estado")
+                            @{
+                                List<SelectListItem> _estado = new List<SelectListItem>();
+                                _estado.Add(new SelectListItem { Text = "Activo", Value = "A", Selected = true });
+                                _estado.Add(new SelectListItem { Text = "Cerrado", Value = "C" });
+
+                            }
+                            @Html.DropDownListFor(model => model.ESTADO, _estado, "--Seleccione--", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-2">
+                            @Html.LabelFor(model => model.ID, "Periodo de pago")
+                            @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+
+                            <span class="error">El periodo de pago es Obligatorio</span>
+                        </div>
+
+
+                        <div class="col-md-2">
+                            @Html.LabelFor(model => model.NUMERO, "Número", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.EditorFor(model => model.NUMERO, new { htmlAttributes = new { @class = "form-control" , @Value = ViewBag.NUM, @readonly = "true" } })
+
+                            <span class="error">El número es obligatorio</span>
+                        </div>
+
+                        <div class="col-md-2">
+                            @Html.LabelFor(model => model.YEAR, "Año", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.EditorFor(model => model.YEAR, new { htmlAttributes = new { @class = "form-control" } })
+
+                            <span class="error">El año es obligatorio</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+
+                        <div class="col-md-2">
+                            @Html.LabelFor(model => model.FECHA_DESDE, "Desde", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.EditorFor(model => model.FECHA_DESDE, "{0:dd/MM/yyyy}")
+                            @*<input type="text" id="FECHA_DESDE" />*@
+
+
+                            <span class="error">La fecha inicio es obligatorio</span>
+                        </div>
+                        <div class="col-md-2">
+
+                            @Html.LabelFor(model => model.FECHA_HASTA, "Hasta", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.EditorFor(model => model.FECHA_HASTA, "{0:dd/MM/yyyy}")
+
+                            <span class="error">La fecha fin es obligatorio</span>
+                        </div>
+                        <div class="col-md-2">
+
+                            @Html.LabelFor(model => model.FECHA_PAGO, "Fecha Pago")
+                            @Html.EditorFor(model => model.FECHA_PAGO, "{0:dd/MM/yyyy}")
+
+                            <span class="error">La fecha de pago es obligatorio</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            @Html.LabelFor(model => model.DESCRIPCION, "Descripción")
+                            @Html.EditorFor(model => model.DESCRIPCION, new { htmlAttributes = new { @class = "form-control" } })
+
+                            <span class="error">La descripcion obligatorio</span>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input id="submit" type="button" value="Guardar" style="padding:5px 15px" class="btn btn-info" /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-primary" })
+                        </div>
+                    </div>
+                </div>
+                }
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@*<script src="~/Scripts/dx.aspnet.mvc.js"></script>*@
+<script src="~/Scripts/dayjs.min.js"></script>
+@section Scripts{
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#NUMERO').keyup(function () {
+                var content = $('#NUMERO').val();
+                var contentY = $('#YEAR').val();
+
+                $("#ID").val(content + contentY);
+
+            });
+
+            $('#YEAR').keyup(function () {
+                var content = $('#NUMERO').val();
+                var contentY = $('#YEAR').val();
+
+                $("#ID").val(content + contentY);
+              
+
+            });
+            function sumarDias(fecha, dias) {
+                fecha.setDate(fecha.getDate() + dias);
+                return fecha;
+            }
+            $('#TIPO_PAGO').change(function () {
+                $('#ID').val('');
+                $('#YEAR').val('');
+                $('#FECHA_DESDE').val('') ;
+                $('#FECHA_HASTA').val('');
+                $('#DESCRIPCION').val('');
+
+
+            });
+
+            $('#FECHA_DESDE').change(function () {
+                let fech = new Date($('#FECHA_DESDE').val());
+                let dias = 0;
+
+                if ($('#TIPO_PAGO').val() == "1") { dias = 13; }
+                else if ($('#TIPO_PAGO').val() == "2") { dias = 14; }
+              
+                let fechh = new Date(sumarDias(fech, dias));
+
+                let dd = fech.getUTCDate();
+                let mm = fech.getMonth() + 1;
+                let yyyy = fech.getFullYear();
+
+                if (mm < 10) mm = "0" + mm;
+                if (dd < 10) dd = "0" + dd;
+
+                var today = yyyy + "-" + mm + "-" + dd;
+
+                    document.getElementById('FECHA_HASTA').value = today;
+                    console.log(fechh);
+                    console.log();
+             
+            });
+
+            $('#FECHA_HASTA').keyup(function () {
+                var content = $('#NUMERO').val();
+                var contentY = $('#YEAR').val();
+                let fech = new Date($('#FECHA_HASTA').val());
+                let dias = 0;
+                if ($('#TIPO_PAGO').val() == "1") { dias = -2; }
+                else if ($('#TIPO_PAGO').val() == "2") { dias = 0; }
+
+                let fechh = new Date(sumarDias(fech, dias));
+
+
+                let dd = fech.getUTCDate();
+                let mm = fech.getMonth() + 1;
+                let yyyy = fech.getFullYear();
+
+                if (mm < 10) mm = "0" + mm;
+                if (dd < 10) dd = "0" + dd;
+
+                var today = dd + "/" + mm + "/" + yyyy;
+
+                var des = 'PP.' + content + '/' + contentY + ' a pagar el '+today;
+                console.log(des);
+
+                $("#DESCRIPCION").val(des);
+
+            });
+
+            $('#FECHA_PAGO').keyup(function () {
+                var content = $('#NUMERO').val();
+                var contentY = $('#YEAR').val();
+                let fech = new Date($('#FECHA_PAGO').val());
+                let dias = 0;
+                //if ($('#TIPO_PAGO').val() == "1") { dias = -2; }
+                //else if ($('#TIPO_PAGO').val() == "2") { dias = 0; }
+
+                //let fechh = new Date(sumarDias(fech, dias));
+
+
+                let dd = fech.getUTCDate();
+                let mm = fech.getMonth() + 1;
+                let yyyy = fech.getFullYear();
+
+                if (mm < 10) mm = "0" + mm;
+                if (dd < 10) dd = "0" + dd;
+
+                var today = dd + "/" + mm + "/" + yyyy;
+
+                var des = 'PP.' + content + '/' + contentY + ' a pagar el ' + today;
+                console.log(des);
+
+                $("#DESCRIPCION").val(des);
+
+            });
+
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+
+
+                if ($('#FECHA_DESDE').val().trim().length === 0) {
+                    isAllValid = false;
+                    $('#FECHA_DESDE').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#FECHA_DESDE').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#FECHA_HASTA').val().trim() == '') {
+                    isAllValid = false;
+                    $('#FECHA_HASTA').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#FECHA_HASTA').siblings('span.error').css('visibility', 'hidden');
+                }
+                if ($('#FECHA_PAGO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#FECHA_PAGO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#FECHA_PAGO').siblings('span.error').css('visibility', 'hidden');
+                }
+                if ($('#NUMERO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#NUMERO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#NUMERO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#YEAR').val().trim() == '') {
+                    isAllValid = false;
+                    $('#YEAR').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#YEAR').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#DESCRIPCION').val().trim() == '') {
+                    isAllValid = false;
+                    $('#DESCRIPCION').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#DESCRIPCION').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#TIPO_PAGO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#TIPO_PAGO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#TIPO_PAGO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#ID').val().trim() == '') {
+                    isAllValid = false;
+                    $('#ID').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#ID').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        ID: $('#ID').val().trim(),
+                        NUMERO: $('#NUMERO').val().trim(),
+                        YEAR: $('#YEAR').val().trim(),
+                        FECHA_DESDE: $('#FECHA_DESDE').val().trim(),
+                        FECHA_HASTA: $('#FECHA_HASTA').val().trim(),
+                        TIPO_PAGO: $('#TIPO_PAGO').val().trim(),
+                        DESCRIPCION: $('#DESCRIPCION').val().trim(),
+                        ESTADO: $('#ESTADO').val().trim(),
+                        FECHA_PAGO: $('#FECHA_PAGO').val().trim()
+
+                    }
+
+                    $(this).val('Generando periodos...');
+
+                    $.ajax({
+                        url: '/Periodo/Create',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Se generaron los periodos del año',
+                                    showConfirmButton: true
+
+                                })
+
+                                window.location.href = '/Periodo/Index';
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+                            $('#submit').val('Guardar');
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente.',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#submit').val('Guardar');
+                        }
+                    });
+                }
+
+            });
+        });
+
+    </script>
+}
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>

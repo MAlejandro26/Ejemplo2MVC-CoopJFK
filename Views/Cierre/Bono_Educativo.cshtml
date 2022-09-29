@@ -1,0 +1,278 @@
+﻿@model CoopJFK.Models.ViewModels.BonoEducativoViewModel
+
+@{
+    ViewBag.Title = "Bono Educativo";
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Caja</li>
+            <li class="active">Bono Educativo</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            @*<p>
+                <a class="btn btn-success" href="@Url.Action("Historial","Cierre")">Historial</a>
+
+            </p>*@
+            <hr />
+            @using (Html.BeginForm())
+            {
+
+                <div class="form-horizontal">
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.fiscal, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.fiscal, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="error">El año fiscal es obligatorio</span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.excedente, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.excedente, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="error">El excedente es obligatorio</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.nota, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.nota, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="error">La nota es obligatorio</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input id="Generar" type="button" value="Generar" class="btn btn-info" /> | <input id="Aplicar" type="button" value="Aplicar" class="btn btn-primary" />| @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-warning" })
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#Generar').click(function () {
+                //validation of order
+                var isAllValid = true;
+                               
+                if ($('#fiscal').val().trim() == '') {
+                    isAllValid = false;
+                    $('#fiscal').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#fiscal').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#excedente').val().trim() == '') {
+                    isAllValid = false;
+                    $('#excedente').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#excedente').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        fiscal: $('#fiscal').val().trim(),
+                        excedente: $('#excedente').val().trim(),
+                        nota: $('#nota').val().trim()
+                    }
+
+                    $(this).val('Procesando...');
+
+                    $.ajax({
+                        url: '/Cierre/Generar',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Se guardaron los datos',
+                                    showConfirmButton: true
+
+                                })
+
+                               
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+                            $('#Generar').val('Generar');
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente.',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#Generar').val('Generar');
+                        }
+                    });
+                }
+
+            });
+
+
+            $('#Aplicar').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#fiscal').val().trim() == '') {
+                    isAllValid = false;
+                    $('#fiscal').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#fiscal').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#excedente').val().trim() == '') {
+                    isAllValid = false;
+                    $('#excedente').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#excedente').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        fiscal: $('#fiscal').val().trim(),
+                        excedente: $('#excedente').val().trim(),
+                        nota: $('#nota').val().trim()
+                    }
+
+                    $(this).val('Procesando...');
+
+                    $.ajax({
+                        url: '/Cierre/Aplicar',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Se aplico el bono educativo',
+                                    showConfirmButton: true
+
+                                })
+
+
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+                            $('#Aplicar').val('Aplicar');
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente.',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#Aplicar').val('Aplicar');
+                        }
+                    });
+                }
+
+            });
+       });
+    </script>
+    }
+
+    <style>
+        /*Adding some css for looks good*/
+        span.error {
+            display: block;
+            visibility: hidden;
+            color: red;
+            font-size: 90%;
+        }
+
+
+        /*css for table*/
+        .container td {
+            vertical-align: top;
+        }
+
+        .tablecontainer table {
+            width: 80%;
+            border-collapse: collapse;
+            border-top: 1px solid #BFAEAE;
+            border-right: 1px solid #BFAEAE;
+            margin: auto;
+        }
+
+        .tablecontainer th {
+            border-bottom: 2px solid #BFAEAE !important;
+        }
+
+        .tablecontainer th, .tablecontainer td {
+            text-align: left;
+            border-left: 1px solid #BFAEAE;
+            padding: 5px;
+            border-bottom: 1px solid #BFAEAE;
+        }
+
+        .ui-widget {
+            font-size: 12px !important;
+        }
+
+        table.space {
+            border: 0px solid black;
+            border-spacing: 8px 2px;
+            border-collapse: separate;
+            margin: auto;
+        }
+    </style>

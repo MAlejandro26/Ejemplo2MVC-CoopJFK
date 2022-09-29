@@ -1,0 +1,215 @@
+﻿@model CoopJFK.Models.PRESTAMO
+
+
+@{
+    ViewBag.Title = "Datos Generales de Préstamo";
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="~/Views/Home/Index.cshtml">Sistema de Gestión de Crédito</a></li>
+            <li class="active">Infromación General</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <div class="container">
+                <div>
+
+                    <hr />
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayName("No Préstamo")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.ID)
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("Tipo de Préstamo")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.TIPO_PRESTAMO1.DESCRIPCION)
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("Estado Préstamo")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.ESTADO_PRESTAMO.DESCRIPCION)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("Referencia Préstamo")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.REFERENCIA_PRESTAMO.DESCRIPCION)
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("No Socio")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.SOCIO)
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("No Empleado")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.PERSONA.NO_EMPLEADO)
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("Nombres y Apellidos")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.PERSONA.NOMBRES)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("No Fiador")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.FIADOR)
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("Nombres Fiador")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.PERSONA1.NOMBRES)
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("No Solicitud")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.SOLICITUD)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("Fecha de Inicio")
+                        </dt>
+
+                        <dd>
+
+                            @Html.DisplayFor(model => model.FECHA_INICIO, "{0:d}")
+                            @*@Html.TextBoxFor(model => model.FECHA_INICIO, "{0:d}", new { @readonly = "readonly"})*@
+
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("Fecha Fin")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.FECHA_FIN)
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("Tasa d/Interés Efectiva")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.TASA_INTERES)
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("Principal")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.MONTO)
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("Interés")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.INTERES_PRINCIPAL)
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("Total Préstamo")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.TOTAL)
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("Plazo en Cuotas")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.PLAZO)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("Tipo de Moneda")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.TIPO_MONEDA.DESCRIPCION)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("Razón")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.RAZON)
+                        </dd>
+
+                        <hr />
+                        <dt>
+                            @Html.DisplayName("Usuario de Creación")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.USUARIO_CREACION)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("Fecha de Creación")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.FECHA_CREACION)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("Usuario de Modificación")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.USUARIO_MODIFICACION)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("Fecha de Modificación")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.FECHA_MODIFICACION)
+                        </dd>
+
+
+                    </dl>
+                </div>
+                <p>
+                    @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-primary" })
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

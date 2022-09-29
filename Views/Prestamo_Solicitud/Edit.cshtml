@@ -1,0 +1,450 @@
+﻿@model CoopJFK.Models.ViewModels.SolicitudViewModel
+@{
+    ViewBag.Title = "Editar Solicitud Préstamo";
+}
+<script src="~/Scripts/gijgo/combined/gijgo.min.js"></script>
+<link href="~/Content/gijgo/combined/gijgo.min.css" rel="stylesheet" />
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Préstamo</li>
+            <li class="active">Solicitud de  Préstamo</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <div class="master">
+                    @using (Html.BeginForm())
+                    {
+        <h2>Solicitud de Préstamo</h2>
+        <hr />
+        @Html.HiddenFor(model => model.ID_PRESTAMO, new { Value = Model.ID_PRESTAMO })
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.FIADOR, new { htmlAttributes = new { @class = "form-control", id = "FIADOR", @readonly = "true" } })
+        <table class="space">
+            <tr>
+                <td colspan="1">
+                    @Html.Label("Numero de Socio:")
+                </td>
+                <td colspan="1">
+                    @Html.Label("No Empleado:")
+                </td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <fieldset disabled>
+                        @Html.EditorFor(model => model.SOCIO, new { htmlAttributes = new { @class = "form-control", id = "SOCIO", @readonly = "true" } })
+                        @Html.ValidationMessageFor(model => model.SOCIO, "", new { @class = "text-danger" })
+                    </fieldset>
+                </td>
+                <td colspan="2">
+                    <fieldset disabled>
+                        @Html.TextBoxFor(model => model.NO_EMPLEADO, new { @class = "form-control", id = "SOCIO_EMPLEADO", @readonly = "true" })
+                    </fieldset>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    @Html.Label("Socio:")
+                </td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td>
+                    <fieldset disabled>
+                        @Html.TextBoxFor(model => model.CEDULA_SOCIO, new { @class = "form-control", placeholder = "Cedula", id = "SOCIO_CEDULA", @readonly = "true" })
+                    </fieldset>
+                </td>
+                <td colspan="3">
+                    <fieldset disabled>
+                        @Html.TextBoxFor(model => model.NOMBRE_SOCIO, new { @class = "form-control", placeholder = "Buscar Socio", id = "NOMBRE_SOCIO" })
+                        @Html.ValidationMessageFor(model => model.SOCIO, "", new { @class = "text-danger" })
+                        <span class="error">El socio es requerido</span>
+                    </fieldset>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    @Html.Label("Fiador:")
+                </td>
+                <td colspan="2"> </td>
+            </tr>
+            <tr>
+                <td>
+                    <fieldset disabled>
+                        @Html.TextBoxFor(model => model.CEDULA_FIADOR, new { @class = "form-control", placeholder = "Cedula", id = "FIADOR_CEDULA", @readonly = "true" })
+                    </fieldset>
+                </td>
+                <td colspan="3">
+                    <fieldset disabled>
+                        @Html.TextBoxFor(model => model.NOMBRE_FIADOR, new { @class = "form-control", placeholder = "Buscar Fiador", id = "FIADOR_NOMBRES" })
+                        @Html.ValidationMessageFor(model => model.FIADOR, "", new { @class = "text-danger" })
+                        <span class="error">El fiador es requerido</span>
+                    </fieldset>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"> @Html.Label("Tipo de Préstamo:")</td>
+                <td colspan="2"> </td>
+            </tr>
+            <tr>
+                <td>
+                    <fieldset disabled>
+                        @Html.EditorFor(model => model.TIPO_PRESTAMO, new { htmlAttributes = new { @id = "TIPO_PRESTAMO_ID", @class = "form-control", @readonly = "true" } })
+                        @Html.ValidationMessageFor(model => model.TIPO_PRESTAMO, "", new { @class = "text-danger" })
+                        <span class="error">El tipo de prestamo es requerido</span>
+                    </fieldset>
+                </td>
+                <td colspan="3">
+                    <fieldset disabled>
+                        @Html.EditorFor(model => model.TIPOPRESTAMO_DESC, new { htmlAttributes = new { @id = "txtTipopDesc", @class = "form-control", @readonly = "true" } })
+                    </fieldset>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    @Html.LabelFor(model => model.FECHA_SOLICITUD)
+                </td>
+                <td colspan="1">
+                    @Html.Label("Razon")
+                </td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td>
+                    <fieldset disabled>
+                        @Html.EditorFor(model => model.FECHA_SOLICITUD)
+                        @*<input type="text" id="FECHA_SOLICITUD" />*@
+                        <script>
+                                            var hoy = new Date().toLocaleTimeString();
+                                            $('#FECHA_SOLICITUD').datepicker({
+                                                uiLibrary: 'bootstrap', format: 'dd/mm/yyyy'
+                                            });
+                        </script>
+                        @Html.ValidationMessageFor(model => model.FECHA_SOLICITUD, "", new { @class = "text-danger" })
+                        <span class="error">La fecha de solicitud es requerida</span>
+                    </fieldset>
+                </td>
+                <td colspan="3">
+                    <fieldset disabled>
+                        @Html.EditorFor(model => model.RAZON, new { htmlAttributes = new { @class = "form-control", placeholder = "Digite una razón" } })
+                        @Html.ValidationMessageFor(model => model.RAZON, "", new { @class = "text-danger" })
+                        <span class="error">La razón requerido</span>
+                    </fieldset>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    @Html.LabelFor(model => model.MONTO)
+                </td>
+                <td colspan="1">
+                    @Html.LabelFor(model => model.PLAZO)
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <fieldset disabled>
+                        @Html.EditorFor(model => model.MONTO, new { htmlAttributes = new { @type = "number", @min = "0", @step = "50", @value = "0", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MONTO, "", new { @class = "text-danger" })
+                        <span class="error">El monto es requerido</span>
+                    </fieldset>
+                </td>
+                <td colspan="3">
+                    <fieldset disabled>
+                        @Html.EditorFor(model => model.PLAZO, new { htmlAttributes = new { @type = "number", @min = "0", @step = "3", @value = "0", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PLAZO, "", new { @class = "text-danger" })
+                        <span class="error">El plazo es requerido</span>
+                    </fieldset>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    @Html.Label("Moneda:")
+                </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td>
+                    <fieldset disabled>
+                        @Html.EditorFor(model => model.MONEDA, new { htmlAttributes = new { @id = "MONEDA_ID", @class = "form-control", @readonly = "true" } })
+                        @Html.ValidationMessageFor(model => model.MONEDA, "", new { @class = "text-danger" })
+                        <span class="error">La moneda es requerida</span>
+                    </fieldset>
+                </td>
+                <td colspan="3">
+                    @Html.EditorFor(model => model.MONEDA_DESC, new { htmlAttributes = new { @id = "monedaDesc", @class = "form-control", @readonly = "true" } })
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    @Html.Label("Referencia:")
+                </td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td>
+                    <fieldset disabled>
+                        @Html.EditorFor(model => model.REFERENCIA, new { htmlAttributes = new { @id = "REFERENCIA_ID", @class = "form-control", @readonly = "true" } })
+                        @Html.ValidationMessageFor(model => model.REFERENCIA, "", new { @class = "text-danger" })
+                        <span class="error">La referencia es requerida</span>
+                    </fieldset>
+                </td>
+                <td colspan="3">
+                    <fieldset disabled>
+                        @Html.EditorFor(model => model.REFERENCIA_DESC, new { htmlAttributes = new { @id = "txtReferenciaDesc", @class = "form-control", @readonly = "true" } })
+                    </fieldset>
+                </td>
+            </tr>
+            @if (Model.ESTADO == 1)
+            {
+<tr>
+    <td colspan="7">
+        <hr />
+        <div class="form-group row">
+            <label for="EstadoSolicitud" class="col-sm-4 col-form-label" style="color:darkred">Estado de la Solicitud</label>
+            <div class="col-sm-8">
+                @Html.DropDownList("EstadoPrestamoList", null, htmlAttributes: new { @class = "form-control is-invalid form-control-lg" })
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td colspan="2"></td>
+    <td colspan="5">
+        <input id="submit" type="button" value="Guardar" style="padding:5px 15px" class="btn btn-info " />| @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-primary" })
+    </td>
+</tr>
+}
+else
+{
+<tr>
+    <td colspan="2"></td>
+    <td colspan="5">
+        @Html.ActionLink("Regresar a la lista", "Index")
+    </td>
+</tr>
+}
+        </table>
+
+    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+@section scripts{
+    @EntitySelectorGrid.selectorGrid(ViewBag.TipoPrestamoList, "TIPO_PRESTAMO_ID", "txtTipopDesc", "tipoprestamo", "ID", "DESCRIPCION");
+    @EntitySelectorGrid.selectorGrid(ViewBag.ReferenciaList, "REFERENCIA_ID", "txtReferenciaDesc", "referencia", "ID", "DESCRIPCION");
+    @EntitySelectorGrid.selectorGrid(ViewBag.MonedaList, "MONEDA_ID", "monedaDesc", "Tipo_Moneda", "ID", "DESCRIPCION");
+    @*  @EntitySelectorGrid.selectorGrid(ViewBag.PersonaList, "SOCIO_ID", "txtSocioDesc", "persona", "ID", "NOMBRES");*@
+    @*@EntitySelectorGrid.selectorGrid(ViewBag.PersonaList, "FIADOR_ID", "txtFiadorDesc", "persona", "ID", "NOMBRES");*@
+
+    @*<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            / Autocomplete , jquery UI /
+
+            $("#NOMBRE_SOCIO").autocomplete({
+                dataType: 'JSON',
+                source: function (request, response) {
+                    jQuery.ajax({
+                        url: "/Prestamo_Solicitud/BuscarSocio",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            nombre: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    id: item.Id,
+                                    value: item.Name,
+                                    cedula: item.Cedula,
+                                    empleado: item.Empleado,
+                                    apellido: item.Apellido,
+                                    ctas: item.cta,
+                                    cuotas: item.cuota,
+                                    prof: item.profesion,
+                                    agen: item.agencia,
+                                    sex: item.sexo
+                                }
+                            }))
+                        }
+                    })
+                },
+                select: function (e, ui) {
+                    $("#SOCIO").val(ui.item.id);
+                    $("#SOCIO_EMPLEADO").val(ui.item.empleado);
+                    $("#SOCIO_CEDULA").val(ui.item.cedula);
+                    $("#APELLIDOS").val(ui.item.apellido);
+                    //$("#CUENTA_BANCARIA").val(ui.item.cta);
+                    //$("#CUOTA_AHORRO").val(ui.item.cuota);
+                    //$("#PROFESION_ID").val(ui.item.prof);
+                    //$("#AGENCIA_ID").val(ui.item.agen);
+                    //$("#SEXO").val(ui.item.sex);
+                    $("#FIADOR_NOMBRES").focus();
+                }
+            })
+        })
+
+        $(document).ready(function () {
+            / Autocomplete , jquery UI /
+
+            $("#FIADOR_NOMBRES").autocomplete({
+                dataType: 'JSON',
+                source: function (request, response) {
+                    jQuery.ajax({
+                        url: "/Prestamo_Solicitud/BuscarFiador",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            nombre: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    id: item.Id,
+                                    value: item.Name,
+                                    cedula: item.Cedula,
+                                    //empleado: item.Empleado
+                                }
+                            }))
+                        }
+                    })
+                },
+                select: function (e, ui) {
+                    $("#FIADOR").val(ui.item.id);
+                    $("#FIADOR_CEDULA").val(ui.item.cedula);
+                    $("#TIPO_PRESTAMO_ID").focus();
+                }
+            })
+        })
+
+
+        $(document).ready(function () {
+            //Save button click function
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+                if ($('#EstadoPrestamoList').val().trim() == '') {
+                    isAllValid = false;
+                    $('#EstadoPrestamoList').siblings('span.error').css('visibility', 'visible');
+                }
+                if (isAllValid) {
+                    var data = JSON.stringify({
+                        'ID': $('#ID_PRESTAMO').val().trim(),
+                        'ESTADO_PRESTAMO': $('#EstadoPrestamoList').val().trim()
+                    });
+                    $(this).val('Procesando...');
+
+                    $.ajax({
+                        url: '/Prestamo_Solicitud/Edit',
+                        type: "POST",
+                        data: data,
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Solicitud de Prestamo',
+                                    text: 'La Solicitud se modifico correctamente',
+                                    showConfirmButton: true
+
+                                }).then((result) => {
+                                    if (result.value) {
+                                        window.location.href = '/Prestamo_Solicitud/Index';
+                                    }
+                                })
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+                            $('#submit').val('Guardar');
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente.',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#submit').val('Guardar');
+                        }
+                    });
+                }
+
+            });
+
+        });
+    </script>
+}
+<style>
+
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>

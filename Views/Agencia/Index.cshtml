@@ -1,0 +1,210 @@
+﻿@model IEnumerable<CoopJFK.Models.AGENCIA>
+
+@{
+    ViewBag.Title = "Agencias";
+}
+
+
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Catálogos</li>
+            <li class="active">Agencias</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <table class="table" id="jqueryTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NOMBRE)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TELEFONO)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DIRECCION)
+                        </th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NOMBRE)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TELEFONO)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DIRECCION)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NOMBRE)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TELEFONO)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DIRECCION)
+                        </th>
+
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+            
+
+            @section scripts
+{
+                @GridTemplate.GridMVCTemplate("Agencia")
+            }
+
+
+            @*
+                <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+                    <link href="~/Content/DataTables/css/buttons.dataTables.min.css" rel="stylesheet" />
+                    <link href="~/Content/DataTableSearch.css" rel="stylesheet" />
+                    @section scripts {
+                        <script src="@Url.Content("~/Scripts/jquery-3.4.1.js")"></script>
+
+                        <script type="text/javascript" language="javascript" src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+                        <script type="text/javascript" language="javascript" src="~/Scripts/DataTables/dataTables.buttons.min.js"></script>
+                        <script type="text/javascript" language="javascript" src="~/scripts/DataTables/buttons.flash.js"></script>
+                        <script type="text/javascript" language="javascript" src="~/Scripts/DataTables/dataTables.select.min.js"></script>
+                        <script type="text/javascript" language="javascript" src="~/Scripts/jszip.min.js"></script>
+                        <script type="text/javascript" language="javascript" src="~/Scripts/buttons.html5.min.js"></script>
+
+                        <script src="~/Scripts/pdfmake.min.js"></script>
+                        <script src="~/Scripts/vfs_fonts.js"></script>
+
+                        <script type="text/javascript">
+                            /* Table initialisation */
+                            $(document).ready(function () {
+
+
+                                $('#jqueryTable tfoot th').each(function () {
+                                    var title = $(this).text();
+                                    $(this).html('<input class="form-control" type="text" placeholder="Buscar por ' + title + '" />');
+                                });
+
+                                var events = $('#events');
+
+                                var table = $('#jqueryTable').DataTable({
+                                    dom: 'Bfrtip',
+                                    language: {
+                                        select: {
+                                            rows: {
+                                                0: "",
+                                                1: " │ %d registro seleccionado."
+                                            }
+                                        }
+                                    },
+                                    select: true,
+                                    buttons: [{
+                                        text: 'Nuevo',
+                                        action: function (e, dt, node, config) {
+                                            window.location.href = '/Agencias/Create';
+                                        },
+                                        init: function (api, node, config) {
+                                            $(node).removeClass('btn-default')
+                                        }
+                                    },
+                                    {
+                                        text: 'Editar',
+                                        action: function (e, dt, node, config) {
+                                            var rowSelected = table.rows({ selected: true }).data();
+                                            console.log(rowSelected[0][0]);
+                                            window.location.href = '/Agencias/Edit/' + rowSelected[0][0];
+                                        },
+                                        init: function (api, node, config) {
+                                            $(node).removeClass('btn-default')
+                                        }
+                                    },
+                                    {
+                                        text: 'Detalle',
+                                        action: function (e, dt, node, config) {
+                                            var rowSelected = table.rows({ selected: true }).data();
+                                            console.log(rowSelected[0][0]);
+                                            window.location.href = '/Agencias/Details/' + rowSelected[0][0];
+                                        },
+                                        init: function (api, node, config) {
+                                            $(node).removeClass('btn-default')
+                                        }
+                                    },
+                                    {
+                                        text: 'Borrar',
+                                        action: function (e, dt, node, config) {
+                                            var rowSelected = table.rows({ selected: true }).data();
+                                            console.log(rowSelected[0][0]);
+                                            window.location.href = '/Agencias/Delete/' + rowSelected[0][0];
+                                        },
+                                        init: function (api, node, config) {
+                                            $(node).removeClass('btn-default')
+                                        }
+                                    },
+                                        'pdf', 'excel'
+                                    ]
+                                });
+                                // Apply the search
+                                table.columns().every(function () {
+                                    var that = this;
+
+                                    $('input', this.footer()).on('keyup change', function () {
+                                        if (that.search() !== this.value) {
+                                            that
+                                                .search(this.value)
+                                                .draw();
+                                        }
+                                    });
+                                });
+                                $('#jqueryTable tfoot tr').appendTo('#jqueryTable thead');
+                                $("#jqueryTable_wrapper button").each(function () {
+                                    $(this).removeClass("dt-button");
+                                    $(this).addClass("btn btn-sm");
+                                    if ($(this).text() == 'PDF' || $(this).text() == 'Excel') {
+                                        $(this).addClass("btn-default");
+                                    }
+                                    else {
+                                        $(this).addClass("btn-primary ");
+                                    }
+                                });
+                                $('#jqueryTable_filter input').addClass("form-control");
+                                $('#jqueryTable tbody').on('dblclick', 'tr', function () {
+                                    var rowSelected = table.rows({ selected: true }).data();
+                                    window.location.href = '/Agencias/Edit/' + rowSelected[0][0];
+                                });
+                            });
+                        </script>*@
+
+

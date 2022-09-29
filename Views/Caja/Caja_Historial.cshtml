@@ -1,0 +1,250 @@
+﻿@model CoopJFK.Models.ViewModels.Hist_CajaViewModels
+
+@{
+    ViewBag.Title = "Historial de Recibos de Caja";
+}
+<script src="~/Scripts/select2.min.js"></script>
+<link href="~/Content/select2/css/select2.min.css" rel="stylesheet" />
+
+<script src="~/Scripts/mask.js"></script>
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title"></h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Caja</li>
+            <li class="active">Historial</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <div class="form-horizontal">
+                    <h4>@ViewBag.Title</h4>
+                    <hr />
+                    @using (Html.BeginForm())
+                    {
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.Label("Desde")
+                                @Html.EditorFor(model => model.Desde, "{0:dd/MM/yyyy}")
+                              
+                                @*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpInicio">*@
+                                <span class="error">La fecha es Obligatorio</span>
+                            </div>
+                            <div class="col-md-3">
+                                @Html.Label("Hasta")
+                                @Html.EditorFor(model => model.Hasta, "{0:dd/MM/yyyy}")
+                                @*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpFin">*@
+                                <span class="error">La fecha es Obligatorio</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-10">
+
+                                <input id="submit" type="button" value="Consultar" class="btn btn-info" /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-warning" })
+
+                            </div>
+                        </div>
+
+
+                    }
+                    <div id="gridComprobantes"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/dx.all.js"></script>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+
+                if ($('#Desde').val().trim() == '') {
+                    isAllValid = false;
+                    $('#Desde').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#Desde').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#Hasta').val().trim() == '') {
+                    isAllValid = false;
+                    $('#Hasta').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#Hasta').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (isAllValid) {
+                  CargarGrid();
+   
+                }
+
+            });
+
+        });
+        
+        function CargarGrid() {
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetCaja")',
+                dataType: "json",
+                data: { desde: $('#Desde').val().trim(), hasta: $('#Hasta').val().trim() },
+                success: function (data) {
+                    var fillData = data.caja;
+                    var dataGrid = $("#gridComprobantes").dxDataGrid({
+                        filterRow: { visible: false },
+                        dataSource: fillData,
+
+                        keyExpr: ["ID", "CONSECUTIVO"],
+                        sorting: {
+                            mode: "multiple"
+                        },
+                       
+                        paging: {
+                            pageSize: 30
+                        },
+                        pager: {
+                            showPageSizeSelector: true,
+                            allowedPageSizes: [10, 20, 50],
+                            showInfo: true
+                        },
+                        filterRow: {
+                            visible: true
+                        },
+                        searchPanel: {
+                            visible: true,
+                            width: 340,
+                            placeholder: "Search..."
+                        },
+                        loadPanel: {
+                            enabled: true
+                        },
+                        showBorders: true,
+                        columns: [
+                            {
+                                dataField: "ID",
+                                caption: "No. Recibo",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "CONSECUTIVO",
+                                caption: "Consecutivo",
+                                alignment: "center",
+                                visible: false
+                            },
+                            {
+                                dataField: "FECHA_TRANSACCION",
+                                caption: "Fecha",
+                                dataType: "date",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "TRANSACCION",
+                                caption: "Transacción",
+                                alignment: "center"
+                            },
+
+                            {
+                                dataField: "SOCIO",
+                                caption: "No. Socio",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "NOMBRE",
+                                caption: "Nombres y Apellidos",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "CONCEPTO",
+                                caption: "Concepto",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "ANULADA",
+                                caption: "Anulada",
+                                alignment: "center"
+                            },
+                            {
+                                alignment: "center",
+                                cellTemplate: function (container, cellInfo) {
+                                    $("<a>", { "class": "btn btn-danger", "href": "Delete/" + cellInfo.data.ID + "?consecutivo=" + cellInfo.data.CONSECUTIVO, "text": "Anular" }).appendTo(container);
+
+                                }
+                            },
+                            {
+                                alignment: "center",
+                                cellTemplate: function (container, cellInfo) {
+                                    $("<a>", { "class": "btn btn-info", "href": "Comprobante?comprobante=" + cellInfo.data.ID + "&consecutivo=" + cellInfo.data.CONSECUTIVO, "text": "Comprobante" }).appendTo(container);
+                                }
+                            }
+                        ]
+                  
+                    }).dxDataGrid("instance");
+                }, error: function (xhr, status, error) {
+                    alert(status);
+                }
+            });
+
+        }
+    </script>
+}
+
+
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>

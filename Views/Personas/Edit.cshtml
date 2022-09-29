@@ -1,0 +1,548 @@
+﻿@model CoopJFK.Models.PERSONA
+
+@{
+    ViewBag.Title = "Editar Socio";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/gijgo/combined/gijgo.min.js"></script>
+<link href="~/Content/gijgo/combined/gijgo.min.css" rel="stylesheet" />
+
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">Editar Socio</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Préstamo</li>
+            <li class="active">Socio</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <div class="master">
+                    <h4>Datos Generales del Socio</h4>
+                    <hr />
+                    @using (Html.BeginForm())
+                    {
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.FECHA_CREACION)
+                        @Html.HiddenFor(model => model.USUARIO_CREACION)
+                        @Html.HiddenFor(model => model.AYUDA_FUNERAL)  
+                        <table class="space">
+                        <tr>
+                            <td> @Html.LabelFor(model => model.ID,"No Socio")</td>
+                           
+
+                        </tr>
+                        <tr>
+                            <td>@Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })</td>
+
+                        </tr>
+
+                        <tr>
+                            <td> @Html.LabelFor(model => model.FECHA_INGRESO, "Fecha de Ingreso")</td>
+                            <td> @Html.LabelFor(model => model.ESTADO, "Estado")</td>
+                            <td> @Html.LabelFor(model => model.NO_EMPLEADO, "No Empleado")</td>
+                            <td colspan="2">@Html.LabelFor(model => model.CEDULA, "Cédula")</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.EditorFor(model => model.FECHA_INGRESO, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.FECHA_INGRESO, "", new { @class = "text-danger" })
+                                <span class="error">La fecha de Ingreso es obligatorio</span>
+                                <script>
+
+                                    $('#FECHA_INGRESO').datepicker({
+                                        uiLibrary: 'bootstrap', format: 'dd/mm/yyyy'
+                                    });
+                                </script>
+                            </td>
+                            <td>
+                                @{
+                                    List<SelectListItem> _estado = new List<SelectListItem>();
+                                    _estado.Add(new SelectListItem { Text = "Primer Ingreso", Value = "P" });
+                                    _estado.Add(new SelectListItem { Text = "Actualización", Value = "U" });
+                                    _estado.Add(new SelectListItem { Text = "Reingreso", Value = "R" });
+                                    _estado.Add(new SelectListItem { Text = "Activo", Value = "A" });
+                                    _estado.Add(new SelectListItem { Text = "Retirado", Value = "T" });
+                                    _estado.Add(new SelectListItem { Text = "Fallecido", Value = "F" });
+                                }
+                                @Html.DropDownListFor(model => model.ESTADO, _estado, "--Seleccione--", new { @class = "form-control", @readonly = true })
+                                @Html.ValidationMessageFor(model => model.ESTADO, "", new { @class = "text-danger" })
+                                <span class="error">El estado es obligatorio</span>
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.NO_EMPLEADO, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.NO_EMPLEADO, "", new { @class = "text-danger", @readonly="true" })
+                                @Html.ValidationMessage("Valid_empleado", "", new { @class = "text-danger" })
+                                <span class="error">El numero de empleado es obligatorio</span>
+                            </td>
+                            <td colspan="2">
+                                @Html.EditorFor(model => model.CEDULA, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                                @Html.ValidationMessageFor(model => model.CEDULA, "", new { @class = "text-danger" })
+                                @Html.ValidationMessage("Valid_Cedula", "", new { @class = "text-danger" })
+                                <span class="error">La cedula es obligatorio</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>@Html.LabelFor(model => model.PERIODO_INGRESO, "Periodo de Ingreso")</td>
+                            <td colspan="2">@Html.LabelFor(model => model.NOMBRES, "Nombres y Apellidos")</td>
+                            <td>@Html.LabelFor(model => model.SEXO, "Sexo")</td>
+                            <td>@Html.LabelFor(model => model.ESTADO_CIVIL, "Estado Civil")</td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.EditorFor(model => model.PERIODO_INGRESO, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.PERIODO_INGRESO, "", new { @class = "text-danger" })
+                                <span class="error">El periodo de ingreso es  obligatorio</span>
+                            </td>
+                            <td colspan="2">
+                                @Html.EditorFor(model => model.NOMBRES, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.NOMBRES, "", new { @class = "text-danger" })
+                                <span class="error">El nombre del socio es obligatorio</span>
+                            </td>
+                            <td>
+                                @{
+                                    List<SelectListItem> _sexo = new List<SelectListItem>();
+                                    _sexo.Add(new SelectListItem { Text = "Masculino", Value = "M", Selected = false });
+                                    _sexo.Add(new SelectListItem { Text = "Femenino", Value = "F" });
+                                }
+                                @Html.DropDownListFor(model => model.SEXO, _sexo, "--Seleccione--", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SEXO, "", new { @class = "text-danger" })
+                                <span class="error">El sexo es obligatorio</span>
+
+                            </td>
+                            <td>
+                                @{
+                                    List<SelectListItem> _estadoCivil = new List<SelectListItem>();
+                                    _estadoCivil.Add(new SelectListItem { Text = "Soltero", Value = "S", Selected = false });
+                                    _estadoCivil.Add(new SelectListItem { Text = "Casado", Value = "C" });
+                                }
+
+                                @Html.DropDownListFor(model => model.ESTADO_CIVIL, _estadoCivil, "--Seleccione--", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ESTADO_CIVIL, "", new { @class = "text-danger" })
+                                <span class="error">El estado civil es obligatorio</span>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td> @Html.Label("Agencia")</td>
+                            <td>&nbsp;</td>
+                            <td> @Html.Label("Tipo de Pago")</td>
+                            <td>&nbsp;</td>
+                            <td>@Html.LabelFor(model => model.PROFESION,"Profesión") </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.EditorFor(model => model.AGENCIA, new { htmlAttributes = new { @id = "AGENCIA_ID", @class = "form-control", @readonly = "true" } })
+                                <span class="error">La agencia es obligatorio</span>
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.AGENCIA1.NOMBRE, new { htmlAttributes = new { @id = "txtAgenciaDesc", @class = "form-control", @readonly = "true" } })
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.TIPO_PAGO, new { htmlAttributes = new { @id = "txtTipoPagoID", @class = "form-control", @readonly = "true" } })
+                                <span class="error">El tipo de pago es obligatorio</span>
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.TIPO_PAGO1.DESCRIPCION, new { htmlAttributes = new { @id = "txtTipoPagoDesc", @class = "form-control", @readonly = "true" } })
+                            </td>
+                            <td>
+                                @Html.DropDownList("PROFESION", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.PROFESION, "", new { @class = "text-danger" })
+                                <span class="error">La profesion es obligatorio</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+
+                            <td>@Html.LabelFor(model => model.SALARIO, "Salario") </td>
+                            <td>@Html.LabelFor(model => model.CUENTA_BANCARIA, "Cta Bancaria")</td>
+                            <td>@Html.LabelFor(model => model.CUOTA_AHORRO, "Cuota de Ahorro")</td>
+                            <td>@Html.LabelFor(model => model.CELULAR, "Celular")</td>
+                            <td> @Html.LabelFor(model => model.TELEFONO, "Telefono")</td>
+
+                        </tr>
+                        <tr>
+
+                            <td>
+                                @Html.EditorFor(model => model.SALARIO, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                @Html.ValidationMessageFor(model => model.SALARIO, "", new { @class = "text-danger" })
+                                <span class="error">El salario es obligatorio</span>
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.CUENTA_BANCARIA, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CUENTA_BANCARIA, "", new { @class = "text-danger" })
+                                <span class="error">La cta bancaria es obligatorio</span>
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.CUOTA_AHORRO, new { htmlAttributes = new { @class = "form-control" ,@readonly=true} })
+                                @Html.ValidationMessageFor(model => model.CUOTA_AHORRO, "", new { @class = "text-danger" })
+                                <span class="error">La cuota de ahorro es obligatorio</span>
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.CELULAR, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CELULAR, "", new { @class = "text-danger" })
+                                <span class="error">El celular es obligatorio</span>
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.TELEFONO, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.TELEFONO, "", new { @class = "text-danger" })
+                                <span class="error">El telefono es obligatorio</span>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+
+                            <td>@Html.LabelFor(model => model.DEPARTAMENTO, "Departamento")</td>
+                            <td> @Html.LabelFor(model => model.MUNICIPIO, "Municipio")</td>
+                            <td colspan="3">@Html.LabelFor(model => model.DIRECCION, "Dirección")</td>
+                            
+                        </tr>
+                        <tr>
+
+                            <td>
+                                @Html.DropDownList("DEPARTAMENTO", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.DEPARTAMENTO, "", new { @class = "text-danger" })
+                                <span class="error">La ciudad es obligatorio</span>
+                            </td>
+                            <td>
+                                @Html.DropDownList("MUNICIPIO", null, "--Seleccione--", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.MUNICIPIO, "", new { @class = "text-danger" })
+                                <span class="error">El municipio es obligatorio</span>
+                            </td>
+                            <td colspan="3">
+                                @Html.EditorFor(model => model.DIRECCION, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.DIRECCION, "", new { @class = "text-danger" })
+                                <span class="error">La direccion es obligatorio</span>
+                            </td>
+                        </tr>
+                       
+                        <tr>
+                           
+                        </tr>
+                    </table>
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-10">
+                                <input id="submit" type="button" value="Guardar" style="padding:5px 15px" class="btn btn-info"
+ /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-primary" })
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    @*@EntitySelectorGrid.selectorGrid(ViewBag.ProfesionList, "PROFESION_ID", "profesionDesc", "profesion", "ID", "Nombre");*@
+    @EntitySelectorGrid.selectorGrid(ViewBag.TipoPagoList, "txtTipoPagoID", "txtTipoPagoDesc", "tipopago", "ID", "DESCRIPCION");
+    @EntitySelectorGrid.selectorGrid(ViewBag.AgenciaList, "AGENCIA_ID", "txtAgenciaDesc", "agencia", "ID", "NOMBRE");
+
+    <script>
+        //Save button click function
+        $('#submit').click(function () {
+            //validation of order
+            var isValidItem = true;
+           
+            if ($('#NO_EMPLEADO').val().trim() == '') {
+                isValidItem = false;
+                $('#NO_EMPLEADO').siblings('span.error').css('visibility', 'visible');
+            }
+            if ($('#PROFESION').val().trim() == '') {
+                isValidItem = false;
+                $('#PROFESION').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#PROFESION').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#CEDULA').val().trim() == '') {
+                isValidItem = false;
+                $('#CEDULA').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#CEDULA').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#NOMBRES').val().trim() == '') {
+                isValidItem = false;
+                $('#NOMBRES').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#NOMBRES').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#ESTADO').val().trim() == '') {
+                isValidItem = false;
+                $('#ESTADO').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#ESTADO').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#SEXO').val().trim() == '') {
+                isValidItem = false;
+                $('#SEXO').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#SEXO').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#FECHA_INGRESO').val().trim() == '') {
+                isValidItem = false;
+                $('#FECHA_INGRESO').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#FECHA_INGRESO').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#CUENTA_BANCARIA').val().trim() == '') {
+                isValidItem = false;
+                $('#CUENTA_BANCARIA').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#CUENTA_BANCARIA').siblings('span.error').css('visibility', 'hidden');
+            }
+
+
+            if ($('#SALARIO').val().trim() == '') {
+                isValidItem = false;
+                $('#SALARIO').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#SALARIO').siblings('span.error').css('visibility', 'hidden');
+            }
+
+
+            if ($('#CUOTA_AHORRO').val().trim() == '') {
+                isValidItem = false;
+                $('#CUOTA_AHORRO').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#CUOTA_AHORRO').siblings('span.error').css('visibility', 'hidden');
+            }
+
+
+            if ($('#DIRECCION').val().trim() == '') {
+                isValidItem = false;
+                $('#DIRECCION').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#DIRECCION').siblings('span.error').css('visibility', 'hidden');
+            }
+
+
+            if ($('#DEPARTAMENTO').val().trim() == '') {
+                isValidItem = false;
+                $('#DEPARTAMENTO').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#DEPARTAMENTO').siblings('span.error').css('visibility', 'hidden');
+            }
+
+
+
+            if ($('#MUNICIPIO').val().trim() == '') {
+                isValidItem = false;
+                $('#MUNICIPIO').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#MUNICIPIO').siblings('span.error').css('visibility', 'hidden');
+            }
+
+
+
+            if ($('#CELULAR').val().trim() == '') {
+                isValidItem = false;
+                $('#CELULAR').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#CELULAR').siblings('span.error').css('visibility', 'hidden');
+            }
+            if ($('#PERIODO_INGRESO').val().trim() == '') {
+                isValidItem = false;
+                $('#PERIODO_INGRESO').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#PERIODO_INGRESO').siblings('span.error').css('visibility', 'hidden');
+            }
+
+
+            if ($('#TELEFONO').val().trim() == '') {
+                isValidItem = false;
+                $('#TELEFONO').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#TELEFONO').siblings('span.error').css('visibility', 'hidden');
+            }
+
+
+
+            if ($('#ESTADO_CIVIL').val().trim() == '') {
+                isValidItem = false;
+                $('#ESTADO_CIVIL').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#ESTADO_CIVIL').siblings('span.error').css('visibility', 'hidden');
+            }
+
+
+            if ($('#txtTipoPagoID').val().trim() == '') {
+                isValidItem = false;
+                $('#txtTipoPagoID').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#txtTipoPagoID').siblings('span.error').css('visibility', 'hidden');
+            }
+            if ($('#AGENCIA_ID').val().trim() == '') {
+                isValidItem = false;
+                $('#AGENCIA_ID').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#AGENCIA_ID').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            //Save if valid
+            if (isValidItem) {
+                var data = {
+                    NO_EMPLEADO: $('#NO_EMPLEADO').val().trim(),
+                    CEDULA: $('#CEDULA').val().trim(),
+                    NOMBRES: $('#NOMBRES').val().trim(),
+                    ESTADO: $('#ESTADO').val().trim(),
+                    SEXO: $('#SEXO').val().trim(),
+                    FECHA_INGRESO: $('#FECHA_INGRESO').val().trim(),
+                    CUENTA_BANCARIA: $('#CUENTA_BANCARIA').val().trim(),
+                    CUOTA_AHORRO: $('#CUOTA_AHORRO').val().trim(),
+                    SALARIO: $('#SALARIO').val().trim(),
+                    DIRECCION: $('#DIRECCION').val().trim(),
+                    DEPARTAMENTO: $('#DEPARTAMENTO').val().trim(),
+                    MUNICIPIO: $('#MUNICIPIO').val().trim(),
+                    CELULAR: $('#CELULAR').val().trim(),
+                    TELEFONO: $('#TELEFONO').val().trim(),
+                    ESTADO_CIVIL: $('#ESTADO_CIVIL').val().trim(),
+                    TIPO_PAGO: $('#txtTipoPagoID').val().trim(),
+                    AGENCIA: $('#AGENCIA_ID').val().trim(),
+                    PROFESION: $('#PROFESION').val().trim(),
+                    ID: $('#ID').val().trim(),
+                    PERIODO_INGRESO: $('#PERIODO_INGRESO').val().trim(),
+                    AYUDA_FUNERAL: $('#AYUDA_FUNERAL').val().trim()
+                   
+                }
+
+                $(this).val('Procesando...');
+
+                $.ajax({
+                    url: '/Personas/Edit',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database
+                        if (d.status == true) {
+                            //will send status from server side
+                            Swal.fire({
+                                position: 'center',
+                                type: 'success',
+                                title: 'Se modificaron los datos',
+                                showConfirmButton: true
+
+                            }).then((result) => {
+                                if (result.value) {
+                                    window.location.href = '/Personas/Index';
+
+                                }
+                            })
+                            
+                        }
+                        else {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: d.messageerror,
+                                footer: ''
+                            })
+
+                        }
+                        $('#submit').val('Guardar');
+                    },
+                    error: function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Intente Nuevamente.',
+                            footer: ''
+                        })
+                        //alert('Error. Intente Nuevamente.');
+                        $('#submit').val('Guardar');
+                    }
+                });
+            }
+
+        });
+    </script>
+}
+<div>
+
+</div>
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>

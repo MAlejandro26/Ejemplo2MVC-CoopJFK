@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "Comprobante de Caja Rapida Uno";
+}
+
+<h2>Comprobante de Caja Rapida Uno </h2>
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "viewerrptComprobanteCajaRapida";
+}).Bind(Model).GetHtml()
+

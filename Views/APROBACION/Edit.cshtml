@@ -1,0 +1,872 @@
+﻿@model CoopJFK.Models.SP_LISTADO_APROBACION_PRESTAMO_SOLICITUD_Result
+
+@{
+    ViewBag.Title = "Decidir Aprobación";
+}
+<style>
+    /*@@keyframes click-wave {
+        0% {
+            height: 40px;
+            width: 40px;
+            opacity: 0.35;
+            position: relative;
+        }
+
+        100% {
+            height: 200px;
+            width: 200px;
+            margin-left: -80px;
+            margin-top: -80px;
+            opacity: 0;
+        }
+    }*/
+
+    .option-input {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        position: relative;
+        top: 13.33333px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 40px;
+        width: 40px;
+        transition: all 0.15s ease-out 0s;
+        background: #cbd1d8;
+        color: #fff;
+        cursor: pointer;
+        display: inline-block;
+        margin-right: 0.5rem;
+        outline: none;
+        position: relative;
+        z-index: 1000;
+    }
+
+        .option-input:hover {
+            background: #9faab7;
+        }
+
+        .option-input:checked {
+            background: #40e0d0;
+        }
+
+            .option-input:checked::before {
+                height: 40px;
+                width: 40px;
+                position: absolute;
+                content: '✔';
+                display: inline-block;
+                font-size: 26.66667px;
+                text-align: center;
+                line-height: 40px;
+            }
+
+            .option-input:checked::after {
+                -webkit-animation: click-wave 0.65s;
+                -moz-animation: click-wave 0.65s;
+                animation: click-wave 0.65s;
+                background: #40e0d0;
+                content: '';
+                display: block;
+                position: relative;
+                z-index: 100;
+            }
+
+        .option-input.radio {
+            border-radius: 50%;
+        }
+
+            .option-input.radio::after {
+                border-radius: 50%;
+            }
+
+    body {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        background: #e8ebee;
+        color: #9faab7;
+    }
+</style>
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Prestamo</li>
+            <li class="active">Aprobaciones</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+@using (Html.BeginForm())
+{
+   
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ID_APROBACION)
+    @Html.HiddenFor(model => model.CANTIDAD_APROBADO)
+    @Html.HiddenFor(model => model.CANTIDAD_RECHAZADO)
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="white-box">
+                <div class="form-horizontal">
+                    <h4>Datos generales del prestamo</h4>
+                    <hr />
+                    <fieldset disabled>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="col-md-12">Numero de Socio:</label>
+                                <div class="col-md-11">
+                                    @Html.EditorFor(model => model.ID_SOCIO, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ID_SOCIO, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="col-md-12">No Empleado:</label>
+                                <div class="col-md-11">
+                                    @Html.EditorFor(model => model.SOCIO_NO_EMPLEADO, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.SOCIO_NO_EMPLEADO, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="col-md-12">Socio:</label>
+                                <div class="col-md-11">
+                                    @Html.EditorFor(model => model.SOCIO_CEDULA, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.SOCIO_CEDULA, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="col-md-12">Nombre:</label>
+                                <div class="col-md-11">
+                                    @Html.EditorFor(model => model.SOCIO_NOMBRES, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.SOCIO_NOMBRES, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="col-md-12">Fiador:</label>
+                                <div class="col-md-11">
+                                    @Html.EditorFor(model => model.FIADOR_CEDULA, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.SOCIO_CEDULA, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="col-md-12">Nombre:</label>
+                                <div class="col-md-11">
+                                    @Html.EditorFor(model => model.FIADOR_NOMBRES, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.SOCIO_NOMBRES, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="col-md-12">Tipo de Prestamo:</label>
+                                <div class="col-md-11">
+                                    @Html.EditorFor(model => model.ID_TIPO_PRESTAMO, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ID_TIPO_PRESTAMO, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label lass="col-md-12">Descripcion Prestamo:</label>
+                                <div class="col-md-11">
+                                    @Html.EditorFor(model => model.TIPO_PRESTAMO, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.TIPO_PRESTAMO, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="col-md-12">Fecha de Solicitud:</label>
+                                <div class="col-md-11">
+                                    @Html.EditorFor(model => model.FECHA_SOLICITUD, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FECHA_SOLICITUD, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="col-md-12">Fecha de Revision:</label>
+                                <div class="col-md-11">
+                                    @Html.EditorFor(model => model.FECHA_REVISION, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FECHA_REVISION, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="col-md-12">Monto:</label>
+                                <div class="col-md-11">
+                                    @Html.EditorFor(model => model.MONTO_SOLICITUD, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.MONTO_SOLICITUD, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="col-md-12">Plazo:</label>
+                                <div class="col-md-11">
+                                    @Html.EditorFor(model => model.PLAZO, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.PLAZO, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="white-box">
+                <div>
+                    @*http://www.bootstraptoggle.com/*@
+                    <div class="row">
+                        <div class="col-md-10"> <h4>Aprobaciones</h4></div>
+                        <div class="col-md-2">
+                            @if (ViewBag.Fuente == "D")
+                            {
+                                <input type="checkbox" id="fuente" name="fuente" data-toggle="toggle" data-on="DIRECTIVA" data-off="CONSEJO" checked>
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="fuente" name="fuente" data-toggle="toggle" data-on="DIRECTIVA" data-off="CONSEJO">
+                            }
+
+                        </div>
+                    </div>
+                    <hr />
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Aprobacion</th>
+                                <th scope="col">Cargo</th>
+                                <th scope="col">Aprobar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Aprobacion 1</th>
+                                <td>
+                                    @if (ViewBag.Fuente == "D")
+                                    {
+                                        <label id="cargoaprobacion1">Presidente</label>
+                                    }
+                                    else
+                                    {
+                                        <label id="cargoaprobacion1">Coordinador</label>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @if (ViewBag.Aprobacion1 == null)
+                                            {
+                                                <div class="col-md-6" style="padding-left:40px">
+                                                    <label>
+                                                        <input type="radio" class="option-input radio" value="true" name="aprobacion1" />
+                                                        Aprobar
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>
+                                                        <input type="radio" class="option-input radio" value="false" name="aprobacion1" />
+                                                        Rechazar
+                                                    </label>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                if (ViewBag.Aprobacion1 == true)
+                                                {
+                                                    <div class="col-md-6" style="padding-left:40px">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="true" name="aprobacion1" checked />
+                                                            Aprobar
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="false" name="aprobacion1" />
+                                                            Rechazar
+                                                        </label>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-md-6" style="padding-left:40px">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="true" name="aprobacion1" />
+                                                            Aprobar
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="false" name="aprobacion1" checked />
+                                                            Rechazar
+                                                        </label>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Aprobacion 2</th>
+                                <td>
+                                    @if (ViewBag.Fuente == "D")
+                                    {
+                                        <label id="cargoaprobacion2">VicePresidente</label>
+                                    }
+                                    else
+                                    {
+                                        <label id="cargoaprobacion2">Secretario</label>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @if (ViewBag.Aprobacion2 == null)
+                                            {
+                                                <div class="col-md-6" style="padding-left:40px">
+                                                    <label>
+                                                        <input type="radio" class="option-input radio" value="true" name="aprobacion2" />
+                                                        Aprobar
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>
+                                                        <input type="radio" class="option-input radio" value="false" name="aprobacion2" />
+                                                        Rechazar
+                                                    </label>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                if (ViewBag.Aprobacion2 == true)
+                                                {
+                                                    <div class="col-md-6" style="padding-left:40px">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="true" name="aprobacion2" checked />
+                                                            Aprobar
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="false" name="aprobacion2" />
+                                                            Rechazar
+                                                        </label>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-md-6" style="padding-left:40px">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="true" name="aprobacion2" />
+                                                            Aprobar
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="false" name="aprobacion2" checked />
+                                                            Rechazar
+                                                        </label>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Aprobacion 3</th>
+                                <td>
+                                    @if (ViewBag.Fuente == "D")
+                                    {
+                                        <label id="cargoaprobacion3">Tesorero</label>
+                                    }
+                                    else
+                                    {
+                                        <label id="cargoaprobacion3">Vocal</label>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @if (ViewBag.Aprobacion3 == null)
+                                            {
+                                                <div class="col-md-6" style="padding-left:40px">
+                                                    <label>
+                                                        <input type="radio" class="option-input radio" value="true" name="aprobacion3" />
+                                                        Aprobar
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>
+                                                        <input type="radio" class="option-input radio" value="false" name="aprobacion3" />
+                                                        Rechazar
+                                                    </label>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                if (ViewBag.Aprobacion3 == true)
+                                                {
+                                                    <div class="col-md-6" style="padding-left:40px">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="true" name="aprobacion3" checked />
+                                                            Aprobar
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="false" name="aprobacion3" />
+                                                            Rechazar
+                                                        </label>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-md-6" style="padding-left:40px">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="true" name="aprobacion3" />
+                                                            Aprobar
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="false" name="aprobacion3" checked />
+                                                            Rechazar
+                                                        </label>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Aprobacion 4</th>
+                                <td>
+                                    @if (ViewBag.Fuente == "D")
+                                    {
+                                        <label id="cargoaprobacion4">Secretario</label>
+                                    }
+                                    else
+                                    {
+                                        <label id="cargoaprobacion4">Vocal</label>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @if (ViewBag.Aprobacion4 == null)
+                                            {
+                                                <div class="col-md-6" style="padding-left:40px">
+                                                    <label>
+                                                        <input type="radio" class="option-input radio" value="true" name="aprobacion4" />
+                                                        Aprobar
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>
+                                                        <input type="radio" class="option-input radio" value="false" name="aprobacion4" />
+                                                        Rechazar
+                                                    </label>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                if (ViewBag.Aprobacion4 == true)
+                                                {
+                                                    <div class="col-md-6" style="padding-left:40px">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="true" name="aprobacion4" checked />
+                                                            Aprobar
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="false" name="aprobacion4" />
+                                                            Rechazar
+                                                        </label>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-md-6" style="padding-left:40px">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="true" name="aprobacion4" />
+                                                            Aprobar
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="false" name="aprobacion4" checked />
+                                                            Rechazar
+                                                        </label>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Aprobacion 5</th>
+                                <td>
+                                    <label>Vocal</label>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @if (ViewBag.Aprobacion5 == null)
+                                            {
+                                                <div class="col-md-6" style="padding-left:40px">
+                                                    <label>
+                                                        <input type="radio" class="option-input radio" value="true" name="aprobacion5" />
+                                                        Aprobar
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>
+                                                        <input type="radio" class="option-input radio" value="false" name="aprobacion5" />
+                                                        Rechazar
+                                                    </label>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                if (ViewBag.Aprobacion5 == true)
+                                                {
+                                                    <div class="col-md-6" style="padding-left:40px">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="true" name="aprobacion5" checked />
+                                                            Aprobar
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="false" name="aprobacion5" />
+                                                            Rechazar
+                                                        </label>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-md-6" style="padding-left:40px">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="true" name="aprobacion5" />
+                                                            Aprobar
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>
+                                                            <input type="radio" class="option-input radio" value="falses" name="aprobacion5" checked />
+                                                            Rechazar
+                                                        </label>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="form-group">
+                        <label class="col-md-12">Observaciones de la aprobacion:</label>
+                        @Html.TextAreaFor(model => model.OBSERVACION, 3, 155, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <hr />
+                    <div class="row p-20">
+                        <div class="form-group ml-auto">
+                            <div class="col-md-2">
+                                @Html.ActionLink("Regresar", "Index", "APROBACION", null, new { @class = "btn btn-primary" })
+                            </div>
+                            @if (ViewBag.cantvoto >= 3)
+                            {
+                                <div class="col-md-2" id="divaprobar">
+                                    <button type="button" id="btnaprobar" class="btn btn-success btn-xl">Aprobar</button>
+                                </div>
+                                <div class="col-md-2" id="divrechazar">
+                                    <button type="button" id="btnrechazar" class="btn btn-danger btn-xl">Rechazar</button>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-2" id="divaprobar" style="display:none">
+                                    <button type="button" id="btnaprobar" class="btn btn-success btn-xl">Aprobar</button>
+                                    @*<button type="button" class="btn btn-danger">VOTOS <span class="badge">@Html.DisplayFor(modelItem => item.CANTIDAD_VOTO)</span></button>*@
+                                </div>
+                                <div class="col-md-2" id="divrechazar" style="display:none">
+                                    <button type="button" id="btnrechazar" class="btn btn-danger btn-xl">Rechazar</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section scripts{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("input[name='aprobacion1']").click(function () {
+                var radioValue = $("input[name='aprobacion1']:checked").val();
+                if (radioValue) {
+                    Voto('aprobacion1', radioValue)
+                }
+                //$('#ModalVotacion').modal('show')
+            });
+            $("input[name='aprobacion2']").click(function () {
+                var radioValue = $("input[name='aprobacion2']:checked").val();
+                if (radioValue) {
+                    Voto('aprobacion2', radioValue)
+                }
+            });
+            $("input[name='aprobacion3']").click(function () {
+                var radioValue = $("input[name='aprobacion3']:checked").val();
+                if (radioValue) {
+                    Voto('aprobacion3', radioValue)
+                }
+            });
+            $("input[name='aprobacion4']").click(function () {
+                var radioValue = $("input[name='aprobacion4']:checked").val();
+                if (radioValue) {
+                    Voto('aprobacion4', radioValue)
+                }
+            });
+            $("input[name='aprobacion5']").click(function () {
+                var radioValue = $("input[name='aprobacion5']:checked").val();
+                if (radioValue) {
+                    Voto('aprobacion5', radioValue)
+                }
+            });
+            $('#fuente').change(function () {
+                var Value = $("input[name='fuente']:checked").val();
+                if (Value == "on") {
+                    //if (confirm("Esta seguro de cambiar los Votantes!")) {
+                    $("#cargoaprobacion1").text("Presidente");
+                    $("#cargoaprobacion2").text("VicePrecidente");
+                    $("#cargoaprobacion3").text("Tesorero");
+                    $("#cargoaprobacion4").text("Secretario");
+                    Fuente("D");
+                    //}
+                    //else {
+                    //    $('#fuente').bootstrapToggle('off')
+                    //}
+                }
+                else {
+                    //if (confirm("Esta seguro de cambiar los Votantes!")) {
+                    $("#cargoaprobacion1").text("Coordinador");
+                    $("#cargoaprobacion2").text("Secretario");
+                    $("#cargoaprobacion3").text("Vocal");
+                    $("#cargoaprobacion4").text("Vocal");
+                    Fuente("C");
+                    //}
+                    //else {
+                    //    $('#fuente').bootstrapToggle('on')
+                    //}
+                }
+            })
+            $('#btnaprobar').click(function () {
+                var aprobado = $('#CANTIDAD_APROBADO').val();
+                var rechazado = $('#CANTIDAD_RECHAZADO').val();
+                var observacion = $('#OBSERVACION').val();
+                var confirmacion;
+
+                if (aprobado > rechazado) {
+                    confirmacion = "Esta seguro aprobar la solicitud del prestamo?"
+                   }
+                else if (aprobado == rechazado) {
+                    confirmacion = "Esta seguro aprobar la solicitud del prestamo?.Este se encuentra en igualda de votos aprobados y rechazados!!"
+                }
+                else {
+                    confirmacion = "Esta seguro aprobar la solicitud del prestamo?.Este se encuentra rechazado segun los votos!!"
+                }
+                if (confirm(confirmacion)) {
+                    EstadoPrestamo("Se ha aprobado la solicitud", observacion, 4);
+                   
+                }
+            })
+            $('#btnrechazar').click(function () {
+                var aprobado = $('#CANTIDAD_APROBADO').val();
+                var rechazado = $('#CANTIDAD_RECHAZADO').val();
+                var observacion = $('#OBSERVACION').val();
+                var confirmacion;
+
+                if (rechazado > aprobado) {
+                    confirmacion = "Esta seguro rechazar la solicitud del prestamo?"
+                }
+                else if (aprobado == rechazado) {
+                    confirmacion = "Esta seguro rechazar la solicitud del prestamo?.Este se encuentra en igualda de votos aprobados y rechazados!!"
+                }
+                else {
+                    confirmacion = "Esta seguro rechazar la solicitud del prestamo?.Este se encuentra aprobado segun los votos!!"
+                }
+                if (confirm(confirmacion)) {
+                    EstadoPrestamo("Se ha rechazado la solicitud", observacion, 3);
+                   
+                }
+            })
+        });
+
+        function Voto(aprobacion, decision) {
+            if (confirm("Esta seguro de realizar la Votacion!")) {
+                var data = JSON.stringify({
+                    'id': $('#ID_APROBACION').val().trim(),
+                    'aprobacion': aprobacion.trim(),
+                    'desicion': decision.trim()
+                });
+                $.ajax({
+                    url: '/APROBACION/Votar',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: data,
+                    contentType: "application/json",
+                    success: function (d) {
+                        if (d.status) {
+                            Swal.fire({
+                                position: 'center',
+                                type: 'success',
+                                title: 'Voto',
+                                text: 'Se realizo con exito la operacion',
+                                showConfirmButton: true
+                            })
+                            if (d.votos >= 3) {
+                                $('#divaprobar').show();
+                                $('#divrechazar').show();
+                            }
+                            else {
+                                $('#divaprobar').hide();
+                                $('#divrechazar').hide();
+                            }
+                            $('#CANTIDAD_APROBADO').val(d.cantidad_aprobado);
+                            $('#CANTIDAD_RECHAZADO').val(d.cantidad_rechazado);
+                        }
+                        else {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: d.messageerror,
+                                footer: ''
+                            })
+
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Intente Nuevamente.',
+                            footer: ''
+                        })
+                    }
+                });
+            }
+            else {
+                if ($("input[name=" + aprobacion + "]:checked").val() == "true") {
+                    var status = $("input[name=" + aprobacion + "]:checked").val();
+                    $("input[name=" + aprobacion + "][value='true']").prop("checked", false);
+                    $("input[name=" + aprobacion + "][value='false']").prop("checked", true);
+                }
+                else {
+                    $("input[name=" + aprobacion + "][value='true']").prop("checked", true);
+                    $("input[name=" + aprobacion + "][value='false']").prop("checked", false);
+                }
+                $('#divaprobar').hide();
+                $('#divrechazar').hide();
+            }
+        }
+        function Fuente(fuente) {
+            var data = JSON.stringify({
+                'id': $('#ID_APROBACION').val().trim(),
+                'fuente': fuente.trim()
+            });
+            $.ajax({
+                url: '/APROBACION/Fuente',
+                type: "POST",
+                dataType: "JSON",
+                data: data,
+                contentType: "application/json",
+                success: function (d) {
+                    if (d.status) {
+                        Swal.fire({
+                            position: 'center',
+                            type: 'success',
+                            title: 'Cambio De Votantes',
+                            text: 'Se realizo con exito la operacion',
+                            showConfirmButton: true
+                        })
+                    }
+                    else {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: d.messageerror,
+                            footer: ''
+                        })
+
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Intente Nuevamente.',
+                        footer: ''
+                    })
+                }
+            });
+        }
+        function EstadoPrestamo(mensaje, observacion, estado) {
+            var data = JSON.stringify({
+                'id': $('#ID_APROBACION').val().trim(),
+                'observacion': observacion,
+                'estado': estado
+            });
+            $.ajax({
+                url: '/APROBACION/EstadoPrestamo',
+                type: "POST",
+                dataType: "JSON",
+                data: data,
+                contentType: "application/json",
+                success: function (d) {
+                    if (d.status) {
+                        Swal.fire({
+                            position: 'center',
+                            type: 'success',
+                            title: mensaje,
+                            text: 'Se realizo con exito la operacion',
+                            showConfirmButton: true
+                        }).then((result) => { if (result.value) { window.location.href = '/APROBACION/Index'; } })
+                    }
+                    else {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: d.messageerror,
+                            footer: ''
+                        })
+
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Intente Nuevamente.',
+                        footer: ''
+                    })
+                }
+            });
+        }
+    </script>
+}
+

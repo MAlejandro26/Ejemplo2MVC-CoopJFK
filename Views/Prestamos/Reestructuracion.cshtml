@@ -1,0 +1,660 @@
+﻿@model CoopJFK.Models.ViewModels.ReestructuracionViewModel
+@{
+    ViewBag.Title = "Reestructuración";
+   
+}
+
+<script src="~/Scripts/gijgo/combined/gijgo.min.js"></script>
+<link href="~/Content/gijgo/combined/gijgo.min.css" rel="stylesheet" />
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="~/Views/Home/Index.cshtml">Sistema de Gestión de Crédito</a></li>
+            <li class="active">Reestructuración</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <div class="container">
+                <form>
+                    <div class="form-group">
+                        <h4>Buscar Préstamo</h4>
+                        <div class="col-md-3">
+                            <label>No. Préstamo:</label> <br>
+                            <input id="prestamo" class="form-control" type="text" placeholder="Escriba el No. Ptamo."><br>
+
+                        </div>
+                        <div class="col-md-3">
+
+                            <label>Tipo de Préstamo:</label> <br>
+                            <input id="tipo_prestamoDesc" class="form-control" type="text" disabled><br>
+
+                        </div>
+                        <div class="col-md-3">
+
+                            <label>Pp Inicio:</label> <br>
+                            <input id="ppinicio" class="form-control" type="text" disabled><br>
+
+                        </div>
+                        <div class="col-md-3">
+
+                            <label>Pp Fin:</label> <br>
+                            <input id="ppfin" class="form-control" type="text" disabled><br>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+
+                            <label>No. de Socio:</label> <br>
+                            <input id="socio" class="form-control" type="text" disabled><br>
+
+                        </div>
+                        <div class="col-md-3">
+
+                            <label>No. de Empleado:</label> <br>
+                            <input id="empleado" class="form-control" type="text" disabled><br>
+
+                        </div>
+                        <div class="col-md-6"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+
+                            <label>Nombre y Apellidos:</label> <br>
+                            <input id="nombres" class="form-control" type="text" disabled><br>
+
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <h4>Pediente</h4>
+                        <div class="col-md-4">
+
+                            <label>Cuota:</label> <br>
+                            <input id="cuotapendiente" class="form-control" type="text" disabled><br>
+
+                        </div>
+                        <div class="col-md-4">
+
+                            <label>Principal:</label> <br>
+                            <input id="principalpendiente" class="form-control" type="text" disabled><br>
+
+                        </div>
+                        <div class="col-md-4">
+
+                            <label>Interés:</label> <br>
+                            <input id="interespendiente" class="form-control" type="text" disabled><br>
+
+                        </div>
+                        <button id="adicionar" class="btn btn-success" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+                    </div>
+                </form>
+
+                <p>
+                    Préstamos a Reestructurar:
+                    <div id="adicionados"></div>
+                </p>
+                @*<p>
+                        Total:
+                        <div id="Totaladicionados"></div>
+                    </p>*@
+                <table id="mytable" class="table table-bordered table-hover ">
+
+                    <tr>
+                        <th>No. Préstamo</th>
+                        <th>Tipo de Préstamo</th>
+                        <th>Cuotas</th>
+                        <th>Principal</th>
+                        <th>Interés</th>
+                        <th>Eliminar</th>
+
+                    </tr>
+
+
+                </table>
+                <hr/>
+                <div class="form-group">
+                    <h4>Datos del Nuevo Préstamo</h4>
+                    <div class="col-md-2">
+
+                        <label>Fiador:</label> <br>
+                        <input id="SOCIO_ID_FIADOR" class="form-control" type="text" disabled><br>
+                        <span class="error">El socio fiador es requerido</span>
+
+                    </div>
+                    <div class="col-md-4">
+
+                        <label>Nombres del Fiador:</label> <br>
+                        <input id="FiadorNombres" class="form-control" type="text" placeholder="Escriba el nombre del Fiador"><br>
+                        <span class="error">El socio fiador es requerido</span>
+                    </div>
+                    <div class="col-md-3">
+
+                        <label>Tipo de Préstamo:</label> <br>
+                        @Html.DropDownList("TIPO_PRESTAMO", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+
+                    </div>
+                    <div class="col-md-3">
+                        <label>Fecha Solicitud:</label> <br>
+                        <input type="text" id="FECHA_SOLICITUD" /><br />
+                        <script>
+                            var hoy = new Date().toLocaleTimeString();
+                            $('#FECHA_SOLICITUD').datepicker({
+                                uiLibrary: 'bootstrap', format: 'yyyy-mm-dd'
+                            });
+                        </script>
+                        <span class="error">La fecha de solicitud es requerida</span>
+                    </div>
+                   
+
+
+                </div>
+                <div class="form-group">
+                    <div class="col-md-2">
+
+                        <label>Periodo:</label> <br>
+                        <input id="PERIODO" class="form-control" type="text"><br>
+                        <span class="error">El Periodo requerido</span>
+
+                    </div>
+                    <div class="col-md-6">
+
+                        <label>Razón:</label> <br>
+                        <input id="RAZON" class="form-control" type="text" /><br>
+                        <span class="error">La razón requerido</span>
+
+                    </div>
+                    <div class="col-md-2">
+
+                        <label>Monto:</label> <br>
+                        <input id="MONTO" class="form-control" type="text" /><br>
+                        <span class="error">El Monto requerido</span>
+                    </div>
+                    <div class="col-md-2">
+
+                        <label>Plazo:</label> <br>
+                        <input id="PLAZO" class="form-control" type="text" /><br>
+                        <span class="error">El plazo requerido</span>
+                    </div>
+                    <button id="reestructurar" class="btn btn-info" type="button">
+                        <span class="glyphicon glyphicon-random"></span> Reestructurar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+@section scripts{
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            //obtenemos el valor de los input
+            var PrestamosItems = [];
+
+
+            $("#FiadorNombres").autocomplete({
+                dataType: 'JSON',
+                source: function (request, response) {
+                    jQuery.ajax({
+                        url: "/Prestamos/BuscarSocio",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            nombre: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    id: item.Id,
+                                    value: item.Name,
+                                    cedula: item.Cedula,
+                                    empleado: item.Empleado,
+                                    apellido: item.Apellido,
+                                    ctas: item.cta,
+                                    //cuotas: item.cuota,
+                                    prof: item.profesion,
+                                    agen: item.agencia,
+                                    sex: item.sexo,
+                                    TipoPago: item.Tipo_Pago
+                                }
+                            }))
+                        }
+                    })
+                },
+                select: function (e, ui) {
+                    $("#SOCIO_ID_FIADOR").val(ui.item.id);
+                    $("#FiadorNombres").focus();
+
+                }
+            })
+
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'decimal',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            })
+            const formatter_money = new Intl.NumberFormat('en-US', {
+                style: 'decimal',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            })
+
+
+            $('#reestructurar').click(function () {
+                var valido = true;
+                if (PrestamosItems.length == 0) {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'No hay detalle que procesar',
+                        footer: ''
+                    })
+                    valido = false;
+                }
+
+                if ($('#PERIODO').val().trim() == '') {
+                    valido = false;
+                    $('#PERIODO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#PERIODO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#RAZON').val().trim() == '') {
+                    valido = false;
+                    $('#RAZON').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#RAZON').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#SOCIO_ID_FIADOR').val().trim() == '') {
+                    valido = false;
+                    $('#SOCIO_ID_FIADOR').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#SOCIO_ID_FIADOR').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#FECHA_SOLICITUD').val().trim() == '') {
+                    valido = false;
+                    $('#FECHA_SOLICITUD').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#FECHA_SOLICITUD').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#PLAZO').val().trim() == '') {
+                    valido = false;
+                    $('#PLAZO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#PLAZO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#TIPO_PRESTAMO').val().trim() == '') {
+                    valido = false;
+                    $('#TIPO_PRESTAMO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#TIPO_PRESTAMO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                if ($('#MONTO').val().trim() == '') {
+                    valido = false;
+                    $('#MONTO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#MONTO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                if (valido) {
+                   
+                    var data = {
+                        FECHA_SOLICITUD: $('#FECHA_SOLICITUD').val().trim(),
+                        MONTO: $('#MONTO').val().trim(),
+                        PLAZO: $('#PLAZO').val().trim(),
+                        RAZON: $('#RAZON').val().trim(),
+                        PERIODO: $('#PERIODO').val().trim(),
+                        SOCIO_ID_FIADOR: $('#SOCIO_ID_FIADOR').val().trim(),
+                        MONEDA: 1,
+                        REFERENCIA: 2,
+                        TIPO_DEDUCCION:1,
+                        TIPO_PRESTAMO: $('#TIPO_PRESTAMO').val().trim(),
+                        ReestructuracionDetalle:PrestamosItems
+                    }
+             
+
+                    $.ajax({
+                        url: '/Prestamos/Reestructuracion',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Se realizo la reestructuracion en la solicitus:' + NoPrestamo,
+                                    showConfirmButton: true
+
+                                })
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente.',
+                                footer: ''
+                            })
+
+                        }
+                    });
+                }
+
+            });
+
+            $('#adicionar').click(function () {
+                var valido = true;
+                var totalprincipal = 0;
+                var totalinteres = 0;
+                var total = 0;
+
+                if ($('#prestamo').val().trim() == '') {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Debe digitar el número de préstamo',
+                        footer: ''
+                    })
+
+                }
+                else {
+
+                    if (PrestamosItems.length > 0) {
+                        $.each(PrestamosItems, function (i, val) {
+                            if (val.id == $('#prestamo').val().trim()) {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: 'Ya agrego este préstamo',
+                                    footer: ''
+                                });
+                                valido = false;
+                                document.getElementById("prestamo").value = "";
+                                document.getElementById("tipo_prestamoDesc").value = "";
+                                document.getElementById("ppinicio").value = "";
+                                document.getElementById("ppfin").value = "";
+                                document.getElementById("socio").value = "";
+                                document.getElementById("empleado").value = "";
+                                document.getElementById("nombres").value = "";
+                                document.getElementById("principalpendiente").value = "";
+                                document.getElementById("cuotapendiente").value = "";
+                                document.getElementById("interespendiente").value = "";
+                                document.getElementById("prestamo").focus();
+                            }
+
+                            //else {
+                            //    valido = true;
+                            //}
+                        })
+
+                    }
+
+                    if (valido) {
+
+                        var prestamo = document.getElementById("prestamo").value;
+                        var tipoprestamo = document.getElementById("tipo_prestamoDesc").value;
+                        var cuotapendiente = document.getElementById("cuotapendiente").value;
+                        var principalpendiente = formatter_money.format(document.getElementById("principalpendiente").value);
+                        var interespendiente = formatter_money.format(document.getElementById("interespendiente").value);
+                        var i = 1; //contador para asignar id al boton que borrara la fila
+                        var fila = '<tr id="row' + prestamo + '"><td>' + prestamo + '</td><td>' + tipoprestamo + '</td><td>' + cuotapendiente + '</td><td>' + principalpendiente + '</td><td>' + interespendiente + '</td><td><button type="button" name="remove" id="' + prestamo + '" class="btn btn-danger btn_remove"><span class="glyphicon glyphicon-remove"></span></button></td></tr>'; //esto seria lo que contendria la fila
+
+                        i++;
+
+                        PrestamosItems.push({
+                            id: document.getElementById("prestamo").value,
+                            prestamo: document.getElementById("prestamo").value,
+                            tipoprestamo: document.getElementById("tipo_prestamoDesc").value,
+                            cuotas: parseFloat(document.getElementById("cuotapendiente").value),
+                            principal: parseFloat(document.getElementById("principalpendiente").value),
+                            interes: parseFloat(document.getElementById("interespendiente").value)
+
+                            //TotalAmount: parseInt($('#quantity').val().trim()) * parseFloat($('#rate').val().trim())
+                        });
+
+                        $('#mytable tr:first').after(fila);
+                        $("#adicionados").text(""); //esta instruccion limpia el div adicioandos para que no se vayan acumulando
+                        var nFilas = $("#mytable tr").length;
+                        $("#adicionados").append(nFilas - 1);
+                        //le resto 1 para no contar la fila del header
+
+                        //var length = PrestamosItems.length;
+                        //if (length > 0) {
+                        //    for (var i = 0; i < length; i++) {
+
+                        //        if (PrestamosItems[i].tipoprestamo==='Prestamo Regular') {
+                        //            totalinteres = 0 + totalinteres ;
+                        //            totalprincipal = parseFloat(PrestamosItems[i].principalpendiente) + totalprincipal;
+
+
+                        //        }
+                        //        else {
+                        //            totalinteres = parseFloat(PrestamosItems[i].interespendiente) + totalinteres ;
+                        //            totalprincipal = parseFloat(PrestamosItems[i].principalpendiente) + totalprincipal;
+
+                        //        }
+                        //    }
+                        //    total = totalprincipal + totalinteres;
+                        //}
+                        //$("#Totaladicionados").text("");
+
+                        //var t = formatter_money.format(total);
+                        //$("#Totaladicionados").append(t);
+
+
+                        //limpiamos los controles
+                        document.getElementById("prestamo").value = "";
+                        document.getElementById("tipo_prestamoDesc").value = "";
+                        document.getElementById("ppinicio").value = "";
+                        document.getElementById("ppfin").value = "";
+                        document.getElementById("socio").value = "";
+                        document.getElementById("empleado").value = "";
+                        document.getElementById("nombres").value = "";
+                        document.getElementById("principalpendiente").value = "";
+                        document.getElementById("cuotapendiente").value = "";
+                        document.getElementById("interespendiente").value = "";
+                        document.getElementById("prestamo").focus();
+
+
+                    }
+
+
+                }
+
+            });
+            $(document).on('click', '.btn_remove', function () {
+                var button_id = $(this).attr("id");
+
+                //cuando da click obtenemos el id del boton
+                $('#row' + button_id + '').remove(); //borra la fila
+                //limpia el para que vuelva a contar las filas de la tabla
+                $("#adicionados").text("");
+                var nFilas = $("#mytable tr").length;
+                $("#adicionados").append(nFilas - 1);
+
+                var length = PrestamosItems.length;
+                for (var i = 0; i < length; i++) {
+                    if (PrestamosItems[i].prestamo === button_id) {
+                        var index = PrestamosItems.indexOf(PrestamosItems[i].prestamo);
+                        PrestamosItems.splice(index, 1)
+
+                    }
+                }
+                //totalprincipal = 0;
+                //totalinteres = 0;
+                //total = 0;
+
+                //if (PrestamosItems.length > 0) {
+                //    for (var i = 0; i < PrestamosItems.length; i++) {
+
+                //        if (PrestamosItems[i].tipoprestamo === 'Prestamo Regular') {
+                //            totalinteres = 0 + totalinteres;
+                //            totalprincipal = parseFloat(PrestamosItems[i].principalpendiente) + totalprincipal;
+                //        }
+                //        else {
+                //            totalinteres = parseFloat(PrestamosItems[i].interespendiente) + totalinteres;
+                //            totalprincipal = parseFloat(PrestamosItems[i].principalpendiente) + totalprincipal;
+
+                //        }
+                //    }
+                //}
+                //total = totalprincipal + totalinteres;
+
+                //$("#Totaladicionados").text("");
+                //var t = total;
+                ////$("#Totaladicionados").append(t);
+            });
+
+
+            $('#prestamo').change(function () {
+                if ($('#prestamo').val().trim() == '') {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Debe digitar el número de préstamo',
+                        footer: ''
+                    })
+
+                }
+                else {
+                    var data = {
+                        prestamo: $('#prestamo').val().trim()
+                    }
+                    $.ajax({
+                        url: '/Prestamos/DatoReestructuracion',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            if (d.status == true) {
+                                $("#tipo_prestamoDesc").val(d.tipo_prestamo);
+                                $("#ppinicio").val(d.ppinicio);
+                                $("#ppfin").val(d.ppfin);
+                                //datos del socio
+                                $("#socio").val(d.socioid);
+                                $("#empleado").val(d.empleado);
+                                $("#nombres").val(d.nombre);
+                                //cantidades
+                                $("#cuotapendiente").val(d.cuota);
+                                $("#principalpendiente").val(d.principal);
+                                $("#interespendiente").val(d.interes);
+
+
+                            }
+                            else {
+
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Error al obtener los daos del préstamo',
+                                footer: ''
+                            })
+
+                        }
+                    })
+                }
+
+            });
+
+
+
+        });
+    </script>
+}
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>

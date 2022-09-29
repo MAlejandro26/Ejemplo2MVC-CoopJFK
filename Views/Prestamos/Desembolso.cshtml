@@ -1,0 +1,223 @@
+﻿@model CoopJFK.Models.DESEMBOLSO
+
+@{
+    ViewBag.Title = " Crear Desembolso";
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="~/Views/Home/Index.cshtml">Sistema de Gestión de Crédito</a></li>
+            <li class="active">Desembolso de Préstamos</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            @using (Html.BeginForm())
+            {
+
+            <div class="form-horizontal">
+                <h4>Desembolso</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PRESTAMO,"No Préstamo", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                       
+                            @Html.EditorFor(model => model.PRESTAMO, new { htmlAttributes = new { @id = "PRESTAMO", @class = "form-control", @readonly = "true" } })
+                            <span class="error">El Numero de Prestamo es requerido</span>
+                       
+                        @Html.ValidationMessageFor(model => model.PRESTAMO, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("No de Socio", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.Editor("SOCIO", new { htmlAttributes = new { @id = "SOCIO", @class = "form-control", @readonly = "true" } })
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Cédula", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.Editor("CEDULA", new { htmlAttributes = new { @id = "CEDULA", @class = "form-control", @readonly = "true" } })
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Nombre y Apellidos", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.Editor("NOMBRE", new { htmlAttributes = new { @id = "NOMBRE", @class = "form-control", @readonly = "true" } })
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Ptamo X Cobrar", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.Editor("MONTO", new { htmlAttributes = new { @id = "MONTO", @class = "form-control", @readonly = "true" } })
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CHEQUE,"No Cheque", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.CHEQUE, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CHEQUE, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.OBSERVACION,"Observación", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.OBSERVACION, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.OBSERVACION, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-4 col-md-10">
+                        <input id="submit" type="button" value="Guardar" style="padding:5px 15px" class="btn btn-info"
+ /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+            }
+
+
+        </div>
+    </div>
+</div>
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+@section Scripts{
+   
+    @EntitySelectorGridAll.selectorGrid(ViewBag.PrestamoList, "PRESTAMO", "SOCIO","CEDULA", "NOMBRE", "MONTO", "prestamo", "Id", "Name", "Socio", "Cedula", "Monto");
+
+    <script>
+        $('#submit').click(function () {
+            //validation of order
+            var isAllValid = true;
+           
+            if ($('#PRESTAMO').val().trim() == '') {
+                isAllValid = false;
+                $('#PRESTAMO').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#PRESTAMO').siblings('span.error').css('visibility', 'hidden');
+            }
+            
+            //Save if valid
+            if (isAllValid) {
+                var data = {
+                    PRESTAMO: $('#PRESTAMO').val().trim(),
+                    OBSERVACION: $('#OBSERVACION').val().trim(),
+                    CHEQUE: $('#CHEQUE').val().trim()
+                }
+
+                $(this).val('Procesando...');
+
+                $.ajax({
+                    url: '/Prestamos/Desembolso',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database
+                        if (d.status == true) {
+                            //will send status from server side
+                            Swal.fire({
+                                position: 'center',
+                                type: 'success',
+                                title: 'Se guardaron los datos',
+                                showConfirmButton: true
+
+                            }).then((result) => {
+                                if (result.value) {
+                                    window.location.href = '/Prestamos/FormatoPagare?NoPrestamo=' + d.NoPrestamo;
+
+                                }
+                            })
+                           
+                        }
+                        else {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: d.messageerror,
+                                footer: ''
+                            })
+
+                        }
+                        $('#submit').val('Guardar');
+                    },
+                    error: function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Intente Nuevamente.',
+                            footer: ''
+                        })
+                        //alert('Error. Intente Nuevamente.');
+                        $('#submit').val('Save');
+                    }
+                });
+            }
+
+        });
+    </script>
+    }
+
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>

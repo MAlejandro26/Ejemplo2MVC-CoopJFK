@@ -1,0 +1,19 @@
+﻿@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+@{
+	ViewBag.Title = "Pagos de Afiliacion";
+}
+
+<h2>Pagos de Afiliacion</h2>
+
+@*<p>
+	<a class="btn btn-success" href="@Url.Action("Reporte","Caja")">Atrás</a>
+
+</p>*@
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+	settings.Name = "Viewer_Pago_Afiliacion";
+}).Bind(Model).GetHtml()
+

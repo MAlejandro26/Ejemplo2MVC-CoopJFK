@@ -1,0 +1,182 @@
+﻿@model CoopJFK.Models.ViewModels.EfectivoViewModels
+@{
+    ViewBag.Title = "Detalle de Efectivo";
+}
+
+<script src="~/Scripts/gijgo/combined/gijgo.min.js"></script>
+<link href="~/Content/gijgo/combined/gijgo.min.css" rel="stylesheet" />
+<script src="~/Scripts/mask.js"></script>
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Caja</li>
+            <li class="active">Crear Transacción</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+
+
+<div class="container">
+    <div class="row">
+        @*<div class="col-md-12">*@
+        <div class="white-box">
+            @using (Html.BeginForm())
+            {
+            <div class="form-horizontal">
+                <div class="form-group">
+
+                    <div class="col-md-3">
+                        @Html.Label("Transacción")
+                        @Html.DropDownList("TRANSACCION", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                        <span class="error">La transacción es requerida</span>
+
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("Opción")
+                        @{
+                            List<SelectListItem> _opcion = new List<SelectListItem>();
+                            _opcion.Add(new SelectListItem { Text = "Recibido", Value = "R" });
+                            _opcion.Add(new SelectListItem { Text = "Entregado", Value = "E" });
+
+                        }
+                        @Html.DropDownListFor(model => model.opcion, _opcion, "--Seleccione--", new { @class = "form-control" })
+                        <span class="error">La Opcion es requerida</span>
+                    </div>
+                    <div class="col-md-6">  </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.Label("Desde")
+
+                        @Html.EditorFor(model => model.desde, new { htmlAttributes = new { @class = "form-control" } })
+                        <script>
+                            var hoy = new Date().toLocaleTimeString();
+                            $('#desde').datepicker({
+                                uiLibrary: 'bootstrap', format: 'yyyy-mm-dd'
+                            });
+                        </script>
+                        <span class="error">La fecha desde es requerida</span>
+
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("Hasta")
+                        @Html.EditorFor(model => model.hasta, new { htmlAttributes = new { @class = "form-control" } })
+                        <script>
+                            var hoy = new Date().toLocaleTimeString();
+                            $('#hasta').datepicker({
+                                uiLibrary: 'bootstrap', format: 'yyyy-mm-dd'
+                            });
+                        </script>
+                        <span class="error">La fecha hasta es requerida</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.Label("Moneda")
+                        @Html.DropDownList("MONEDA", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                        <span class="error">La transacción es requerida</span>
+
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    
+                    <div class="col-md-3">
+
+                        <div class="col-md-offset-2 col-md-10">
+                            <span class='glyphicon glyphicon-print'></span> <input type="submit" id="Reporte" value="Ver Detalle" class="btn btn-info" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            }
+        </div>
+
+
+        @*</div>*@
+
+    </div>
+    <script>
+
+        $(document).ready(function () {
+            //boton del reporte
+            $('#Reporte').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+
+                if ($('#SOCIO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#SOCIO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#SOCIO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+
+                //Save if valid
+                if (isAllValid) {
+                    window.open('/Arqueo/BeneficiariosSocios?socio=' + $('#SOCIO').val().trim(), '_blank');
+                }
+
+            });
+
+        });
+
+    </script>
+
+
+    <style>
+        /*Adding some css for looks good*/
+        span.error {
+            display: block;
+            visibility: hidden;
+            color: red;
+            font-size: 90%;
+        }
+
+
+        /*css for table*/
+        .container td {
+            vertical-align: top;
+        }
+
+        .tablecontainer table {
+            width: 80%;
+            border-collapse: collapse;
+            border-top: 1px solid #BFAEAE;
+            border-right: 1px solid #BFAEAE;
+            margin: auto;
+        }
+
+        .tablecontainer th {
+            border-bottom: 2px solid #BFAEAE !important;
+        }
+
+        .tablecontainer th, .tablecontainer td {
+            text-align: left;
+            border-left: 1px solid #BFAEAE;
+            padding: 5px;
+            border-bottom: 1px solid #BFAEAE;
+        }
+
+        .ui-widget {
+            font-size: 12px !important;
+        }
+
+        table.space {
+            border: 0px solid black;
+            border-spacing: 8px 2px;
+            border-collapse: separate;
+            margin: auto;
+        }
+    </style>

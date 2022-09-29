@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4bbe8118d9cf41c2b48477471657a9cc" Name="Diagram1" ZoomLevel="23">
+        <EntityTypeShape EntityType="CoopJFKModel.AGENCIA" Width="1.5" PointX="1.5" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.AHORRO" Width="1.5" PointX="10.5" PointY="40.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.APROBACION" Width="1.5" PointX="8.25" PointY="21.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.ARQUEO" Width="1.5" PointX="7.5" PointY="50.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.ARQUEO_DETALLE" Width="1.5" PointX="9.75" PointY="44.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.AspNetRoles" Width="1.5" PointX="10.75" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.AspNetUserClaims" Width="1.5" PointX="15.25" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.AspNetUserLogins" Width="1.5" PointX="15.25" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.AspNetUsers" Width="1.5" PointX="13" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.BENEFICIARIOS" Width="1.5" PointX="12.5" PointY="35.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.CAMBIO_CAHORRO" Width="1.5" PointX="0.75" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.CIERRE" Width="1.5" PointX="13.75" PointY="17.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.CIERRE_DETALLE" Width="1.5" PointX="16" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.CONFIGURACION" Width="1.5" PointX="10.75" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.DEPARTAMENTO" Width="1.5" PointX="1.5" PointY="47.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.DESEMBOLSO" Width="1.5" PointX="5.25" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.ESTADO_PRESTAMO" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.LOG_NOTAS" Width="1.5" PointX="13.25" PointY="23.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.MUNICIPIO" Width="1.5" PointX="3.75" PointY="54.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.PARENTESCO" Width="1.5" PointX="5.25" PointY="44.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.PERSONAL" Width="1.5" PointX="18.75" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.PRESTAMO_CONFIG" Width="1.5" PointX="3.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.PRESTAMO_SOLICITUD" Width="1.5" PointX="6" PointY="22.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.PROFESION" Width="1.5" PointX="1.5" PointY="50.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.REFERENCIA_PRESTAMO" Width="1.5" PointX="3.75" PointY="34.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.REVALORIZACION" Width="1.5" PointX="18.75" PointY="19.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.TIPO_BENEFICIARIO" Width="1.5" PointX="10.25" PointY="49.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.TIPO_DEDUCCION" Width="1.5" PointX="0.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.TIPO_DENOMINACION" Width="1.5" PointX="3" PointY="39.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.TIPO_FONDO" Width="1.5" PointX="3" PointY="42.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.TIPO_MONEDA" Width="1.5" PointX="0.75" PointY="23.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.TIPO_PAGO" Width="1.5" PointX="1.5" PointY="54" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.TIPO_PRESTAMO" Width="1.5" PointX="1.5" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoopJFKModel.TRANSACCION_CAJA" Width="1.5" PointX="5.25" PointY="50.375" IsExpanded="true" />
+        <AssociationConnector Association="CoopJFKModel.FK_APROBRACION_PRESTAMO_SOLICITUD" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_ARQUEO_DETALLE_ARQUEO" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_ARQUEO_TRANSACCION_CAJA" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_ARQUEO_DETALLE_DENOMINACION_CAJA" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_BENEFICIARIOS_PARENTESCO" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_BENEFICIARIOS_TIPO_BENEFICIARIO" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_CIERRE_DETALLE_CIERRE" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_MUNICIPIO_DEPARTAMENTO" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_SOLICITUD_ESTADO_PRESTAMO" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_CONFIG_TIPO_PAGO" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_CONFIG_TIPO_PRESTAMO" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_SOLICITUD_PRESTAMO_CONFIG" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_SOLICITUD_REFERENCIA_PRESTAMO" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_SOLICITUD_TIPO_MONEDA" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_TIPO_DENOMINACION_TIPO_MONEDA" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_TIPO_FONDO_TIPO_MONEDA" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.FK_TRANSACCION_CAJA_TIPO_FONDO" ManuallyRouted="false" />
+        <AssociationConnector Association="CoopJFKModel.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CoopJFKModel.APORTACION" Width="1.5" PointX="6" PointY="34.125" />
+        <AssociationConnector Association="CoopJFKModel.FK_APORTACION_TIPO_DEDUCCION" />
+        <EntityTypeShape EntityType="CoopJFKModel.PRESTAMO" Width="1.5" PointX="16.25" PointY="22.25" />
+        <AssociationConnector Association="CoopJFKModel.FK_DESEMBOLSO_PRESTAMO" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_ESTADO_PRESTAMO" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_PRESTAMO" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_PRESTAMO_SOLICITUD" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_REFERENCIA_PRESTAMO" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_TIPO_DEDUCCION" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_TIPO_MONEDA" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_TIPO_PRESTAMO" />
+        <EntityTypeShape EntityType="CoopJFKModel.ESTADO_CUENTA" Width="1.5" PointX="15.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CoopJFKModel.AYUDA_VOLUNTARIA" Width="1.5" PointX="5.375" PointY="9.75" />
+        <EntityTypeShape EntityType="CoopJFKModel.AYUDA_VOLUNTARIA_DET" Width="1.5" PointX="7.375" PointY="9.75" />
+        <EntityTypeShape EntityType="CoopJFKModel.PERIODO" Width="1.5" PointX="4.125" PointY="59" />
+        <EntityTypeShape EntityType="CoopJFKModel.PLANILLA" Width="1.5" PointX="6.375" PointY="58.75" />
+        <AssociationConnector Association="CoopJFKModel.FK_PERIODO_TIPO_PAGO" />
+        <AssociationConnector Association="CoopJFKModel.PLANILLA_PERIODO" />
+        <EntityTypeShape EntityType="CoopJFKModel.LIQUIDACION" Width="1.5" PointX="7.75" PointY="12.75" />
+        <EntityTypeShape EntityType="CoopJFKModel.PRESTAMO_DETALLE_TEMP" Width="2.25" PointX="11.625" PointY="2" />
+        <EntityTypeShape EntityType="CoopJFKModel.PRESTAMO_TEMP" Width="1.5" PointX="9.375" PointY="1.125" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_DETALLE_TEMP_PRESTAMO_TEMP" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_TEMP_PRESTAMO_TEMP" />
+        <EntityTypeShape EntityType="CoopJFKModel.CONSECUTIVOS" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CoopJFKModel.AHORRO_DETALLE" Width="1.5" PointX="12.75" PointY="52.875" />
+        <EntityTypeShape EntityType="CoopJFKModel.APLICACION_AHORRO" Width="1.5" PointX="6.375" PointY="73.25" />
+        <EntityTypeShape EntityType="CoopJFKModel.APORTACION_DETALLE" Width="1.5" PointX="13.25" PointY="46.5" />
+        <EntityTypeShape EntityType="CoopJFKModel.DENOMINACION_CAJA" Width="1.5" PointX="5.25" PointY="38.625" />
+        <EntityTypeShape EntityType="CoopJFKModel.PLANILLA_DETALLE" Width="1.5" PointX="8.625" PointY="57.625" />
+        <AssociationConnector Association="CoopJFKModel.FK_AHORRO_DETALLE_AHORRO" />
+        <AssociationConnector Association="CoopJFKModel.AHORRODET_PERIODO" />
+        <AssociationConnector Association="CoopJFKModel.APLI_PERIODO" />
+        <AssociationConnector Association="CoopJFKModel.FK_APORTACION_DETALLE_APORTACION" />
+        <AssociationConnector Association="CoopJFKModel.APORDET_PERIODO" />
+        <AssociationConnector Association="CoopJFKModel.FK_DENOMINACION_CAJA_TIPO_DENOMINACION" />
+        <AssociationConnector Association="CoopJFKModel.FK_PLANILLA_DETALLE_PLANILLA" />
+        <EntityTypeShape EntityType="CoopJFKModel.NOTAS" Width="1.5" PointX="6" PointY="65" />
+        <EntityTypeShape EntityType="CoopJFKModel.TIPO_CAMBIO" Width="1.5" PointX="3.375" PointY="0.75" />
+        <AssociationConnector Association="CoopJFKModel.ID_NOTA" />
+        <EntityTypeShape EntityType="CoopJFKModel.ACCION_SOCIO" Width="1.5" PointX="13" PointY="27.375" />
+        <EntityTypeShape EntityType="CoopJFKModel.PERSONA" Width="1.5" PointX="10.75" PointY="25" />
+        <EntityTypeShape EntityType="CoopJFKModel.TIPO_ACCION" Width="1.5" PointX="10.75" PointY="21.625" />
+        <AssociationConnector Association="CoopJFKModel.ACTION" />
+        <AssociationConnector Association="CoopJFKModel.ACTION_SOCIO" />
+        <AssociationConnector Association="CoopJFKModel.FK_PERSONA_AGENCIA" />
+        <AssociationConnector Association="CoopJFKModel.FK_AHORRO_PERSONA" />
+        <AssociationConnector Association="CoopJFKModel.FK_APORTACION_PERSONA" />
+        <AssociationConnector Association="CoopJFKModel.FK_BENEFICIARIOS_PERSONA" />
+        <AssociationConnector Association="CoopJFKModel.FK_PERSONA_DEPARTAMENTO" />
+        <AssociationConnector Association="CoopJFKModel.FK_NOTA_PERSONA" />
+        <AssociationConnector Association="CoopJFKModel.FK_PERSONA_PROFESION" />
+        <AssociationConnector Association="CoopJFKModel.FK_PERSONA_TIPO_PAGO" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_PERSONA" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_PERSONA1" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_SOLICITUD_FIADOR" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_SOLICITUD_SOCIO" />
+        <EntityTypeShape EntityType="CoopJFKModel.ACC_CAMBIO" Width="1.5" PointX="18" PointY="35" />
+        <AssociationConnector Association="CoopJFKModel.ACC_SOCIO" />
+        <AssociationConnector Association="CoopJFKModel.ACC_TIPO" />
+        <AssociationConnector Association="CoopJFKModel.ACC_TIPOPAGO" />
+        <EntityTypeShape EntityType="CoopJFKModel.ALERTAS" Width="1.5" PointX="6.375" PointY="5.75" />
+        <EntityTypeShape EntityType="CoopJFKModel.AYUDA_FUNERAL" Width="1.5" PointX="16" PointY="45.25" />
+        <EntityTypeShape EntityType="CoopJFKModel.AYUDA_FUNERAL_DET" Width="1.5" PointX="6.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CoopJFKModel.CAJA" Width="1.5" PointX="15" PointY="38.25" />
+        <AssociationConnector Association="CoopJFKModel.FUN_PERIODO" />
+        <AssociationConnector Association="CoopJFKModel.FUN_SOCIO" />
+        <AssociationConnector Association="CoopJFKModel.FK_CAJA_PERSONA" />
+        <AssociationConnector Association="CoopJFKModel.FK_CAJA_TIPO_FONDO" />
+        <AssociationConnector Association="CoopJFKModel.FK_CAJA_TRANSACCION_CAJA" />
+        <EntityTypeShape EntityType="CoopJFKModel.PRESTAMO_DETALLE" Width="1.5" PointX="18.5" PointY="24" />
+        <AssociationConnector Association="CoopJFKModel.FK_PRESTAMO_DETALLE_PRESTAMO" />
+        <EntityTypeShape EntityType="CoopJFKModel.CAJA_DETALLE" Width="1.5" PointX="18.5" PointY="41.125" />
+        <AssociationConnector Association="CoopJFKModel.CAJA_PERIODO" />
+        <AssociationConnector Association="CoopJFKModel.FK_CAJA_DETALLE_PRESTAMO" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

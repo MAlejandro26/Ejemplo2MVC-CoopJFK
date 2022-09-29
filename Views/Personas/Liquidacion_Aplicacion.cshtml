@@ -1,0 +1,480 @@
+﻿@model CoopJFK.Models.ViewModels.LiquidarViewModel
+
+@{
+    ViewBag.Title = "Aplicar Liquidacion";
+}
+<link href="~/Content/dx.common.css" rel="stylesheet" />
+<link href="~/Content/dx.light.css" rel="stylesheet" />
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title"></h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Socio</li>
+            <li class="active">Lliquidación</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                
+
+                @using (Html.BeginForm())
+                {
+                    <div class="form-horizontal">
+                        <h4>Aplicar Liquidación</h4>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SOCIO, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.SOCIO, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                                @Html.ValidationMessageFor(model => model.SOCIO, "", new { @class = "text-danger" })
+                                <span class="error">El socio es obligatorio</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.NO_EMPLEADO, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.NO_EMPLEADO, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                                @Html.ValidationMessageFor(model => model.NO_EMPLEADO, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CEDULA, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.CEDULA, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                                @Html.ValidationMessageFor(model => model.CEDULA, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.NOMBRES, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(model => model.NOMBRES, new { @class = "form-control", placeholder = "Escriba el nombre de un socio", id = "NOMBRES" })
+                                @Html.ValidationMessageFor(model => model.NOMBRES, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div id="gridLiquidaciones"></div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                 @Html.ActionLink("Atrás", "Liquidacion", null, new { @class = "btn btn-warning" })
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/dx.all.js"></script>
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+@section Scripts{
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+            var pago;
+            var soc;
+
+    
+
+            $("#NOMBRES").autocomplete({
+                dataType: 'JSON',
+                source: function (request, response) {
+                    jQuery.ajax({
+                        url: "/Personas/BuscarSocio",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            nombre: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    id: item.Id,
+                                    value: item.Name,
+                                    cedula: item.Cedula,
+                                    empleado: item.Empleado,
+                                    cuota: item.Cuota,
+                                    salario: item.Salario,
+                                    tipo_pago: item.Tipo_Pago
+                                }
+                            }))
+                        }
+                    })
+                },
+                select: function (e, ui) {
+                    $("#SOCIO").val(ui.item.id);
+                    $("#NO_EMPLEADO").val(ui.item.empleado);
+                    $("#CEDULA").val(ui.item.cedula);
+                    pago = ui.item.tipo_pago;
+                    soc = ui.item.id;
+                    CargarGrid(soc);
+                }
+            });
+
+            $('#Aplicar').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#SOCIO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#SOCIO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#SOCIO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        SOCIO: $('#SOCIO').val().trim()
+                    }
+
+                    $(this).val('Procesando...');
+
+                    $.ajax({
+                        url: '/Personas/Aplicar',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Se liquido al socio :' + $('#SOCIO').val().trim(),
+                                    showConfirmButton: true
+
+                                })
+
+
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+                            $('#Generar').val('Generar');
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente.',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#Generar').val('Generar');
+                        }
+                    });
+                }
+
+            });
+           
+        });
+
+        function Aplicar(liq) {
+            var isAllValid = true;
+
+            
+
+            if ($('#SOCIO').val().trim() == '') {
+                isAllValid = false;
+                $('#SOCIO').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#SOCIO').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            //Save if valid
+            if (isAllValid) {
+                var data = {
+                    SOCIO: $('#SOCIO').val().trim(),
+                    liquidacion_id: liq
+                }
+              
+
+                $.ajax({
+                    url: '/Personas/Aplicar',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database
+                        if (d.status == true) {
+                            //will send status from server side
+                            Swal.fire({
+                                position: 'center',
+                                type: 'success',
+                                title: 'Se liquido al socio :' + $('#SOCIO').val().trim(),
+                                showConfirmButton: true
+
+                            })
+
+                            CargarGrid(soc);
+
+                        }
+                        else {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: d.messageerror,
+                                footer: ''
+                            })
+
+                        }
+                       
+                    },
+                    error: function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Intente Nuevamente.',
+                            footer: ''
+                        })
+                        //alert('Error. Intente Nuevamente.');
+                       
+                    }
+                });
+            }
+        };
+
+        function Anular(liq) {
+            var isAllValid = true;
+                       
+
+            if ($('#SOCIO').val().trim() == '') {
+                isAllValid = false;
+                $('#SOCIO').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#SOCIO').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            //Save if valid
+            if (isAllValid) {
+                var data = {
+                    SOCIO: $('#SOCIO').val().trim(),
+                    liquidacion_id: liq
+                }
+
+
+                $.ajax({
+                    url: '/Personas/Anular',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database
+                        if (d.status == true) {
+                            //will send status from server side
+                            Swal.fire({
+                                position: 'center',
+                                type: 'success',
+                                title: 'La liquidación se anulo correctamente!!',
+                                showConfirmButton: true
+
+                            })
+
+
+
+                        }
+                        else {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: d.messageerror,
+                                footer: ''
+                            })
+
+                        }
+
+                    },
+                    error: function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Intente Nuevamente.',
+                            footer: ''
+                        })
+                        //alert('Error. Intente Nuevamente.');
+
+                    }
+                });
+            }
+        };
+        function CargarGrid(soc) {
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetLiquidaciones")',
+                dataType: "json",
+                data: { socio: soc },
+                success: function (data) {
+                    var fillData = data.liquidacion;
+                    var dataGrid = $("#gridLiquidaciones").dxDataGrid({
+                        filterRow: { visible: false },
+                        dataSource: fillData,
+
+                        keyExpr: "ID",
+                        sorting: {
+                            mode: "multiple"
+                        },
+                        editing: {
+                            mode: "popup",
+                            allowUpdating: false,
+                            allowDeleting: false,
+                            allowAdding: false,
+
+                        },
+                        paging: {
+                            pageSize: 30
+                        },
+                        pager: {
+                            showPageSizeSelector: true,
+                            allowedPageSizes: [10, 20, 50],
+                            showInfo: true
+                        },
+                        filterRow: {
+                            visible: true
+                        },
+                        searchPanel: {
+                            visible: true,
+                            width: 340,
+                            placeholder: "Search..."
+                        },
+                        loadPanel: {
+                            enabled: true
+                        },
+                        showBorders: true,
+                        columns: [
+                            {
+                                dataField: "ID",
+                                caption: "No. Liquidacion",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "FECHA_SALIDA",
+                                caption: "Fecha de Salida",
+                                dataType: "date",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "APLICADO",
+                                caption: "Aplicada",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "ANULADO",
+                                caption: "Anulada",
+                                alignment: "center"
+                            }
+
+                            ,
+                            {
+                                alignment: "center",
+                                cellTemplate: function (container, cellInfo) {
+                                    $("<a>", { "class": "btn btn-info", "href": "javascript:;", "onclick": "Aplicar(" + cellInfo.data.ID+");" , "text": "Aplicar" }).appendTo(container); 
+
+
+                                }
+                            }
+                            ,
+                            {
+                                alignment: "center",
+                                cellTemplate: function (container, cellInfo) {
+                                    $("<a>", { "class": "btn btn-success", "href": "@Url.Action("Formato_Liquidacion", "Personas")?liquidacion=" + cellInfo.data.ID, "text": "Reporte", "target": "_blank" }).appendTo(container);
+
+                                }
+                            }
+                            ,
+                            {
+                                alignment: "center",
+                                cellTemplate: function (container, cellInfo) {
+                                    $("<a>", { "class": "btn btn-warning", "href": "javascript:;", "onclick": "Anular(" + cellInfo.data.ID + ");", "text": "Anular" }).appendTo(container);
+
+                                }
+                            }
+                        ]
+
+                    }).dxDataGrid("instance");
+                }, error: function (xhr, status, error) {
+                    alert(status);
+                }
+            });
+
+        }
+    </script>
+}
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>

@@ -1,0 +1,149 @@
+﻿@model IEnumerable<CoopJFK.Models.NOTAS>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TIPO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SUBTIPO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SOCIO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MONTO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MONEDA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PERIODO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TIPO_CAMBIO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PLANILLA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.REFERENCIA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.USUARIO_CREACION)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FECHA_CREACION)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.USUARIO_MODIFICACION)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FECHA_MODIFICACION)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.APLICACION)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.USUARIO_APLICACION)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FECHA_APLICACION)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ANULACION)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.USUARIO_ANULACION)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FECHA_ANULACION)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TIPO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SUBTIPO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SOCIO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MONTO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MONEDA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PERIODO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TIPO_CAMBIO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PLANILLA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.REFERENCIA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.USUARIO_CREACION)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FECHA_CREACION)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.USUARIO_MODIFICACION)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FECHA_MODIFICACION)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.APLICACION)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.USUARIO_APLICACION)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FECHA_APLICACION)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ANULACION)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.USUARIO_ANULACION)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FECHA_ANULACION)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.ID_NOTA }) |
+                @Html.ActionLink("Details", "Details", new { id=item.ID_NOTA }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.ID_NOTA })
+            </td>
+        </tr>
+    }
+    
+    </table>
+</body>
+</html>

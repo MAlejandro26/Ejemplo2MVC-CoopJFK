@@ -1,0 +1,71 @@
+﻿@model IEnumerable<CoopJFK.Models.UserWithRolViewModel>
+@{
+    ViewBag.Title = "Usuarios";
+}
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Administracion</li>
+            <li class="active">Usuario</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <p>
+                <a class="btn btn-default" href="@Url.Action("Register","Users")">Nuevo Usuario</a>
+            </p>
+            <hr />
+            <div class="row justify-content-center" onloadstart="document.getElementsByClassName('dt-buttons')[0].style.visibility = 'hidden';">
+                <div class="col-md-12">
+                    <table class="table table-striped table-bordered" id="jqueryTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.UserName)
+                                </th>
+                                <th>Nombre</th>
+                                <th>
+                                    Rol
+                                </th>
+                                <th>
+                                    Activo
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(item.UserName, "EditUser", new { id = item.Id })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Role)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.isActive)
+                    </td>
+                </tr>
+            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    @GridTemplateWB.GridMVCTemplate(" ")
+}
+

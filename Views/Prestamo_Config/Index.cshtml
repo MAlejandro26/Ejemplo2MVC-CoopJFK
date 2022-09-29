@@ -1,0 +1,116 @@
+﻿@model IEnumerable<CoopJFK.Models.PRESTAMO_CONFIG>
+
+@{
+    ViewBag.Title = "Configuración de Prestamos";
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Administración</li>
+            <li class="active">Configuración de Prestamos</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <table class="table" id="jqueryTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TIPO_PRESTAMO1.DESCRIPCION)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ANTIGUEDAD_MINIMA)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ANTIGUEDAD_MAXIMA)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PLAZO_MINIMO)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PLAZO_MAXIMO)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.INTERES)
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TIPO_PRESTAMO1.DESCRIPCION)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ANTIGUEDAD_MINIMA)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ANTIGUEDAD_MAXIMA)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PLAZO_MINIMO)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PLAZO_MAXIMO)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.INTERES)
+                        </td>
+
+                    </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TIPO_PRESTAMO1.DESCRIPCION)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ANTIGUEDAD_MINIMA)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ANTIGUEDAD_MAXIMA)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PLAZO_MINIMO)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PLAZO_MAXIMO)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.INTERES)
+                        </th>
+
+                    </tr>
+                </tfoot>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    @GridTemplate.GridMVCTemplate("Prestamo_Config")
+}

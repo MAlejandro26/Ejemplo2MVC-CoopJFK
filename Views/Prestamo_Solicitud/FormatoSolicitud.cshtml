@@ -1,0 +1,16 @@
+﻿@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+@{
+    ViewBag.Title = "FormatoSolicitud";
+}
+
+<h2>Formato Solicitud de Prestamos</h2>
+
+
+
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "ViewerFormatoSolicitud";
+}).Bind(Model).GetHtml()

@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "BeneficiariosSocios";
+}
+
+<h2>BeneficiariosSocios</h2>
+
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+
+@Html.DevExpress().WebDocumentViewer(settings => {
+    settings.Name = "ViewBeneficiarioSocios";
+}).Bind(new rptBeneficiarioSocio()).GetHtml()

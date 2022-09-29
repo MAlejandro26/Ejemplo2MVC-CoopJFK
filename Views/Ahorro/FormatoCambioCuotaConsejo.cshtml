@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "Formato Cambio de Cuota Consejo";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+
+
+
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "ViewerFormatCambioCuotaConsejo";
+}).Bind(Model).GetHtml()

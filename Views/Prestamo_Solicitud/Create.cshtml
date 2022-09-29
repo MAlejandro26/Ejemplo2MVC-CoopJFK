@@ -1,0 +1,543 @@
+﻿@model CoopJFK.Models.ViewModels.SolicitudViewModel
+
+@{
+    ViewBag.Title = "Crear Solicitud Préstamo";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/gijgo/combined/gijgo.min.js"></script>
+<link href="~/Content/gijgo/combined/gijgo.min.css" rel="stylesheet" />
+
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Préstamo</li>
+            <li class="active">Solicitud de  Préstamo</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <div class="master">
+                    @using (Html.BeginForm())
+                    {
+                        <h2>Solicitud de Préstamo</h2>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.FIADOR, new { htmlAttributes = new { @class = "form-control", id = "FIADOR", @readonly = "true" } })
+                        @Html.HiddenFor(model => model.TIPO_PAGO, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                        <table class="space">
+                            <tr>
+                                <td colspan="1">
+                                    @Html.Label("Numero de Socio:")
+                                </td>
+                                <td colspan="1">
+                                    @Html.Label("No Empleado:")
+                                </td>
+                                <td colspan="2"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="1">
+                                    @Html.EditorFor(model => model.SOCIO, new { htmlAttributes = new { @class = "form-control", id = "SOCIO", @readonly = "true" } })
+                                    @Html.ValidationMessageFor(model => model.SOCIO, "", new { @class = "text-danger" })
+                                </td>
+
+                                <td colspan="2">
+                                    @Html.TextBoxFor(model => model.NO_EMPLEADO, new { @class = "form-control", id = "SOCIO_EMPLEADO", @readonly = "true" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    @Html.Label("Socio:")
+                                </td>
+                                <td colspan="2"></td>
+                            </tr>
+                            <tr>
+
+                                <td>
+                                    @Html.TextBoxFor(model => model.CEDULA_SOCIO, new { @class = "form-control", placeholder = "Cedula", id = "SOCIO_CEDULA", @readonly = "true" })
+                                </td>
+                                <td colspan="3">
+                                    @Html.TextBoxFor(model => model.NOMBRE_SOCIO, new { @class = "form-control", placeholder = "Buscar Socio", id = "NOMBRE_SOCIO" })
+                                    @Html.ValidationMessageFor(model => model.SOCIO, "", new { @class = "text-danger" })
+                                    <span class="error">El socio es requerido</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    @Html.Label("Fiador:")
+                                </td>
+                                <td colspan="2"> </td>
+
+                            </tr>
+                            <tr>
+
+                                <td>
+
+                                    @Html.TextBoxFor(model => model.CEDULA_FIADOR, new { @class = "form-control", placeholder = "Cedula", id = "FIADOR_CEDULA", @readonly = "true" })
+                                </td>
+                                <td colspan="3">
+                                    @Html.TextBoxFor(model => model.NOMBRE_FIADOR, new { @class = "form-control", placeholder = "Buscar Fiador", id = "FIADOR_NOMBRES" })
+                                    @Html.ValidationMessageFor(model => model.FIADOR, "", new { @class = "text-danger" })
+                                    <span class="error">El fiador es requerido</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> @Html.Label("Tipo de Préstamo:")</td>
+                                <td colspan="2"> </td>
+
+                            </tr>
+                            <tr>
+
+                                <td>
+                                    @Html.EditorFor(model => model.TIPO_PRESTAMO, new { htmlAttributes = new { @id = "TIPO_PRESTAMO_ID", @class = "form-control", @readonly = "true" } })
+                                    @Html.ValidationMessageFor(model => model.TIPO_PRESTAMO, "", new { @class = "text-danger" })
+                                    <span class="error">El tipo de prestamo es requerido</span>
+                                </td>
+                                <td colspan="3">
+                                    @Html.EditorFor(model => model.TIPOPRESTAMO_DESC, new { htmlAttributes = new { @id = "txtTipopDesc", @class = "form-control", @readonly = "true" } })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="1">
+                                    @Html.LabelFor(model => model.FECHA_SOLICITUD)
+                                </td>
+                                <td>@Html.Label("Periodo")</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" id="FECHA_SOLICITUD" />
+                                    <script>
+                                        var hoy = new Date().toLocaleTimeString();
+                                        $('#FECHA_SOLICITUD').datepicker({
+                                            uiLibrary: 'bootstrap', format: 'yyyy-mm-dd'
+                                        });
+                                    </script>
+                                    @Html.ValidationMessageFor(model => model.FECHA_SOLICITUD, "", new { @class = "text-danger" })
+                                    <span class="error">La fecha de solicitud es requerida</span>
+                                </td>
+
+                                <td>
+                                    @Html.DropDownList("PERIODO", new SelectList(string.Empty, "Value", "Text"), "--Seleccione--", new { @class = "form-control" })
+                                    <span class="error">El periodo es obligatorio</span>
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <td colspan="1">
+                                    @Html.Label("Razón")
+                                </td>
+                                <td colspan="2"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    @Html.EditorFor(model => model.RAZON, new { htmlAttributes = new { @class = "form-control", placeholder = "Digite una razón" } })
+                                    @Html.ValidationMessageFor(model => model.RAZON, "", new { @class = "text-danger" })
+                                    <span class="error">La razón requerido</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="1">
+                                    @Html.LabelFor(model => model.MONTO)
+                                </td>
+                                <td colspan="1">
+                                    @Html.LabelFor(model => model.PLAZO)
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+
+                                <td>
+                                    @Html.EditorFor(model => model.MONTO, new { htmlAttributes = new { @type = "number", @min = "0", @step = "50", @value = "0", @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.MONTO, "", new { @class = "text-danger" })
+                                    <span class="error">El monto es requerido</span>
+                                </td>
+
+                                <td colspan="3">
+                                    @Html.EditorFor(model => model.PLAZO, new { htmlAttributes = new { @type = "number", @min = "0", @step = "3", @value = "0", @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.PLAZO, "", new { @class = "text-danger" })
+                                    <span class="error">El plazo es requerido</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    @Html.Label("Moneda:")
+                                </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.EditorFor(model => model.MONEDA, new { htmlAttributes = new { @id = "MONEDA_ID", @class = "form-control", @readonly = "true" } })
+                                    @Html.ValidationMessageFor(model => model.MONEDA, "", new { @class = "text-danger" })
+                                    <span class="error">La moneda es requerida</span>
+                                </td>
+                                <td colspan="3">
+                                    @Html.EditorFor(model => model.MONEDA_DESC, new { htmlAttributes = new { @id = "monedaDesc", @class = "form-control", @readonly = "true" } })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    @Html.Label("Referencia:")
+                                </td>
+                                <td colspan="2"></td>
+                            </tr>
+                            <tr>
+
+                                <td>
+                                    @Html.EditorFor(model => model.REFERENCIA, new { htmlAttributes = new { @id = "REFERENCIA_ID", @class = "form-control", @readonly = "true" } })
+                                    @Html.ValidationMessageFor(model => model.REFERENCIA, "", new { @class = "text-danger" })
+                                    <span class="error">La referencia es requerida</span>
+                                </td>
+                                <td colspan="3">
+                                    @Html.EditorFor(model => model.REFERENCIA_DESC, new { htmlAttributes = new { @id = "txtReferenciaDesc", @class = "form-control", @readonly = "true" } })
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <td colspan="2"></td>
+
+                                <td colspan="5">
+                                    <input id="submit" type="button" value="Guardar" style="padding:5px 15px" class="btn btn-info" />| @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-primary" })
+                                </td>
+                            </tr>
+                        </table>
+
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+@section scripts{
+
+    @EntitySelectorGrid.selectorGrid(ViewBag.TipoPrestamoList, "TIPO_PRESTAMO_ID", "txtTipopDesc", "tipoprestamo", "ID", "DESCRIPCION");
+    @EntitySelectorGrid.selectorGrid(ViewBag.ReferenciaList, "REFERENCIA_ID", "txtReferenciaDesc", "referencia", "ID", "DESCRIPCION");
+    @EntitySelectorGrid.selectorGrid(ViewBag.MonedaList, "MONEDA_ID", "monedaDesc", "Tipo_Moneda", "ID", "DESCRIPCION");
+
+
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script>
+        var pago;
+
+        $(document).ready(function () {
+            /* Autocomplete , jquery UI */
+
+                                $("#NOMBRE_SOCIO").autocomplete({
+                                    dataType: 'JSON',
+                                    source: function (request, response) {
+                                        jQuery.ajax({
+                                            url: "/Prestamo_Solicitud/BuscarSocio",
+                                            type: "post",
+                                            dataType: "json",
+                                            data: {
+                                                nombre: request.term
+                                            },
+                                            success: function (data) {
+                                                response($.map(data, function (item) {
+                                                    return {
+                                                        id: item.Id,
+                                                        value: item.Name,
+                                                        cedula: item.Cedula,
+                                                        empleado: item.Empleado,
+                                                        apellido: item.Apellido,
+                                                        ctas: item.cta,
+                                                        cuotas: item.cuota,
+                                                        prof: item.profesion,
+                                                        agen: item.agencia,
+                                                        sex: item.sexo,
+                                                        TipoPago:item.Tipo_Pago
+                                                    }
+                                                }))
+                                            }
+                                        })
+                                    },
+                                    select: function (e, ui) {
+                                        $("#SOCIO").val(ui.item.id);
+                                        $("#SOCIO_EMPLEADO").val(ui.item.empleado);
+                                        $("#SOCIO_CEDULA").val(ui.item.cedula);
+                                        $("#APELLIDOS").val(ui.item.apellido);
+                                        $("#TIPO_PAGO").val(ui.item.TipoPago);
+                                        $("#FIADOR_NOMBRES").focus();
+                                        Getperiodo(ui.item.TipoPago)
+                                    }
+                                })
+                            })
+
+               function Getperiodo(tipo_pagos) {
+            $("#PERIODO").empty();
+           $.ajax({
+
+                             type: 'POST',
+                             url: '@Url.Action("GetPeriodos")', // we are calling json method
+                             dataType: 'json',
+                            data: { tipo_pago: tipo_pagos},
+
+                             success: function (states) {
+                                 $("#PERIODO").append('<option value="0">--Seleccione--</option>');
+                                 $.each(states, function (i, state) {
+
+                                     $("#PERIODO").append('<option value="' + state.Value + '">' +
+                                     state.Text + '</option>');
+                                // here we are adding option for States
+
+                                });
+                            },
+                            error: function (ex) {
+                                alert('Failed to retrieve states.' + ex);
+                            }
+                             });
+        };
+
+        $(document).ready(function () {
+            /* Autocomplete , jquery UI */
+
+            $("#FIADOR_NOMBRES").autocomplete({
+                dataType: 'JSON',
+                source: function (request, response) {
+                    jQuery.ajax({
+                        url: "/Prestamo_Solicitud/BuscarFiador",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            nombre: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    id: item.Id,
+                                    value: item.Name,
+                                    cedula: item.Cedula,
+                                    //empleado: item.Empleado
+                                }
+                            }))
+                        }
+                    })
+                },
+                select: function (e, ui) {
+                    $("#FIADOR").val(ui.item.id);
+                    $("#FIADOR_CEDULA").val(ui.item.cedula);
+                    $("#TIPO_PRESTAMO_ID").focus();
+                }
+            })
+        })
+
+
+        $(document).ready(function () {
+            //Save button click function
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+
+                if ($('#MONTO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#MONTO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#MONTO').siblings('span.error').css('visibility', 'hidden');
+                }
+                if ($('#PERIODO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#PERIODO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#PERIODO').siblings('span.error').css('visibility', 'hidden');
+                }
+                if ($('#SOCIO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#SOCIO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#SOCIO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#FIADOR').val().trim() == '') {
+                    isAllValid = false;
+                    $('#FIADOR').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#FIADOR').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#TIPO_PRESTAMO_ID').val().trim() == '') {
+                    isAllValid = false;
+                    $('#TIPO_PRESTAMO_ID').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#TIPO_PRESTAMO_ID').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#MONEDA_ID').val().trim() == '') {
+                    isAllValid = false;
+                    $('#MONEDA_ID').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#MONEDA_ID').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#FECHA_SOLICITUD').val().trim() == '') {
+                    isAllValid = false;
+                    $('#FECHA_SOLICITUD').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#FECHA_SOLICITUD').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#PLAZO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#PLAZO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#PLAZO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#RAZON').val().trim() == '') {
+                    isAllValid = false;
+                    $('#RAZON').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#RAZON').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#REFERENCIA_ID').val().trim() == '') {
+                    isAllValid = false;
+                    $('#REFERENCIA_ID').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#REFERENCIA_ID').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                                    if (isAllValid) {
+                                        var data = {
+                                            FECHA_SOLICITUD: $('#FECHA_SOLICITUD').val().trim(),
+                                            MONTO: $('#MONTO').val().trim(),
+                                            PLAZO: $('#PLAZO').val().trim(),
+                                            RAZON: $('#RAZON').val().trim(),
+                                            PERIODO: $('#PERIODO').val().trim(),
+                                            // ESTADO: estado,
+                                            SOCIO: $('#SOCIO').val().trim(),
+                                            MONEDA: $('#MONEDA_ID').val().trim(),
+                                            REFERENCIA: $('#REFERENCIA_ID').val().trim(),
+                                            TIPO_PRESTAMO: $('#TIPO_PRESTAMO_ID').val().trim(),
+                                            TIPO_PAGO: $('#TIPO_PAGO').val().trim(),
+                                            FIADOR: $('#FIADOR').val().trim()
+
+                    }
+
+
+                    $(this).val('Procesando...');
+
+                    $.ajax({
+                        url: '/Prestamo_Solicitud/Create',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Solicitud de Prestamo',
+                                    text: 'Se creo la Solicitud No:' + d.NoPrestamo,
+                                    showConfirmButton: true
+
+                                }).then((result) => {
+                                    if (result.value) {
+                                        window.location.href = '/Prestamo_Solicitud/Index';
+
+                                    }
+                                })
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+                            $('#submit').val('Guardar');
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente.',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#submit').val('Guardar');
+                        }
+                    });
+                }
+
+            });
+
+        });
+    </script>
+
+}
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>

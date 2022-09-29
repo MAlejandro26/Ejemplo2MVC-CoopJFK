@@ -1,0 +1,178 @@
+﻿@model CoopJFK.Models.PERSONA
+
+@{
+	ViewBag.Title = "Details";
+}
+
+<link href="~/Content/dx.common.css" rel="stylesheet" />
+<link href="~/Content/dx.light.css" rel="stylesheet" />
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title"></h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="#">Sistema de Gestión de Crédito</a></li>
+			<li>Ayuda</li>
+			<li class="active">Detalle de Ayuda Funeraria</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="white-box">
+				@using (Html.BeginForm())
+				{
+
+
+					<div class="form-horizontal">
+						<h4>Detalle de Ayuda Funeraria</h4>
+						<hr />
+						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+						@Html.HiddenFor(model => model.ID)
+						@Html.HiddenFor(model => model.NOMBRES)
+						<div class="form-group">
+							<div class="col-md-4">
+								@Html.LabelFor(model => model.NOMBRES, "Socio")
+								@Html.TextBoxFor(model => model.NOMBRES, new { @class = "form-control", @readonly = "true" })
+								@Html.ValidationMessageFor(model => model.NOMBRES, "", new { @class = "text-danger" })
+							</div>
+							@*<div class="col-md-6">
+									@Html.LabelFor(model => model.PERIODO1, "Periodo Inicio")
+									@Html.TextBoxFor(model => model.PERIODO1, new { @class = "form-control", @readonly = "true" })
+									@Html.ValidationMessageFor(model => model.PERIODO1, "", new { @class = "text-danger" })
+								</div>
+								<div class="col-md-6">
+									@Html.LabelFor(model => model.PERIODO2, "Periodo Final")
+									@Html.TextBoxFor(model => model.PERIODO2, new { @class = "form-control", @readonly = "true" })
+									@Html.ValidationMessageFor(model => model.PERIODO2, "", new { @class = "text-danger" })
+								</div>*@
+						</div>
+						<div class="form-group">
+							<div class="col-md-offset-4 col-md-10">
+
+								<input id="submit" type="button" value="Historial" class="btn btn-info" /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-warning" })
+							</div>
+						</div>
+						<div id="gridAportacionesDetalle"></div>
+
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts{
+	<script>
+        $(document).ready(function () {
+
+
+			$('#submit').click(function () {
+				CargarGrid();
+            });
+
+        });
+
+
+        function CargarGrid() {
+            var apor = get('persona');
+
+            function get(name) {
+                if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))
+                    return decodeURIComponent(name[1]);
+            };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetPersonaFuneralDetalle")',
+                dataType: "json",
+                data: { aportacion: apor },
+                success: function (data) {
+                    var fillData = data.aportacion_detalle;
+                    var dataGrid = $("#gridAportacionesDetalle").dxDataGrid({
+                        filterRow: { visible: false },
+                        dataSource: fillData,
+
+                        keyExpr: "ID",
+                        sorting: {
+                            mode: "multiple"
+                        },
+                        editing: {
+                            mode: "popup",
+                            allowUpdating: false,
+                            allowDeleting: false,
+                            allowAdding: false,
+
+                        },
+                        paging: {
+                            pageSize: 30
+                        },
+                        pager: {
+                            showPageSizeSelector: true,
+                            allowedPageSizes: [10, 20, 50],
+                            showInfo: true
+                        },
+                        filterRow: {
+                            visible: true
+                        },
+                        searchPanel: {
+                            visible: true,
+                            width: 340,
+                            placeholder: "Search..."
+                        },
+                        loadPanel: {
+                            enabled: true
+                        },
+                        showBorders: true,
+                        columns: [
+                            {
+								dataField: "PERIODO",
+                                caption: "Periodo",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "TIPO_PAGO",
+                                caption: "Tipo de Pago",
+                                alignment: "center"
+                            },
+                            {
+								dataField: "NOMBRES",
+                                caption: "Socio",
+                                alignment: "center"
+                            },
+                            {
+								dataField: "FECHA",
+								caption: "Fecha",
+								dataType: "date",
+                                alignment: "center"
+                            },
+                            {
+								dataField: "MONTO",
+                                caption: "Ayuda",
+                                alignment: "center"
+							},
+							{
+								dataField: "SOCIO_OCURRENCIA",
+								caption: "Socio Ocurrencia",
+								alignment: "center"
+							}//,
+                            //{
+                            //    alignment: "center",
+                            //    cellTemplate: function (container, cellInfo) {
+                            //        $("<a>", { "class": "btn btn-info", "href": "Aportaciones/" + cellInfo.data.ID, "text": "Aportaciones" }).appendTo(container);
+                            //    }
+                            //}
+                        ]
+
+                    }).dxDataGrid("instance");
+                }, error: function (xhr, status, error) {
+                    alert(status);
+                }
+            });
+
+        }
+
+	</script>
+}

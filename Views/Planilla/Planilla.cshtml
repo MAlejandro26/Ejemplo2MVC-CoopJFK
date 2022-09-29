@@ -1,0 +1,668 @@
+﻿@model CoopJFK.Models.ViewModels.PlanillaViewModel
+
+@{
+    ViewBag.Title = "Planilla de Cobro";
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Planilla</li>
+            <li class="active">Planilla</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            @*<p>
+                <a class="btn btn-success" href="@Url.Action("Ayuda_Voluntaria","Planilla")">Ayuda Voluntaria</a>
+
+            </p>*@
+            <hr />
+            @using (Html.BeginForm())
+            {
+
+            <div class="form-horizontal">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.periodo, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.EditorFor(model => model.periodo, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="error">El periodo es obligatorio</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Tipo Pago", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.DropDownList("pago", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                        <span class="error">El Tipo de Pago es obligatorio</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input id="Generar" type="button" value="Generar" class="btn btn-info" /> | <input id="Aplicar" type="button" value="Aplicar" class="btn btn-primary" /> | <input id="dolares" type="button" value="Dólares" class="btn btn-success" /> | <input id="cordobas" type="button" value="Córdobas" class="btn btn-success" /> | <input id="agencia_cordoba" type="button" value="P/Agencia Córdobas" class="btn btn-success" />  
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input id="agencia_dolar" type="button" value="P/Agencia Dólar" class="btn btn-success" /> | <input id="consolidado_Cordoba" type="button" value="Consolidado Córdoba" class="btn btn-success" />| <input id="consolidado_dolar" type="button" value="Consolidado Dólar" class="btn btn-success" /> | <input id="aportacion" type="button" value="Aportaciones" class="btn btn-success" /> | <input id="ahorro" type="button" value="Ahorros" class="btn btn-success" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                          <input id="caja_rapida" type="button" value="Caja Rápida" class="btn btn-success" /> | <input id="p_caja_rapida" type="button" value="P/Caja Rápida" class="btn btn-success" /> | <input id="escolar" type="button" value="Escolar" class="btn btn-success" /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-warning" })
+                    </div>
+                </div>
+                </div>
+                }
+
+            </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#Generar').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#periodo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#pago').val().trim() == '') {
+                    isAllValid = false;
+                    $('#pago').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#pago').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        pago: $('#pago').val().trim(),
+                        periodo: $('#periodo').val().trim()
+                    }
+
+                    $(this).val('Procesando...');
+
+                    $.ajax({
+                        url: '/Planilla/Generar',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Se genero la planilla de cobro',
+                                    showConfirmButton: true
+
+                                })
+
+
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+                            $('#Generar').val('Generar');
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente.',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#Generar').val('Generar');
+                        }
+                    });
+                }
+
+            });
+            $('#Aplicar').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#periodo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#pago').val().trim() == '') {
+                    isAllValid = false;
+                    $('#pago').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#pago').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        pago: $('#pago').val().trim(),
+                        periodo: $('#periodo').val().trim()
+                    }
+
+                    $(this).val('Procesando...');
+
+                    $.ajax({
+                        url: '/Planilla/Aplicar',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Se aplico la planilla de cobro',
+                                    showConfirmButton: true
+
+                                })
+
+
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+                            $('#Aplicar').val('Aplicar');
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente.',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#Aplicar').val('Aplicar');
+                        }
+                    });
+                }
+
+            });
+            /*Eventos de botones de los reportes*/
+            $('#dolares').click(function () {
+                //validation of order
+                var isAllValid = true;
+               
+                if ($('#periodo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#pago').val().trim() == '') {
+                    isAllValid = false;
+                    $('#pago').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#pago').siblings('span.error').css('visibility', 'hidden');
+                }
+                
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        pago: $('#pago').val().trim(),
+                        periodo: $('#periodo').val().trim()
+                    }
+
+                    window.open('/Planilla/P_Planilla_Dolar?periodo=' + $('#periodo').val().trim() + '&tipopago=' + $('#pago').val().trim(), '_blank');
+
+                }
+
+            });
+
+            $('#cordobas').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#periodo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#pago').val().trim() == '') {
+                    isAllValid = false;
+                    $('#pago').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#pago').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        pago: $('#pago').val().trim(),
+                        periodo: $('#periodo').val().trim()
+                    }
+
+                    window.open('/Planilla/P_Planilla_Cordoba?periodo=' + $('#periodo').val().trim() + '&tipopago=' + $('#pago').val().trim(), '_blank');
+
+                }
+
+            });
+
+            $('#agencia_cordoba').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#periodo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#pago').val().trim() == '') {
+                    isAllValid = false;
+                    $('#pago').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#pago').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        pago: $('#pago').val().trim(),
+                        periodo: $('#periodo').val().trim()
+                    }
+
+                    window.open('/Planilla/P_Deduccion_PAgencia_Cordoba?periodo=' + $('#periodo').val().trim() + '&tipopago=' + $('#pago').val().trim(), '_blank');
+
+                }
+
+            });
+
+            $('#agencia_dolar').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#periodo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#pago').val().trim() == '') {
+                    isAllValid = false;
+                    $('#pago').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#pago').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        pago: $('#pago').val().trim(),
+                        periodo: $('#periodo').val().trim()
+                    }
+
+                    window.open('/Planilla/P_Deduccion_PAgencia_Dolar?periodo=' + $('#periodo').val().trim() + '&tipopago=' + $('#pago').val().trim(), '_blank');
+
+                }
+
+            });
+
+            $('#consolidado_Cordoba').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#periodo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#pago').val().trim() == '') {
+                    isAllValid = false;
+                    $('#pago').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#pago').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        pago: $('#pago').val().trim(),
+                        periodo: $('#periodo').val().trim()
+                    }
+
+                    window.open('/Planilla/P_Consolidada_Cordoba?periodo=' + $('#periodo').val().trim() + '&tipopago=' + $('#pago').val().trim(), '_blank');
+
+                }
+
+            });
+
+            $('#consolidado_dolar').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#periodo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#pago').val().trim() == '') {
+                    isAllValid = false;
+                    $('#pago').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#pago').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        pago: $('#pago').val().trim(),
+                        periodo: $('#periodo').val().trim()
+                    }
+
+                    window.open('/Planilla/P_Consolidada_Dolar?periodo=' + $('#periodo').val().trim() + '&tipopago=' + $('#pago').val().trim(), '_blank');
+
+                }
+
+            });
+
+            $('#aportacion').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#periodo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#pago').val().trim() == '') {
+                    isAllValid = false;
+                    $('#pago').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#pago').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        pago: $('#pago').val().trim(),
+                        periodo: $('#periodo').val().trim()
+                    }
+
+                    window.open('/Planilla/P_Det_Deduccion_Aportacion?periodo=' + $('#periodo').val().trim() + '&tipopago=' + $('#pago').val().trim(), '_blank');
+
+                }
+
+            });
+
+            $('#ahorro').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#periodo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#pago').val().trim() == '') {
+                    isAllValid = false;
+                    $('#pago').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#pago').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        pago: $('#pago').val().trim(),
+                        periodo: $('#periodo').val().trim()
+                    }
+
+                    window.open('/Planilla/P_Det_Deduccion_Ahorro?periodo=' + $('#periodo').val().trim() + '&tipopago=' + $('#pago').val().trim(), '_blank');
+
+                }
+
+            });
+
+            $('#ayuda_funeral').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#periodo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#pago').val().trim() == '') {
+                    isAllValid = false;
+                    $('#pago').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#pago').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        pago: $('#pago').val().trim(),
+                        periodo: $('#periodo').val().trim()
+                    }
+
+                    window.open('/Planilla/ayuda_funeral?periodo=' + $('#periodo').val().trim() + '&tipopago=' + $('#pago').val().trim(), '_blank');
+
+                }
+
+            });
+
+            $('#caja_rapida').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#periodo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#pago').val().trim() == '') {
+                    isAllValid = false;
+                    $('#pago').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#pago').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        pago: $('#pago').val().trim(),
+                        periodo: $('#periodo').val().trim()
+                    }
+
+                    window.open('/Planilla/P_Det_Deduccion_Caja?periodo=' + $('#periodo').val().trim() + '&tipopago=' + $('#pago').val().trim(), '_blank');
+
+                }
+
+            });
+
+            $('#p_caja_rapida').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#periodo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#pago').val().trim() == '') {
+                    isAllValid = false;
+                    $('#pago').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#pago').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        pago: $('#pago').val().trim(),
+                        periodo: $('#periodo').val().trim()
+                    }
+
+                    window.open('/Planilla/P_Planilla_caja?periodo=' + $('#periodo').val().trim() + '&tipopago=' + $('#pago').val().trim(), '_blank');
+
+                }
+
+            });
+
+            $('#escolar').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#periodo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#pago').val().trim() == '') {
+                    isAllValid = false;
+                    $('#pago').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#pago').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        pago: $('#pago').val().trim(),
+                        periodo: $('#periodo').val().trim()
+                    }
+
+                    window.open('/Planilla/P_Det_Deduccion_Escolar?periodo=' + $('#periodo').val().trim() + '&tipopago=' + $('#pago').val().trim(), '_blank');
+
+                }
+
+            });
+        });
+    </script>
+}
+
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>

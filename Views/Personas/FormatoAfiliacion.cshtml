@@ -1,0 +1,13 @@
+﻿@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+@{
+    ViewBag.Title = "Formato de Afiliación";
+}
+
+<h2>Formato de Afiliación</h2>
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "ViewerFormatoAfiliacion";
+}).Bind(Model).GetHtml()

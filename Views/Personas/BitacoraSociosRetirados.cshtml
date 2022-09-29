@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Reporte bitacora de socios retirados";
+}
+
+<h2>Bitacora de Socios Retirados</h2>
+
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+
+@Html.DevExpress().WebDocumentViewer(settings => {
+    settings.Name = "ViewBitacoraSociosRetirados";
+}).Bind(new rptBitacora_sociosRetirados()).GetHtml()
+
+

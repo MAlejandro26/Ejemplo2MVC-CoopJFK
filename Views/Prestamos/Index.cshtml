@@ -1,0 +1,120 @@
+﻿@model IEnumerable<CoopJFK.Models.PRESTAMO>
+
+@{
+    ViewBag.Title = "Préstamos";
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="~/Views/Home/Index.cshtml">Sistema de Gestión de Crédito</a></li>
+            <li class="active">Préstamos</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <table class="table" id="jqueryTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("No Préstamo")
+                        </th>
+                        <th>
+                            @Html.DisplayName("No. Socio")
+                        </th>
+                        <th>
+                            @Html.DisplayName("No. Empleado")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Nombres y Apellidos")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Fecha de Inicio")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Fecha Finalización")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Total Préstamos")
+                        </th>
+                        
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SOCIO)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PERSONA.NO_EMPLEADO)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PERSONA.NOMBRES)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FECHA_INICIO)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FECHA_FIN)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TOTAL)
+                        </td>
+
+
+                    </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("No Préstamo")
+                        </th>
+                        <th>
+                            @Html.DisplayName("No. Socio")
+                        </th>
+                        <th>
+                            @Html.DisplayName("No. Empleado")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Nombres y Apellidos")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Fecha de Inicio")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Fecha Finalización")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Total Préstamos")
+                        </th>
+
+                    </tr>
+                </tfoot>
+
+
+
+
+            </table>
+
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    @GridTemplate.GridMVCTemplate("Prestamos")
+}
+

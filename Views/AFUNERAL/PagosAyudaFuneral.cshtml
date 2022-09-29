@@ -1,0 +1,18 @@
+﻿@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+@{
+	ViewBag.Title = "Pagos Ayuda Funeral";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+	<a class="btn btn-success" href="@Url.Action("Reporte","AFUNERAL")">Atrás</a>
+
+</p>
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+	settings.Name = "Viewer_Pago_Ayuda_Funeral";
+}).Bind(Model).GetHtml()

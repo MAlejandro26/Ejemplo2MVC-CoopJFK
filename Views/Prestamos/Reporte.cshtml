@@ -1,0 +1,502 @@
+﻿@model CoopJFK.Models.ViewModels.Hist_AportacionesViewModels
+<h2></h2>
+
+<script src="~/Scripts/select2.min.js"></script>
+<link href="~/Content/select2/css/select2.min.css" rel="stylesheet" />
+
+<script src="~/Scripts/mask.js"></script>
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title"></h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="#">Sistema de Gestión de Crédito</a></li>
+			<li>Reporte</li>
+			<li class="active">Bitacora de Deudores y Fiadores</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="container">
+	<input type="button" value="Rpt Colocación Prestamos" class="btn btn-info" onclick="ocultarReporte1(8)" /><hr />
+	<input type="button" value="Rpt Bitacora Dudores" class="btn btn-info" onclick="ocultarReporte1(1)" />
+	<input type="button" value="Rpt Cambio Cuotas" class="btn btn-info" onclick="ocultarReporte1(2)" />
+	<input type="button" value="Rpt Detalle Aplicaciones" class="btn btn-info" onclick="ocultarReporte1(3)" />
+	<input type="button" value="Rpt Detalle Prestamo" class="btn btn-info" onclick="ocultarReporte1(4)" />
+	<input type="button" value="Rpt Saldo Agencias" class="btn btn-info" onclick="ocultarReporte1(5)" />
+	<input type="button" value="Rpt Solicitudes Aprobadas" class="btn btn-info" onclick="ocultarReporte1(6)" />
+	<input type="button" value="Rpt Cartera" class="btn btn-info" onclick="ocultarReporte1(7)" />
+
+	<div class="row" id="Reporte1">
+		<div class="col-md-12">
+			<div class="white-box">
+				@using (Html.BeginForm("rptBitacoraDeudores", "Prestamos", null, FormMethod.Post, null))
+				{
+					<div class="form-horizontal">
+						<h4>Bitacora de Deudores y Fiadores</h4>
+						<hr />
+						<div class="form-group">
+							<div class="col-md-4">
+								@Html.Label("Fecha Inicio")
+								@Html.TextBoxFor(model => model.PpInicio, new { @class = "form-control", @type = "date", required = "required" })
+								@Html.ValidationMessageFor(model => model.PpInicio, "", new { @class = "text-danger" })
+								@*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpInicio">*@
+								<span class="error">El periodo de pago es Obligatorio</span>
+							</div>
+							<div class="col-md-4">
+								@Html.Label("Fecha Fin")
+								@Html.TextBoxFor(model => model.PpFin, new { @class = "form-control", @type = "date", required = "required" })
+								@Html.ValidationMessageFor(model => model.PpFin, "", new { @class = "text-danger" })
+								@*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpFin">*@
+								<span class="error">El periodo de pago es Obligatorio</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-offset-4 col-md-10">
+
+								<input type="submit" value="Generar Reporte" class="btn btn-info" /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-warning" })
+
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /SEGUNDO REPORTE-->
+<div class="container">
+	<div class="row" id="Reporte2">
+		<div class="col-md-12">
+			<div class="white-box">
+				@using (Html.BeginForm("rptCambioCuotas", "Prestamos", null, FormMethod.Post, null))
+				{
+					<div class="form-horizontal">
+						<h4>Cambio de Cuotas</h4>
+						<hr />
+						<div class="form-group">
+							<div class="col-md-4">
+								@Html.Label("Fecha Inicio")
+								@Html.TextBoxFor(model => model.PpInicio, new { @class = "form-control", required = "required" })
+								@Html.ValidationMessageFor(model => model.PpInicio, "", new { @class = "text-danger" })
+								@*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpInicio">*@
+								<span class="error">El periodo de pago es Obligatorio</span>
+							</div>
+							<div class="col-md-2">
+								@Html.Label("Tipo Pago")
+								@Html.DropDownList("pago", null, "--Seleccione--", htmlAttributes: new { @class = "form-control", required = "required" })
+								@Html.ValidationMessageFor(model => model.pago, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-offset-4 col-md-10">
+
+								<input type="submit" value="Generar Reporte" class="btn btn-info" /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-warning" })
+
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- TERCER REPORTE-->
+<div class="container">
+	<div class="row" id="Reporte3">
+		<div class="col-md-12">
+			<div class="white-box">
+				@using (Html.BeginForm("rptDetalleAplicaciones", "Prestamos", null, FormMethod.Post, null))
+				{
+					<div class="form-horizontal">
+						<h4>Detalle aplicaciones</h4>
+						<hr />
+						<div class="form-group">
+							<div class="col-md-4">
+								@Html.Label("Periodo Inicio")
+								@Html.TextBoxFor(model => model.PpInicio, new { @class = "form-control", required = "required" })
+								@Html.ValidationMessageFor(model => model.PpInicio, "", new { @class = "text-danger" })
+								@*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpInicio">*@
+								<span class="error">El periodo de pago es Obligatorio</span>
+							</div>
+							<div class="col-md-4">
+								@Html.Label("Periodo Fin")
+								@Html.TextBoxFor(model => model.PpFin, new { @class = "form-control", required = "required" })
+								@Html.ValidationMessageFor(model => model.PpFin, "", new { @class = "text-danger" })
+								@*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpFin">*@
+								<span class="error">El periodo de pago es Obligatorio</span>
+							</div>
+							<div class="col-md-2">
+								@Html.Label("Tipo Pago")
+								@Html.DropDownList("pago", null, "--Seleccione--", htmlAttributes: new { @class = "form-control", required = "required" })
+								@Html.ValidationMessageFor(model => model.pago, "", new { @class = "text-danger" })
+
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-offset-4 col-md-10">
+
+								<input type="submit" value="Generar Reporte" class="btn btn-info" /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-warning" })
+
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Cuarto REPORTE-->
+<div class="container">
+	<div class="row" id="Reporte4">
+		<div class="col-md-12">
+			<div class="white-box">
+				@using (Html.BeginForm("rptDetalleDeSolicitudPrestamo", "Prestamos", null, FormMethod.Post, null))
+				{
+					<div class="form-horizontal">
+						<h4>Detalle Solicitud Prestamos</h4>
+						<hr />
+						<div class="form-group">
+							<div class="col-md-4">
+								@Html.Label("Periodo Inicio")
+								@Html.TextBoxFor(model => model.PpInicio, new { @class = "form-control", required = "required" })
+								@Html.ValidationMessageFor(model => model.PpInicio, "", new { @class = "text-danger" })
+								@*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpInicio">*@
+								<span class="error">El periodo de pago es Obligatorio</span>
+							</div>
+							<div class="col-md-4">
+								@Html.Label("Periodo Fin")
+								@Html.TextBoxFor(model => model.PpFin, new { @class = "form-control", required = "required" })
+								@Html.ValidationMessageFor(model => model.PpFin, "", new { @class = "text-danger" })
+								@*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpFin">*@
+								<span class="error">El periodo de pago es Obligatorio</span>
+							</div>
+							<div class="col-md-2">
+								@Html.Label("Tipo Pago")
+								@Html.DropDownList("pago", null, "--Seleccione--", htmlAttributes: new { @class = "form-control", required = "required" })
+								@Html.ValidationMessageFor(model => model.pago, "", new { @class = "text-danger" })
+
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-offset-4 col-md-10">
+
+								<input type="submit" value="Generar Reporte" class="btn btn-info" /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-warning" })
+
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- QUINTO REPORTE-->
+<div class="container">
+	<div class="row" id="Reporte5">
+		<div class="col-md-12">
+			<div class="white-box">
+				@using (Html.BeginForm("SaldosPorAgencia", "Prestamo_Solicitud", null, FormMethod.Post, null))
+				{
+					<div class="form-horizontal">
+						<h4>Detalle de Saldos Agencias</h4>
+						<hr />
+						<div class="form-group">
+							<div class="col-md-4">
+								@Html.Label("Periodo Inicio")
+								@Html.TextBoxFor(model => model.PpInicio, new { @class = "form-control", required = "required", @type = "date" })
+								@Html.ValidationMessageFor(model => model.PpInicio, "", new { @class = "text-danger" })
+								@*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpInicio">*@
+								<span class="error">El periodo de pago es Obligatorio</span>
+							</div>
+							<div class="col-md-4">
+								@Html.Label("Periodo Fin")
+								@Html.TextBoxFor(model => model.PpFin, new { @class = "form-control", required = "required", @type = "date" })
+								@Html.ValidationMessageFor(model => model.PpFin, "", new { @class = "text-danger" })
+								@*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpFin">*@
+								<span class="error">El periodo de pago es Obligatorio</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-offset-4 col-md-10">
+
+								<input type="submit" value="Generar Reporte" class="btn btn-info" /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-warning" })
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- SEXTO REPORTE-->
+<div class="container">
+	<div class="row" id="Reporte6">
+		<div class="col-md-12">
+			<div class="white-box">
+				@using (Html.BeginForm("SolicitudesAprobadasDenenegadas", "Prestamo_Solicitud", null, FormMethod.Post, null))
+				{
+					<div class="form-horizontal">
+						<h4>Detalle de Solicitudes Aprobadas</h4>
+						<hr />
+						<div class="form-group">
+							<div class="col-md-4">
+								@Html.Label("Periodo Inicio")
+								@Html.TextBoxFor(model => model.PpInicio, new { @class = "form-control", required = "required", @type = "date" })
+								@Html.ValidationMessageFor(model => model.PpInicio, "", new { @class = "text-danger" })
+								@*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpInicio">*@
+								<span class="error">El periodo de pago es Obligatorio</span>
+							</div>
+							<div class="col-md-4">
+								@Html.Label("Periodo Fin")
+								@Html.TextBoxFor(model => model.PpFin, new { @class = "form-control", required = "required", @type = "date" })
+								@Html.ValidationMessageFor(model => model.PpFin, "", new { @class = "text-danger" })
+								@*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpFin">*@
+								<span class="error">El periodo de pago es Obligatorio</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-offset-4 col-md-10">
+
+								<input type="submit" value="Generar Reporte" class="btn btn-info" /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-warning" })
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- SEPTIMO REPORTE-->
+<div class="container">
+	<div class="row" id="Reporte7">
+		<div class="col-md-12">
+			<div class="white-box">
+				@using (Html.BeginForm("Cartera", "Prestamo_Solicitud", null, FormMethod.Post, null))
+				{
+					<div class="form-horizontal">
+						<h4>Detalle de Cartera</h4>
+						<hr />
+						<div class="form-group">
+							<div class="col-md-4">
+								@Html.Label("Periodo Inicio")
+								@Html.TextBoxFor(model => model.PpInicio, new { @class = "form-control", required = "required", @type = "date" })
+								@Html.ValidationMessageFor(model => model.PpInicio, "", new { @class = "text-danger" })
+								@*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpInicio">*@
+								<span class="error">El periodo de pago es Obligatorio</span>
+							</div>
+							<div class="col-md-4">
+								@Html.Label("Periodo Fin")
+								@Html.TextBoxFor(model => model.PpFin, new { @class = "form-control", required = "required", @type = "date" })
+								@Html.ValidationMessageFor(model => model.PpFin, "", new { @class = "text-danger" })
+								@*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpFin">*@
+								<span class="error">El periodo de pago es Obligatorio</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-offset-4 col-md-10">
+
+								<input type="submit" value="Generar Reporte" class="btn btn-info" /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-warning" })
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+<!-- OCTAVO REPORTE-->
+<div class="container">
+	<div class="row" id="Reporte8">
+		<div class="col-md-12">
+			<div class="white-box">
+				@using (Html.BeginForm("ColocacionPrestamos", "Prestamo_Solicitud", null, FormMethod.Post, null))
+				{
+					<div class="form-horizontal">
+						<h4>Colocacion de Prestamos</h4>
+						<hr />
+						<div class="form-group">
+							<div class="col-md-4">
+								@Html.Label("Periodo Inicio")
+								@Html.TextBoxFor(model => model.PpInicio, new { @class = "form-control", required = "required", @type = "date" })
+								@Html.ValidationMessageFor(model => model.PpInicio, "", new { @class = "text-danger" })
+								@*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpInicio">*@
+								<span class="error">El periodo de pago es Obligatorio</span>
+							</div>
+							<div class="col-md-4">
+								@Html.Label("Periodo Fin")
+								@Html.TextBoxFor(model => model.PpFin, new { @class = "form-control", required = "required", @type = "date" })
+								@Html.ValidationMessageFor(model => model.PpFin, "", new { @class = "text-danger" })
+								@*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpFin">*@
+								<span class="error">El periodo de pago es Obligatorio</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-offset-4 col-md-10">
+
+								<input type="submit" value="Generar Reporte" class="btn btn-info" /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-warning" })
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function () {
+		document.getElementById("Reporte1").style.display = "block";
+		document.getElementById("Reporte2").style.display = "none";
+		document.getElementById("Reporte3").style.display = "none";
+		document.getElementById("Reporte4").style.display = "none";
+		document.getElementById("Reporte5").style.display = "none";
+		document.getElementById("Reporte6").style.display = "none";
+		document.getElementById("Reporte7").style.display = "none";
+		document.getElementById("Reporte8").style.display = "none";
+		$("#socio").select2({
+			placeholder: "Seleccione al socio",
+			allowClear: true,
+		});
+	});
+
+	function ocultarReporte1(a) {
+		if (a == 1) {
+			document.getElementById("Reporte1").style.display = "block";
+			document.getElementById("Reporte2").style.display = "none";
+			document.getElementById("Reporte3").style.display = "none";
+			document.getElementById("Reporte4").style.display = "none";
+			document.getElementById("Reporte5").style.display = "none";
+			document.getElementById("Reporte6").style.display = "none";
+			document.getElementById("Reporte7").style.display = "none";
+			document.getElementById("Reporte8").style.display = "none";
+
+		}
+		else if (a == 2) {
+			document.getElementById("Reporte2").style.display = "block";
+			document.getElementById("Reporte1").style.display = "none";
+			document.getElementById("Reporte3").style.display = "none";
+			document.getElementById("Reporte4").style.display = "none";
+			document.getElementById("Reporte5").style.display = "none";
+			document.getElementById("Reporte6").style.display = "none";
+			document.getElementById("Reporte7").style.display = "none";
+			document.getElementById("Reporte8").style.display = "none";
+
+		} else if (a == 3) {
+			document.getElementById("Reporte3").style.display = "block";
+			document.getElementById("Reporte1").style.display = "none";
+			document.getElementById("Reporte2").style.display = "none";
+			document.getElementById("Reporte4").style.display = "none";
+			document.getElementById("Reporte5").style.display = "none";
+			document.getElementById("Reporte6").style.display = "none";
+			document.getElementById("Reporte7").style.display = "none";
+			document.getElementById("Reporte8").style.display = "none";
+
+		}
+		else if (a == 4) {
+			document.getElementById("Reporte4").style.display = "block";
+			document.getElementById("Reporte1").style.display = "none";
+			document.getElementById("Reporte2").style.display = "none";
+			document.getElementById("Reporte3").style.display = "none";
+			document.getElementById("Reporte5").style.display = "none";
+			document.getElementById("Reporte6").style.display = "none";
+			document.getElementById("Reporte7").style.display = "none";
+			document.getElementById("Reporte8").style.display = "none";
+
+		}
+		else if (a == 5) {
+			document.getElementById("Reporte5").style.display = "block";
+			document.getElementById("Reporte1").style.display = "none";
+			document.getElementById("Reporte2").style.display = "none";
+			document.getElementById("Reporte3").style.display = "none";
+			document.getElementById("Reporte4").style.display = "none";
+			document.getElementById("Reporte6").style.display = "none";
+			document.getElementById("Reporte7").style.display = "none";
+			document.getElementById("Reporte8").style.display = "none";
+
+		}
+		else if (a == 6) {
+			document.getElementById("Reporte6").style.display = "block";
+			document.getElementById("Reporte1").style.display = "none";
+			document.getElementById("Reporte2").style.display = "none";
+			document.getElementById("Reporte3").style.display = "none";
+			document.getElementById("Reporte4").style.display = "none";
+			document.getElementById("Reporte5").style.display = "none";
+			document.getElementById("Reporte7").style.display = "none";
+			document.getElementById("Reporte8").style.display = "none";
+
+		} else if (a == 7) {
+			document.getElementById("Reporte7").style.display = "block";
+			document.getElementById("Reporte1").style.display = "none";
+			document.getElementById("Reporte2").style.display = "none";
+			document.getElementById("Reporte3").style.display = "none";
+			document.getElementById("Reporte4").style.display = "none";
+			document.getElementById("Reporte5").style.display = "none";
+			document.getElementById("Reporte6").style.display = "none";
+			document.getElementById("Reporte8").style.display = "none";
+		}
+		else {
+			document.getElementById("Reporte8").style.display = "block";
+			document.getElementById("Reporte1").style.display = "none";
+			document.getElementById("Reporte2").style.display = "none";
+			document.getElementById("Reporte3").style.display = "none";
+			document.getElementById("Reporte4").style.display = "none";
+			document.getElementById("Reporte5").style.display = "none";
+			document.getElementById("Reporte6").style.display = "none";
+			document.getElementById("Reporte7").style.display = "none";
+		}
+	};
+</script>
+
+<style>
+	/*Adding some css for looks good*/
+	span.error {
+		display: block;
+		visibility: hidden;
+		color: red;
+		font-size: 90%;
+	}
+
+
+	/*css for table*/
+	.container td {
+		vertical-align: top;
+	}
+
+	.tablecontainer table {
+		width: 80%;
+		border-collapse: collapse;
+		border-top: 1px solid #BFAEAE;
+		border-right: 1px solid #BFAEAE;
+		margin: auto;
+	}
+
+	.tablecontainer th {
+		border-bottom: 2px solid #BFAEAE !important;
+	}
+
+	.tablecontainer th, .tablecontainer td {
+		text-align: left;
+		border-left: 1px solid #BFAEAE;
+		padding: 5px;
+		border-bottom: 1px solid #BFAEAE;
+	}
+
+	.ui-widget {
+		font-size: 12px !important;
+	}
+
+	table.space {
+		border: 0px solid black;
+		border-spacing: 8px 2px;
+		border-collapse: separate;
+		margin: auto;
+	}
+</style>
+
+

@@ -1,0 +1,2442 @@
+﻿@model CoopJFK.Models.ViewModels.CajaViewModel
+
+@{
+    ViewBag.Title = "Crear";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/gijgo/combined/gijgo.min.js"></script>
+<link href="~/Content/gijgo/combined/gijgo.min.css" rel="stylesheet" />
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Caja</li>
+            <li class="active">Crear Transacción de Retiro</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <div class="master">
+                    <div class="form-horizontal">
+                        <h4>Retiro</h4>
+                        <hr />
+                        @using (Html.BeginForm())
+                        {
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.transaccion)
+                                    @Html.DropDownList("TRANSACCION", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.tc)
+                                    @Html.EditorFor(model => model.tc, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.Label("Forma de Pago")
+                                    @{
+                                        List<SelectListItem> _formapago = new List<SelectListItem>();
+                                        _formapago.Add(new SelectListItem { Text = "Efectivo", Value = "E" });
+                                        _formapago.Add(new SelectListItem { Text = "Depósito", Value = "D" });
+                                        _formapago.Add(new SelectListItem { Text = "Aplicar Ahorros", Value = "AA" });
+
+                                    }
+                                    @Html.DropDownListFor(model => model.FormaPago, _formapago, "--Seleccione--", new { @class = "form-control" })
+                                    <span class="error">La forma de pago  es Obligatorio</span>
+                                </div>
+                                <div class="col-md-3">
+
+                                </div>
+                                <div class="col-md-3"> </div>
+                            </div>
+                            <div class="form-group" id="dato_socio">
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.socio)
+                                    @Html.EditorFor(model => model.socio, new { htmlAttributes = new { @id = "socio", @class = "form-control", @readonly = "true" } })
+
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.empleado)
+                                    @Html.Editor("empleado", new { htmlAttributes = new { @id = "empleado", @class = "form-control", @readonly = "true" } })
+
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.Label("Nombres y Apellidos")
+                                    @Html.TextBoxFor(model => model.nombres, new { @class = "form-control", placeholder = "Escriba el nombre de un socio", id = "nombres" })
+
+                                </div>
+                            </div>
+                            <div class="form-group" id="detalle_prestamo">
+                                <div class="col-md-3">
+                                    @Html.Label("No. Préstamo")
+
+                                    @Html.DropDownList("prestamo", new SelectList(string.Empty, "Value", "Text"), "--Seleccione--", new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.Label("Tipo de Pago")
+                                    @Html.DropDownList("Pago", new SelectList(string.Empty, "Value", "Text"), "--Seleccione--", new { @class = "form-control" })
+                                    <span class="error">El tipo  es Obligatorio</span>
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.LabelFor(model => model.cant_cuotas)
+                                    @Html.EditorFor(model => model.cant_cuotas, new { htmlAttributes = new { @class = "form-control" } })
+                                    <span class="error">Ingrese la Cantidad de cuotas</span>
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.LabelFor(model => model.monto_cuotas)
+                                    @Html.EditorFor(model => model.monto_cuotas, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    <span class="error">El monto es Obligatorio</span>
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.LabelFor(model => model.total_monto_cuotas)
+                                    @Html.EditorFor(model => model.total_monto_cuotas, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    <span class="error">El total es Obligatorio</span>
+                                </div>
+                            </div>
+                            <div class="form-group" id="detalle_aportacion">
+
+                                <div class="col-md-3">
+                                    @Html.Label("No. Aportacion")
+
+                                    @Html.EditorFor(model => model.aportacion, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.Label("Tipo de Pago")
+                                    @Html.DropDownList("Pago_aportacion", new SelectList(string.Empty, "Value", "Text"), "--Seleccione--", new { @class = "form-control" })
+                                    <span class="error">El tipo  es Obligatorio</span>
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.LabelFor(model => model.cant_cuotas_aportacion)
+                                    @Html.EditorFor(model => model.cant_cuotas_aportacion, new { htmlAttributes = new { @class = "form-control" } })
+                                    <span class="error">Ingrese la Cantidad de cuotas</span>
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.LabelFor(model => model.monto_cuotas_aportacion)
+                                    @Html.EditorFor(model => model.monto_cuotas_aportacion, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    <span class="error">El monto es Obligatorio</span>
+                                </div>
+
+                            </div>
+                            <div class="form-group" id="dato_deposito">
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.minuta)
+                                    @Html.EditorFor(model => model.minuta, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.fecha_minuta)
+                                    <input type="text" id="fecha_minuta" />
+                                    <script>
+                                        var hoy = new Date().toLocaleTimeString();
+                                        $('#fecha_minuta').datepicker({
+                                            uiLibrary: 'bootstrap', format: 'dd/mm/yyyy'
+                                        });
+                                    </script>
+
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.LabelFor(model => model.concepto)
+                                    @Html.EditorFor(model => model.concepto, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.monto_cordoba)
+                                    @Html.EditorFor(model => model.monto_cordoba, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.monto_dolar)
+                                    @Html.EditorFor(model => model.monto_dolar, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.LabelFor(model => model.cambio)
+                                    @Html.EditorFor(model => model.cambio, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                </div>
+                                <div class="col-md-1">
+                                    @Html.Label("Moneda")
+                                    @Html.Editor("Simbolo", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                </div>
+
+                            </div>
+
+                            <div class="form-group" id="div_fallecidomontos">
+                                <div class="col-md-2">
+                                    @Html.LabelFor(model => model.periodesc_funeral)
+                                    @Html.EditorFor(model => model.periodesc_funeral, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.LabelFor(model => model.socio_ocurrencia)
+                                    @Html.DropDownList("socio_ocurrencia", null, "--Seleccione--", htmlAttributes: new { @class = "form-control"})
+                                  
+                                </div>
+                                
+                                <div class="col-md-2">
+                                    @Html.LabelFor(model => model.monto_funeral,"Ayuda")
+                                    @Html.EditorFor(model => model.monto_funeral, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+
+                                </div>
+                            </div>
+
+                                <div class="form-group" id="div_fallecido">
+                                    
+                                    <div class="col-md-6">
+                                        @Html.LabelFor(model => model.nombre_fallecido)
+                                        @Html.EditorFor(model => model.nombre_fallecido, new { htmlAttributes = new { @class = "form-control", @readonly="true" } })
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.parentesco)
+                                        @Html.DropDownList("PARENTESCO", null, "--Seleccione--", htmlAttributes: new { @class = "form-control", @readonly = "true" })
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.fecha_ocurrencia)
+                                        <input type="text" id="fecha_ocurrencia" />
+                                        <script>
+                                            var hoy = new Date().toLocaleTimeString();
+                                            $('#fecha_ocurrencia').datepicker({
+                                                uiLibrary: 'bootstrap', format: 'dd/mm/yyyy'
+                                            });
+                                        </script>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-offset-8 col-md-10">
+                                        <input id="calcular" type="button" value="Calcular" class="btn btn-success btn-lg" style="padding:5px 15px" />    |    <input id="submit" type="button" value="Procesar" style="padding:5px 15px" class="btn btn-info btn-lg" />
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="efectivo">
+        <div class="col-md-6">
+            <div class="white-box">
+                <div class="details" width="50%">
+                    <h4>Detalle Denominaciones Recibidas</h4>
+                    <hr />
+                    <table class="space" width="50%">
+                        <tr>
+                            <td colspan="3">Denominación</td>
+                            <td>Cantidad</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                @Html.DropDownList("denominacion_recibida", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                                <span class="error">Tipo beneficiario es requerido</span>
+                            </td>
+                            <td>
+                                @Html.Editor("cantidad_recibida", new { htmlAttributes = new { @class = "form-control" } })
+                                @*<input type="text" id="nombre" />*@
+                                <span class="error">La Cantidad es requerida</span>
+                            </td>
+                            <td>
+                                <input type="button" id="Agregar_recibida" value="Agregar" class="btn btn-success btn-sm" />
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="deno_recibida" class="tablecontainer"></div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="white-box">
+                <div class="details" width="50%">
+                    <h4>Detalle Denominaciones Entregadas</h4>
+                    <hr />
+                    <table class="space" width="50%">
+                        <tr>
+                            <td colspan="3">Denominación</td>
+                            <td>Cantidad</td>
+                            <td>&nbsp;</td>
+
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                @Html.DropDownList("denominacion", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                                <span class="error">Tipo beneficiario es requerido</span>
+                            </td>
+                            <td>
+                                @Html.Editor("cantidad_entregada", new { htmlAttributes = new { @class = "form-control" } })
+                                @*<input type="text" id="nombre" />*@
+                                <span class="error">La Cantidad es requerida</span>
+                            </td>
+                            <td>
+                                <input type="button" id="Agregar_entregada" value="Agregar" class="btn btn-success btn-sm"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="deno_entregada" class="tablecontainer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+<link href="~/Content/DataTables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.bootstrap.min.js"></script>
+@section Scripts{
+    <script src="~/Scripts/jquery-ui.js"></script>
+   
+    <script>
+        $('#div_fallecido').hide();
+        $('#div_fallecidomontos').hide();
+       $('#dato_deposito').hide();
+        $('#cuotas').hide();
+        $('#detalle_prestamo').hide();
+        $('#detalle_aportacion').hide();
+        $('#efectivo').hide();
+        $('#dato_socio').hide();
+        var total_cuotas;
+        var total_cuotas_aportacion;
+        var monto_ahorro;
+        $(document).ready(function () {
+          
+            var valor = $("#TRANSACCION").val();
+           $("#nombres").autocomplete({
+                dataType: 'JSON',
+                source: function (request, response) {
+                    jQuery.ajax({
+                        url: "/Caja/BuscarSocio",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            nombre: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    id: item.Id,
+                                    value: item.Name,
+                                    cedula: item.Cedula,
+                                    empleado: item.Empleado,
+                                    cuota: item.Cuota,
+                                    salario: item.Salario,
+                                    tipo_pago: item.Tipo_Pago,
+                                    aportaciones:item.aportacion
+                                }
+                            }))
+                        }
+                    })
+                },
+                select: function (e, ui) {
+                    $("#socio").val(ui.item.id);
+                    $("#empleado").val(ui.item.empleado);
+                    $("#aportacion").val(ui.item.aportaciones);
+                    $("#prestamo").empty();
+
+                    
+                    if ($("#TRANSACCION").val() == 7) { $("#monto_dolar").val(ui.item.cuota); }
+                    $.ajax({
+
+                             type: 'POST',
+                             url: '@Url.Action("GetPrestamosCaja")', 
+                             dataType: 'json',
+                         data: { socio: ui.item.id },
+
+                             success: function (states) {
+                                 $("#prestamo").append('<option value="0">--Seleccione--</option>');
+                                 $.each(states, function (i, state) {
+
+                                $("#prestamo").append('<option value="' + state.Value + '">' +
+                                     state.Text + '</option>');
+                                
+                                });
+                            },
+                            error: function (ex) {
+                                alert('Failed to retrieve states.' + ex);
+                            }
+                    });
+
+                    if ($("#TRANSACCION").val() == 4) { }
+
+                }
+            })
+        })//fin funtion
+                $(document).ready(function () {
+                    var desc_recibido;
+                    var desc_entregado;
+                    var Denominacion = [];
+                    var Denominacion_Rec = [];
+                   
+                    $('#denominacion').change(function () {
+                        desc_entregado = $(this).find('option:selected').text();
+
+                    });
+                    $('#denominacion_recibida').change(function () {
+                        desc_recibido = $(this).find('option:selected').text();
+
+                    });
+                  
+                    $('#Agregar_recibida').click(function () {
+                       
+                        var isValidItem = true;
+
+                        if ($('#denominacion_recibida').val().trim() == '') {
+                            isValidItem = false;
+                            $('#denominacion_recibida').siblings('span.error').css('visibility', 'visible');
+                        }
+                        else {
+                            $('#denominacion_recibida').siblings('span.error').css('visibility', 'hidden');
+                        }
+
+                        if ($('#cantidad_recibida').val().trim() == '') {
+                            isValidItem = false;
+                            $('#cantidad_recibida').siblings('span.error').css('visibility', 'visible');
+                        }
+                        else {
+                            $('#cantidad_recibida').siblings('span.error').css('visibility', 'hidden');
+                        }
+
+                        //Add item to list if valid
+                        if (isValidItem) {
+                            Denominacion.push({
+                                denominacion: $('#denominacion_recibida').val().trim(),
+                                cantidad: $('#cantidad_recibida').val().trim(),
+                                descripcion: desc_recibido.trim(),
+                                RECIBIDA: 'S',
+                                ENTREGADA: 'N'
+                            });
+
+                            //Clear fields
+                            $('#denominacion_recibida,#cantidad_recibida').val('');
+
+                        }
+                        //populate order items
+                        GeneratedItemsTable();
+
+                    });
+
+                    function GeneratedItemsTable() {
+                        if (Denominacion.length > 0) {
+                            var $table = $('<table/>');
+                            $table.append('<thead><tr><th>No</th><th>Denominación</th><th>Cantidad</th><th></th></tr></thead>');
+                            var $tbody = $('<tbody/>');
+                            $.each(Denominacion, function (i, val) {
+                                var $row = $('<tr/>');
+                                $row.append($('<td/>').html(val.denominacion));
+                                $row.append($('<td/>').html(val.descripcion));
+                                $row.append($('<td/>').html(val.cantidad));
+                                var $remove = $('<a href="#">Quitar</a>');
+                                $remove.click(function (e) {
+                                    e.preventDefault();
+                                    Denominacion.splice(i, 1);
+                                    GeneratedItemsTable();
+                                });
+                                $row.append($('<td/>').html($remove));
+                                $tbody.append($row);
+                            });
+                            console.log("current", Denominacion);
+                            $table.append($tbody);
+                            $('#deno_recibida').html($table);
+                        }
+                        else {
+                            $('#deno_recibida').html('');
+                        }
+                    }
+
+
+
+                    //Add button click function
+                    $('#Agregar_entregada').click(function () {
+                        //Check validation of order item
+                        var isValidItem = true;
+
+                        if ($('#denominacion').val().trim() == '') {
+                            isValidItem = false;
+                            $('#denominacion').siblings('span.error').css('visibility', 'visible');
+                        }
+                        else {
+                            $('#denominacion').siblings('span.error').css('visibility', 'hidden');
+                        }
+
+                        if ($('#cantidad_entregada').val().trim() == '') {
+                            isValidItem = false;
+                            $('#cantidad_entregada').siblings('span.error').css('visibility', 'visible');
+                        }
+                        else {
+                            $('#cantidad_entregada').siblings('span.error').css('visibility', 'hidden');
+                        }
+
+                        //Add item to list if valid
+                        if (isValidItem) {
+                            Denominacion_Rec.push({
+                                denominacion: $('#denominacion').val().trim(),
+                                cantidad: $('#cantidad_entregada').val().trim(),
+                                descripcion: desc_entregado.trim(),
+                                RECIBIDA: 'N',
+                                ENTREGADA:'S'
+                            });
+
+                            //Clear fields
+                            $('#denominacion,#cantidad_entregada').val('');
+
+                        }
+                        //populate order items
+                        GeneratedItemsTableEntregado();
+
+                    });
+
+                    function GeneratedItemsTableEntregado() {
+                        if (Denominacion_Rec.length > 0) {
+                            var $table = $('<table/>');
+                            $table.append('<thead><tr><th>No</th><th>Denominación</th><th>Cantidad</th><th></th></tr></thead>');
+                            var $tbody = $('<tbody/>');
+                            $.each(Denominacion_Rec, function (i, val) {
+                                var $row = $('<tr/>');
+                                $row.append($('<td/>').html(val.denominacion));
+                                $row.append($('<td/>').html(val.descripcion));
+                                $row.append($('<td/>').html(val.cantidad));
+                                var $remove = $('<a href="#">Quitar</a>');
+                                $remove.click(function (e) {
+                                    e.preventDefault();
+                                    Denominacion_Rec.splice(i, 1);
+                                    GeneratedItemsTableEntregado();
+                                });
+                                $row.append($('<td/>').html($remove));
+                                $tbody.append($row);
+                            });
+                            console.log("current", Denominacion_Rec);
+                            $table.append($tbody);
+                            $('#deno_entregada').html($table);
+                        }
+                        else {
+                            $('#deno_entregada').html('');
+                        }
+                    }
+
+                    $('#FormaPago').change(function () {
+                        var text = $(this).find('option:selected').text();
+                             var valor = $("#FormaPago").val();
+                                       
+                        if (valor == 'E') {
+                            $('#dato_deposito').hide(); 
+                            $('#efectivo').show();
+                        }
+                        //compra de divisas
+                        else if (valor == 'D') {
+                            $('#dato_deposito').show();
+                            $('#efectivo').hide();
+                        }
+                        //venta de divisas
+                        else if (valor == 'AA') {
+                            $('#dato_deposito').hide();
+                            $('#efectivo').hide();
+                        }
+                    });
+
+
+                    //funcion para cambiar transaccion
+                    $('#TRANSACCION').change(function () {
+                        var text = $(this).find('option:selected').text();
+                        var valor = $("#TRANSACCION").val();
+                        clear();
+                        $("#prestamo").empty();
+                        //fondo ayuda funeral
+                        if (valor == 4) {
+                            GetTC(valor, 'V');
+                            $('#div_fallecido').show();
+                            $('#div_fallecidomontos').show();
+                            $('#dato_deposito').hide();
+                            $('#dato_socio').show();
+                            $("#monto_cordoba").removeAttr("disabled");
+                            $("#monto_dolar").prop('disabled', true);
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $('#cuotas').hide();
+                            $('#detalle_aportacion').hide();
+                            $("#monto_dolar").val("0");
+                            $("#cambio").val("0");
+                        }
+                        //compra de divisas
+                        else if (valor == 1) {
+                            GetTC(valor, 'C');
+                            $("#monto_cordoba").prop('disabled', true);
+                            $('#dato_deposito').hide();
+                            $("#monto_cordoba").val("0");
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $("#monto_dolar").removeAttr("disabled");
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $("#calcular").css('visibility', 'visible');
+                            $('#cuotas').hide();
+                            $('#detalle_aportacion').hide();
+                            //$('#efectivo').show();
+
+
+                        }
+                        //venta de divisas
+                        else if (valor == 2) {
+                            GetTC(valor, 'V');
+                            //$("#monto_dolar").prop('disabled', true);
+                            $('#dato_deposito').hide();
+                            $("#monto_dolar").removeAttr("disabled");
+                            $("#monto_cordoba").removeAttr("disabled");
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $("#calcular").css('visibility', 'visible');
+                            $('#cuotas').hide();
+                            $('#detalle_aportacion').hide();
+
+
+                        }
+                        //reembolso de divisas compras
+                        else if (valor == 3) {
+                            GetTC(valor, 'C');
+                            $("#monto_dolar").prop('disabled', true);
+                            $('#dato_deposito').hide();
+                            $("#monto_dolar").val("0");
+                            $("#cambio").val("0");
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $("#monto_cordoba").removeAttr("disabled");
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').hide();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').hide();
+                            $('#detalle_aportacion').hide();
+
+
+                        }
+                        //reembolso de divisas ventas
+                        else if (valor == 5) {
+                            GetTC(valor, 'V');
+                            $("#monto_cordoba").prop('disabled', true);
+                            $('#dato_deposito').hide();
+                            $("#monto_cordoba").val("0");
+                            $("#cambio").val("0");
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $("#monto_dolar").removeAttr("disabled");
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').hide();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').hide();
+                            $('#detalle_aportacion').hide();
+
+
+                        }
+                        else if (valor == 6) {
+                            GetTC(valor, 'V');
+                            $("#cambio").val("0");
+                            $('#dato_deposito').hide();
+                            $("#monto_cordoba").val("0");
+                            $("#monto_dolar").removeAttr("disabled");
+                            $("#monto_cordoba").prop('disabled', true);
+                            $("#prestamo").removeAttr("disabled");
+                            $('#detalle_prestamo').show();
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').show();
+                            $("#Pago").empty();
+                            $('#detalle_aportacion').hide();
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetTipo_Pago")',
+                                dataType: 'json',
+                                data: { transaccion: $("#TRANSACCION").val() },
+
+                                success: function (states) {
+
+                                    $.each(states, function (i, state) {
+                                        $("#Pago").append('<option value="' + state.Value + '">' +
+                                            state.Text + '</option>');
+
+                                    });
+                                },
+                                error: function (ex) {
+                                    alert('Failed to retrieve states.' + ex);
+                                }
+                            });
+                            return false;
+
+                        }
+                        //Deposito de ahorro
+                        else if (valor == 7) {
+                            GetTC(valor, 'V');
+                            $("#cambio").val("0");
+                            $('#dato_deposito').hide();
+                            $("#monto_cordoba").val("0");
+                            $("#monto_dolar").removeAttr("disabled");
+                            $("#monto_cordoba").prop('disabled', true);
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').show();
+                            $('#detalle_aportacion').hide();
+                        }
+                        //Deposito de ahorro extraordinario
+                        else if (valor == 8) {
+                            GetTC(valor, 'V');
+                            $("#cambio").val("0");
+                            $('#dato_deposito').hide();
+                            $("#monto_cordoba").val("0");
+                            $("#monto_dolar").removeAttr("disabled");
+                            $("#monto_cordoba").prop('disabled', true);
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').show();
+                            $('#detalle_aportacion').hide();
+                        }
+                        //pago de aportacion
+                        else if (valor == 10) {
+                            GetTC(valor, 'V');
+                            $("#cambio").val("0");
+                            $('#dato_deposito').hide();
+                            $("#monto_dolar").val("0");
+                            $("#monto_cordoba").removeAttr("disabled");
+                            $("#monto_dolar").prop('disabled', true);
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').show();
+                            $("#Pago_aportacion").empty();
+                            $('#detalle_aportacion').show();
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetTipo_Pago_Aportacion")',
+                                dataType: 'json',
+                                data: { transaccion: $("#TRANSACCION").val() },
+
+                                success: function (states) {
+
+                                    $.each(states, function (i, state) {
+                                        $("#Pago_aportacion").append('<option value="' + state.Value + '">' +
+                                            state.Text + '</option>');
+
+                                    });
+                                },
+                                error: function (ex) {
+                                    alert('Failed to retrieve states.' + ex);
+                                }
+                            });
+
+                        }
+                        //pago de afiliacion
+                        else if (valor == 11) {
+                            GetTC(valor, 'V');
+                            $("#cambio").val("0");
+                            $('#dato_deposito').hide();
+                            $("#monto_dolar").val("0");
+                            $("#monto_cordoba").removeAttr("disabled");
+                            $("#monto_dolar").prop('disabled', true);
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').show();
+                            $('#detalle_aportacion').hide();
+                        }
+
+                        else if (valor == 13) {
+                            GetTC(valor, 'V');
+                            $('#dato_deposito').hide();
+                            $("#monto_dolar").val("0");
+                            $("#cambio").val("0");
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $("#monto_cordoba").removeAttr("disabled");
+                            $('#div_fallecido').hide();
+                            $('#dato_socio').hide();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').hide();
+                            $('#detalle_aportacion').hide();
+                            $('#div_fallecidomontos').hide();
+                        }//reembolso de fondo de ayuda funeral
+                        else if (valor == 14) {
+                            GetTC(valor, 'V');
+                            $("#cambio").val("0");
+                            $('#dato_deposito').hide();
+                            $("#monto_cordoba").val("0");
+                            $("#monto_dolar").removeAttr("disabled");
+                            $("#monto_cordoba").prop('disabled', true);
+                            $("#prestamo").removeAttr("disabled");
+                            $('#detalle_prestamo').show();
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').show();
+                            $("#Pago").empty();
+                            $('#detalle_aportacion').hide();
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetTipo_Pago")',
+                                dataType: 'json',
+                                data: { transaccion: $("#TRANSACCION").val() },
+
+                                success: function (states) {
+
+                                    $.each(states, function (i, state) {
+                                        $("#Pago").append('<option value="' + state.Value + '">' +
+                                            state.Text + '</option>');
+
+                                    });
+                                },
+                                error: function (ex) {
+                                    alert('Failed to retrieve states.' + ex);
+                                }
+                            });
+                            return false;
+
+                        }//retiro de caja rapida
+                        else if (valor == 17) {
+                            GetTC(valor, 'V');
+                            $("#cambio").val("0");
+                            $('#dato_deposito').hide();
+                            $("#monto_dolar").val("0");
+                            $("#monto_cordoba").removeAttr("disabled");
+                            $("#monto_dolar").prop('disabled', true);
+                            $("#prestamo").removeAttr("disabled");
+                            $('#detalle_prestamo').hide();
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').show();
+                            $("#Pago").empty();
+                            $('#detalle_aportacion').hide();
+                        }//retiro de aportaciones
+
+                        else if (valor == 9) {
+                            GetTC(valor, 'C');
+                            $("#monto_cordoba").prop('disabled', true);
+                            $('#dato_deposito').hide();
+                            $("#monto_cordoba").val("0");
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $("#monto_dolar").removeAttr("disabled");
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').hide();
+                            $('#detalle_aportacion').hide();
+                            $("#cambio").val("0");
+                            //$('#efectivo').show();
+
+
+                        }
+                    });//fin funcion select transaccion der caja
+
+                    $('#calcular').click(function () {
+                        //Check validation of order item
+                        var valor = $("#TRANSACCION").val();
+                        var isValidAll = true;
+                       
+                        if (valor.trim() == '') {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Debe seleccionar la transacción que desea realizar',
+                                footer: ''
+                            })
+                            isValidAll = false;
+                        }
+                        
+                        else {
+                            if (valor == 1) {
+                                //validamos si monto dolar no esta vacio
+                                if ($('#monto_dolar').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de dólar no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAll = false;
+                                }
+                                if ($('#socio').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El socio es requerido',
+                                        footer: ''
+                                    })
+                                    isValidAll = false;
+                                }
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAll = false;
+                                }
+                            }
+                            else if (valor == 2) {
+                                if ($('#socio').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El socio es requerido',
+                                        footer: ''
+                                    })
+                                    isValidAll = false;
+                                }
+                                if ($('#monto_dolar').val().trim() == '' && $('#monto_cordoba').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe ingresar Cordobas o dolares',
+                                        footer: ''
+                                    })
+                                    isValidAll = false;
+                                }
+                                else if ($('#monto_dolar').val().trim() != '' && $('#monto_cordoba').val().trim() != '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe ingresar Cordobas o dolares',
+                                        footer: ''
+                                    })
+                                    isValidAll = false;
+                                }
+
+                               
+                            }
+
+                        }
+
+                        if (isValidAll) {
+                            if (valor == 1) {
+                                $("#Simbolo").val("C$");
+                                var dolar = $('#monto_dolar').val().trim();
+                                var tc = $('#tc').val().trim();
+                                var calc = parseFloat(dolar) * parseFloat(tc);
+                                $("#cambio").val(calc.toFixed(2));
+
+                            }
+                            else if (valor == 2) {
+                                if ($('#monto_dolar').val().trim() != '' || $('#monto_dolar').val().trim() != 0) {
+                                    alert('quiero cambiar dolar a cordoba pero doy dolar');
+                                    $("#Simbolo").val("$");
+                                    var tc = $('#tc').val().trim();
+                                    var cam_dolar = $('#monto_dolar').val().trim();
+                                    var calc_cor = parseFloat(cam_dolar) * parseFloat(tc);
+                                    $("#monto_cordoba").val(calc_cor.toFixed(2));
+                                    $("#monto_dolar").val('');
+
+                                    var cordoba = $('#monto_cordoba').val().trim();
+                                    var calc = parseFloat(cordoba) / parseFloat(tc);
+                                    $("#cambio").val(calc.toFixed(2));
+                                }
+                                else {
+                                    alert('quiero cambiar dolar a cordoba pero doy cordobasssss');
+                                    $("#Simbolo").val("$");
+                                    var tc = $('#tc').val().trim();
+                                    $("#monto_dolar").val('');
+                                    var cordobas = $('#monto_cordoba').val().trim();
+                                    var calcs = parseFloat(cordobas) / parseFloat(tc);
+                                    $("#cambio").val(calcs.toFixed(2));
+                                }
+
+
+
+                            }
+
+
+
+                        }
+
+
+                    });//fin boton calcular
+                                        
+                    $('#submit').click(function ()
+                    {
+                        //Check validation of order item
+                        var valor = $("#TRANSACCION").val();
+                        var isValidAlls = true;
+                        var formapago = $("#FormaPago").val();
+
+                        if (valor.trim() == '') {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Debe seleccionar la transacción que desea realizar',
+                                footer: ''
+                            })
+                            isValidAlls = false;
+                        }
+                        else if (formapago.trim() == '') {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Debe seleccionar la forma de Pago',
+                                footer: ''
+                            })
+                            isValidAlls = false;
+                        }
+                        else {
+                            
+                            if (formapago.trim() == 'D') {
+                                if ($('#minuta').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe ingresar el numero de deposito',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else if ($('#fecha_minuta').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe ingresar la fecha del deposito',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                            }
+                            else if (formapago.trim() == 'E')
+                            {
+                                if (valor == 1 || valor==2)
+                                {
+                                    if (Denominacion.length == 0) {
+                                        $('#deno_recibida').html('<span style="color:red;">Por favor agregue el detalle de las denominaciones recibidas</span>');
+                                        isValidAlls = false;
+                                    }
+                                    if (Denominacion_Rec.length == 0) {
+                                        $('#deno_entregada').html('<span style="color:red;">Por favor agregue el detalle de las denominaciones entrgadas</span>');
+                                        isValidAlls = false;
+                                    }
+                                }
+                                else if (valor == 3 || valor==5 || valor==6 || valor==7 || valor==11 || valor==10)
+                                {
+                                    if (Denominacion.length == 0) {
+                                        $('#deno_recibida').html('<span style="color:red;">Por favor agregue el detalle de las denominaciones recibidas</span>');
+                                        isValidAlls = false;
+                                    }
+                                }
+                                else if (valor == 14) {
+                                    if (Denominacion_Rec.length == 0) {
+                                        $('#deno_entregada').html('<span style="color:red;">Por favor agregue el detalle de las denominaciones entrgadas</span>');
+                                        isValidAlls = false;
+                                    }
+                                }
+                                
+
+                            }
+                            
+                            if (valor == 1) {
+
+                                if ($('#monto_dolar').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de dólar no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#socio').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El socio es requerido',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                            }
+                            else if (valor == 3) {
+
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#monto_cordoba').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de cordoba no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                            }
+                            else if (valor == 2) {
+                                $("#monto_dolar").val("0");
+
+                                //validamos si monto dolar no esta vacio
+                                if ($('#monto_cordoba').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de cordoba no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#socio').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El socio es requerido',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                            }
+                            else if (valor == 4) {//ayuda funeral
+
+                                if ($('#periodesc_funeral').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe digitar el periodo',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else if ($('#monto_cordoba').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de cordoba no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else if ($('#socio_ocurrencia').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El socio de la ayuda funeral no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                //else if ($('#monto_cordoba').val().trim() != $('#monto_funeral').val().trim()) {
+                                //    Swal.fire({
+                                //        type: 'error',
+                                //        title: 'Error!',
+                                //        text: 'El monto del deposito no coincide con el total de la ayuda ',
+                                //        footer: ''
+                                //    })
+                                //    isValidAlls = false;
+                                //}
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de depósito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del depósito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+
+                            }
+                            else if (valor == 5) {
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#monto_dolar').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de dolar no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                            }
+                            else if (valor == 6) {//RECUPERACION DE CREDITO
+
+                                if ($('#prestamo').val().trim() == '0' || $('#prestamo').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar el prestamo',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else if ($('#Pago').val().trim() == '0' || $('#Pago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar el tipo de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+
+                                else if ($('#monto_dolar').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de dolar no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                else if ($('#monto_dolar').val().trim() != $('#total_monto_cuotas').val().trim()) {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto del deposito no coincide con el total de cuotas',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+
+                            }
+                            else if (valor == 7) {
+
+                                if ($('#monto_dolar').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de dólar no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#socio').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El socio es requerido',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                            }
+                            else if (valor == 8) {
+
+                                if ($('#monto_dolar').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de dólar no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#socio').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El socio es requerido',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                            }
+                            else if (valor == 10) {
+
+                                if ($('#monto_cordoba').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de cordoba no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#socio').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El socio es requerido',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                                if ($('#cant_cuotas_aportacion').val().trim() == '') {
+                                    isValidAlls = false;
+                                    $('#cant_cuotas_aportacion').siblings('span.error').css('visibility', 'visible');
+                                }
+                                else {
+                                    $('#cant_cuotas_aportacion').siblings('span.error').css('visibility', 'hidden');
+                                }
+
+                                if ($('#monto_cuotas_aportacion').val().trim() == '') {
+                                    isValidAlls = false;
+                                    $('#monto_cuotas_aportacion').siblings('span.error').css('visibility', 'visible');
+                                }
+                                else {
+                                    $('#monto_cuotas_aportacion').siblings('span.error').css('visibility', 'hidden');
+                                }
+                            }
+                            else if (valor == 11) {
+
+                                if ($('#monto_cordoba').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de dólar no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#socio').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El socio es requerido',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                            }
+                            else if (valor == 13) {
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#monto_cordoba').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de cordoba no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                            }
+                            else if (valor == 14) {
+
+                                if ($('#prestamo').val().trim() == '0' || $('#prestamo').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar el prestamo',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else if ($('#Pago').val().trim() == '0' || $('#Pago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar el tipo de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+
+                                else if ($('#monto_dolar').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de dolar no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                else if ($('#monto_dolar').val().trim() != $('#total_monto_cuotas').val().trim()) {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto del deposito no coincide con el total de cuotas',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+                            }
+                           else if (valor == 9) {
+
+                                if ($('#monto_dolar').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de dólar no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#socio').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El socio es requerido',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+
+                        //Guardar si todo esta bien
+                        if (isValidAlls) {
+                            var datas = {
+                                transaccion: $('#TRANSACCION').val().trim(),
+                                tc: $('#tc').val().trim(),
+                                socio: $('#socio').val().trim(),
+                                socio_ocurrencia: $('#socio_ocurrencia').val().trim(),
+                                periodesc_funeral: $('#periodesc_funeral').val().trim(),
+                                monto_dolar: $('#monto_dolar').val().trim(),
+                                monto_cordoba: $('#monto_cordoba').val().trim(),
+                                cambio: $('#cambio').val().trim(),
+                                minuta: $('#minuta').val().trim(),
+                                fecha_minuta: $('#fecha_minuta').val().trim(),
+                                concepto: $('#concepto').val().trim(),
+                                nombre_fallecido: $('#nombre_fallecido').val().trim(),
+                                parentesco: $('#PARENTESCO').val().trim(),
+                                fecha_ocurrencia: $('#fecha_ocurrencia').val().trim(),
+                                prestamo: $('#prestamo').val().trim(),
+                                cant_cuotas: $('#cant_cuotas').val().trim(),
+                                FormaPago: $('#FormaPago').val().trim(),
+                                tipo:'R',
+                                aportacion:$('#aportacion').val().trim(),
+                                cant_cuotas_aportacion:$('#cant_cuotas_aportacion').val().trim(),
+                                monto_cuotas_aportacion:$('#monto_cuotas_aportacion').val().trim(),
+                                Denominaciones_Recibidas: Denominacion,
+                                Denominaciones_Entregadas: Denominacion_Rec
+
+                            }
+                            $(this).val('Procesando...');
+                        
+                            $.ajax({
+                                url: '/Caja/Retiro',
+                                type: "POST",
+                                data: JSON.stringify(datas),
+                                dataType: "JSON",
+                                contentType: "application/json",
+                                success: function (d) {
+                                    //check is successfully save to database
+                                    if (d.status == true) {
+                                        //will send status from server side
+                                        Swal.fire({
+                                            position: 'center',
+                                            type: 'success',
+                                            title: 'Se guardaron los datos',
+                                            showConfirmButton: true
+
+                                        }).then((result) => {
+                                            if (result.value) {
+                                                if( (d.transac == 1) || (d.transac == 2))
+                                                { window.location.href = '/Caja/ComprobanteDivisas?comprobante=' + d.comprobante; }
+                                                else if ((d.transac == 6)) { window.location.href = '/Caja/ComprobanteRecuperacion?comprobante=' + d.comprobante; }
+                                                else if ((d.transac == 8) || (d.transac == 11) || (d.transac == 10) || (d.transac == 15) || (d.transac == 17) || (d.transac == 14) || (d.transac == 9)) { window.location.href = '/Caja/ComprobanteAhorro?comprobante=' + d.comprobante; }
+                                                else if ((d.transac == 4)) { window.location.href = '/Caja/ComprobanteFuneral?comprobante=' + d.comprobante; }
+                                            }
+
+
+                                        })
+
+                                        //clear form
+                                        Denominacion = [];
+                                        Denominacion_Rec = [];
+                                        $('#TRANSACCION').val('');
+                                        $('#socio').val('');
+                                        $('#empleado').val('');
+                                        $('#nombres').val('');
+                                        $('#tc').val('');
+                                        $('#monto_dolar').val('');
+                                        $('#monto_cordoba').val('');
+                                        $('#cambio').val('');
+                                        $('#minuta').val('');
+                                        $('#concepto').val('');
+                                        $('#nombre_fallecido').val('');
+                                        $('#PARENTESCO').val('');
+                                        $('#prestamo').val('');
+                                        $('#cant_cuotas').val('');
+                                        $('#monto_cuotas').val('');
+                                        $('#total_monto_cuotas').val('');
+                                        $('#Denominacion').empty();
+                                        $('#Denominacion_Rec').empty();
+                                        $('#deno_entregada').css('visibility', 'visible');
+                                        $('#deno_recibida').css('visibility', 'visible');
+                                        $('#aportacion').val('');
+                                        $('#cant_cuotas_aportacion').val('');
+                                        $('#monto_cuotas_aportacion').val('');
+                                        $("#monto_funeral").val('');
+                                        $("#fecha_ocurrencia").val('');
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            type: 'error',
+                                            title: 'Error!',
+                                            text: d.messageerror,
+                                            footer: ''
+                                        })
+                                        $('#submit').val('Guardar');
+                                    }
+                                    $('#submit').val('Guardar');
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Intente Nuevamente.',
+                                        footer: ''
+                                    })
+                                    //alert('Error. Intente Nuevamente.');
+                                    $('#submit').val('Guardar');
+                                }
+                            });
+
+
+                        }
+                    });
+
+                    function clear() {
+                        $('#socio,#empleado,#nombres,#monto_dolar,#Simbolo,#monto_cordoba,#prestamo,#fecha_ocurrencia,#parentesco,#nombre_fallecido, #fecha_minuta,#minuta,#concepto').val('');
+                    };
+
+                    function GetTC(transaccion, type) {
+                        var data = {
+                            transaccion: transaccion.trim(),
+                            type: type.trim()
+                        }
+
+                        $.ajax({
+                            url: '/Caja/GetTipo_Cambio',
+                            type: "POST",
+                            data: JSON.stringify(data),
+                            dataType: "JSON",
+                            contentType: "application/json",
+                            success: function (d) {
+                                //check is successfully save to database
+                                if (d.status == true) {
+                                    $("#tc").val(d.tc);
+
+                                }
+                                else {
+                                    $("#tc").val(d.tc);
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: d.messageerror,
+                                        footer: ''
+                                    })
+
+                                }
+
+                            },
+                            error: function () {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: 'Error al obtener el tipo de cambio',
+                                    footer: ''
+                                })
+
+                            }
+                        })
+                    };
+
+
+                });//fin function
+
+
+        var ObtainPrestamos = function () {
+            var soc = $('#socio').val().trim();
+            var valor = $("#TRANSACCION").val();
+            $("#prestamo").empty();
+
+
+            var isValidAlls = true;
+
+
+            if (valor.trim() == '') {
+                Swal.fire({
+                    type: 'error',
+                    title: 'Error!',
+                    text: 'Debe seleccionar la transacción que desea realizar',
+                    footer: ''
+                })
+                isValidAlls = false;
+            }
+            else if ($('#socio').val().trim() == '') {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Debe seleccionar un socio',
+                        footer: ''
+                    })
+                    isValidAlls = false;
+            }
+
+            if (isValidAlls)
+            {
+                    $.ajax({
+
+                             type: 'POST',
+                             url: '@Url.Action("GetPrestamos")', // we are calling json method
+                             dataType: 'json',
+                             data: { socio: soc },
+
+                             success: function (states) {
+                                 $("#prestamo").append('<option value="0">--Seleccione--</option>');
+                                 $.each(states, function (i, state) {
+
+                                $("#prestamo").append('<option value="' + state.Value + '">' +
+                                     state.Text + '</option>');
+                                // here we are adding option for States
+
+                                });
+                            },
+                            error: function (ex) {
+                                alert('Failed to retrieve states.' + ex);
+                            }
+                             });
+                         return false;
+
+            }
+
+
+        }//fin obtener prestamos
+
+
+        $('#Pago').change(function () {
+            var valor = $("#TRANSACCION").val();
+            var tipo = $("#Pago").val();
+            if (valor == 6) {
+                if (tipo == 'AB') {
+                    $("#cant_cuotas").removeAttr("disabled");
+                    $("#monto_cuotas").prop('disabled', true);
+                    $("#total_monto_cuotas").prop('disabled', true);
+                }
+                else {
+                    $("#cant_cuotas").prop('disabled', true);
+                    $("#monto_cuotas").prop('disabled', true);
+                    $("#total_monto_cuotas").prop('disabled', true);
+                }
+
+
+            }
+            var data = {
+                prestamo: $("#prestamo").val().trim(),
+                paga: $("#Pago").val().trim()
+            }
+
+            $.ajax({
+                url: '/Caja/GetDatoPrestamo',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    if (d.status == true) {
+
+                        if (tipo == 'AB') {
+                            $("#monto_cuotas").val(d.cuota);
+                            $("#cant_cuotas").val(0);
+                            total_cuotas = d.cant_cuotas;
+                        }
+                        else {
+                            $("#cant_cuotas").val(d.cant_cuotas);
+                            $("#monto_cuotas").val(d.cuota);
+                        }
+
+
+                        var t = d.cant_cuotas * d.monto_cuota;
+                        $("#total_monto_cuotas").val(d.monto_cuota);
+
+
+                    }
+                    else {
+
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: d.messageerror,
+                            footer: ''
+                        })
+
+                    }
+
+                },
+                error: function () {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Error al obtener los montos del prestamo',
+                        footer: ''
+                    })
+
+                }
+            })
+        })//fin pagos
+
+        $('#Pago_aportacion').change(function () {
+            var valor = $("#TRANSACCION").val();
+            var tipo = $("#Pago_aportacion").val();
+            if (valor == 10) {
+                if (tipo == 'AB') {
+                    $("#cant_cuotas_aportacion").removeAttr("disabled");
+                    $("#monto_cuotas_aportacion").prop('disabled', true);
+                   
+                }
+                else {
+                    $("#cant_cuotas_aportacion").prop('disabled', true);
+                    $("#monto_cuotas_aportacion").prop('disabled', true);
+                   
+                }
+
+
+            }
+            var data = {
+                aportacion: $("#aportacion").val().trim(),
+                paga: $("#Pago_aportacion").val().trim()
+            }
+
+            $.ajax({
+                url: '/Caja/GetDatoAportacion',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    if (d.status == true) {
+
+                        if (tipo == 'AB') {
+                            $("#monto_cuotas_aportacion").val(d.monto_cuota);
+                            $("#cant_cuotas_aportacion").val(0);
+                           total_cuotas_aportacion = d.cant_cuotas;
+                        }
+                        else {
+                            $("#monto_cuotas_aportacion").val(d.monto_cuota);
+                            $("#cant_cuotas_aportacion").val(d.cant_cuotas);
+                        }
+                    }
+                    else {
+
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: d.messageerror,
+                            footer: ''
+                        })
+
+                    }
+
+                },
+                error: function () {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Error al obtener los montos de las aportaciones',
+                        footer: ''
+                    })
+
+                }
+            })
+        })//fin pagos aportacion
+
+            $('#prestamo').change(function () {
+                $("#cant_cuotas").val('');
+                $("#monto_cuotas").val('');
+                $("#total_monto_cuotas").val('');
+                $("#Pago").val('0');
+
+            })
+
+            $('#cant_cuotas').change(function () {
+                var cantidad = $("#cant_cuotas").val().trim()
+                var valor_cuota = $("#monto_cuotas").val().trim()
+                if (cantidad > total_cuotas) {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Error las cuotas digitadas no pueden superar el total de cuotas del préstamo',
+                        footer: ''
+                    });
+                    $("#cant_cuotas").val('0');
+                }
+                else
+                {
+                    var t = cantidad * valor_cuota;
+                    $("#total_monto_cuotas").val(t.toFixed(2));
+                }
+                
+
+            })
+
+        $('#cant_cuotas_aportacion').change(function () {
+            var cantidad = $("#cant_cuotas_aportacion").val().trim()
+            var valor_cuota = $("#monto_cuotas_aportacion").val().trim()
+                if (cantidad > total_cuotas_aportacion) {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Error las cuotas digitadas no pueden superar el total de cuotas de las aportaciones',
+                        footer: ''
+                    });
+                    $("#cant_cuotas_aportacion").val('0');
+                }
+                else {
+                    var data = {
+                        aportacion: $("#aportacion").val().trim(),
+                        paga: $("#Pago_aportacion").val().trim(),
+                        cuotas: cantidad
+                    }
+
+                    $.ajax({
+                        url: '/Caja/GetMontoAportacion',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            if (d.status == true) {
+                    
+                             $("#monto_cuotas_aportacion").val(d.monto_cuota);
+                                               
+                            }
+                            else {
+
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Error al obtener los montos de las aportaciones',
+                                footer: ''
+                            })
+
+                        }
+                    })
+                }
+
+
+            })
+
+        $('#socio_ocurrencia').change(function () {
+            var isValidAyuda=true;
+
+
+            if ($('#periodesc_funeral').val().trim() == '') {
+                Swal.fire({
+                    type: 'error',
+                    title: 'Error!',
+                    text: 'Debe digitar el periodo de la ayuda',
+                    footer: ''
+                })
+                isValidAyuda = false;
+            }
+            if (isValidAyuda) {
+                var data = {
+                    socio: $("#socio_ocurrencia").val().trim(),
+                    Periodo: $("#periodesc_funeral").val().trim()
+               
+                }
+                $.ajax({
+                    url: '/Caja/GetAyudaFuneral_Retirar',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        if (d.status == true) {
+                            
+                            $("#monto_funeral").val(d.monto_funeral);
+                            $("#nombre_fallecido").val(d.nombre_fallecido);
+                            $("#fecha_ocurrencia").val(d.fecha_ocurrencia);
+                            $("#PARENTESCO").val(d.parentesco).change();
+
+                        }
+                        else {
+
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: d.messageerror,
+                                footer: ''
+                            })
+
+                        }
+
+                    },
+                    error: function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Error al obtener los datos de la ayuda funeral',
+                            footer: ''
+                        })
+
+                    }
+                })
+            }
+
+        })
+       
+
+
+    </script>
+}
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: compact;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>

@@ -1,0 +1,410 @@
+﻿@model CoopJFK.Models.ViewModels.FormalizacionViewModel
+
+@{
+    ViewBag.Title = "Formalización";
+}
+
+<script src="~/Scripts/gijgo/combined/gijgo.min.js"></script>
+<link href="~/Content/gijgo/combined/gijgo.min.css" rel="stylesheet" />
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="~/Views/Home/Index.cshtml">Sistema de Gestión de Crédito</a></li>
+            <li class="active">Préstamos</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+@using (Html.BeginForm())
+{<div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <h4>Datos del Socio</h4>
+                <hr />
+                <table class="space">
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.SOCIO_ID, "No de Socio")
+                        </td>
+                        <td>
+                            @Html.LabelFor(model => model.NO_EMPLEADO, "No de Empleado")
+                        </td>
+                        <td>
+                            @Html.LabelFor(model => model.CEDULA, "Cédula")
+                        </td>
+                        <td>
+                            @Html.LabelFor(model => model.NOMBRES, "Nombres y Apellidos")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> @Html.Editor("SOCIO_ID", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.ID_SOCIO, @readonly = "true" } })</td>
+                        <td> @Html.Editor("EMPLEADO", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.EMPLEADO, @readonly = "true" } })</td>
+                        <td> @Html.Editor("CEDULA", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.CEDULA, @readonly = "true" } })</td>
+                        <td> @Html.Editor("NOMBRES", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.NOMBRE_SOCIO, @readonly = "true" } })</td>
+                    </tr>
+                    <tr>
+                        <td> @Html.LabelFor(model => model.AGENCIA, "Agencia")</td>
+                        <td>@Html.LabelFor(model => model.TIPO_PAGO, "Tipo de Pago")</td>
+                        <td>@Html.LabelFor(model => model.SALARIO, "Salario")</td>
+                        <td> @Html.LabelFor(model => model.CUOTA_AHORRO, "Cuota de Ahorro")</td>
+                    </tr>
+                    <tr>
+                        <td> @Html.Editor("AGENCIA", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.AGENCIA, @readonly = "true" } })</td>
+                        <td> @Html.DropDownList("TIPO_PAGO", null, htmlAttributes: new { @class = "form-control" })</td>
+                        <td>@Html.Editor("SALARIO", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.SALARIO, @readonly = "true" } })</td>
+                        <td>
+                            @Html.Editor("CUOTA", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.CUOTA, @readonly = "true" } })
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.SOCIO_ID_FIADOR, "No de Socio del fiador")
+                        </td>
+                        <td>
+                            @Html.LabelFor(model => model.NO_EMPLEADO, "No de Empleado del fiador")
+                        </td>
+                        <td>
+                            @Html.LabelFor(model => model.CEDULA, "Cédula del fiador")
+                        </td>
+                        <td>
+                            @Html.LabelFor(model => model.NOMBRES, "Nombres y Apellidos fiador")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> @Html.Editor("SOCIO_ID_FIADOR", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.ID_FIADOR, @readonly = "true" } })</td>
+                        <td> @Html.Editor("NO_EMPLEADO_FIADOR", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.EMPLEADO_FIADOR, @readonly = "true" } })</td>
+                        <td> @Html.Editor("CEDULA_FIADOR", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.CEDULA_FIADOR, @readonly = "true" } })</td>
+                        <td> @Html.Editor("NOMBRES_FIADOR", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.NOMBRE_FIADOR, @readonly = "true" } })</td>
+                    </tr>
+                </table>
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <h4>Datos del Préstamo</h4>
+                <hr />
+                <table class="space2">
+                    <tr>
+                        <td> @Html.LabelFor(model => model.SOLICITUD, "No de Solicitud")</td>
+                        <td> @Html.LabelFor(model => model.TIPO_PRESTAMO, "Tipo de Prestamo")</td>
+                        <td>@Html.LabelFor(model => model.PERIODO, "Periodo")</td>
+                        <td>@Html.LabelFor(model => model.TIPO_DEDUCCION, "Aplicación")</td>
+
+
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DropDownList("SOLICITUD", null, htmlAttributes: new { @class = "form-control" })
+                            <span class="error"> El numero de  prestamo es requerido</span>
+                        </td>
+                        <td>
+                            @Html.DropDownList("TIPO_PRESTAMO", null, htmlAttributes: new { @class = "form-control" })
+                            <span class="error"> El tipo de prestamo es requerido</span>
+                        </td>
+                        <td>
+                            @Html.DropDownList("PERIODO", null,"--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                            <span class="error">El periodo es requerido</span>
+                        </td>
+                        <td>
+                            @Html.DropDownList("TIPO_DEDUCCION", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                            <span class="error">La forma de aplicación es requerido</span>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td> @Html.LabelFor(model => model.ESTADO, "Estado")</td>
+                        <td> @Html.LabelFor(model => model.RAZON, "Razón", htmlAttributes: new { @class = "control-label col-md-2" })</td>
+
+                        <td></td>
+
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DropDownList("ESTADO", null, htmlAttributes: new { @class = "form-control" })
+                            <span class="error"> El estado es requerido</span>
+                        </td>
+                        <td colspan="3">
+                            @Html.EditorFor(model => model.RAZON, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.RAZON } })
+                            <span class="error">La razón es requerida</span>
+                        </td>
+
+                        <td></td>
+
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td> @Html.LabelFor(model => model.REFERENCIA, "Referencia", htmlAttributes: new { @class = "control-label col-md-2" })</td>
+                        <td> @Html.LabelFor(model => model.MONTO, "Monto", htmlAttributes: new { @class = "control-label col-md-2" })</td>
+                        <td>@Html.LabelFor(model => model.PLAZO, "Plazo", htmlAttributes: new { @class = "control-label col-md-2" })</td>
+                        <td> @Html.LabelFor(model => model.MONEDA, "Moneda", htmlAttributes: new { @class = "control-label col-md-2" })</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DropDownList("REFERENCIA", null, htmlAttributes: new { @class = "form-control" })
+                            <span class="error"> La referencia es requerida</span>
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.MONTO, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.MONTO } })
+                            <span class="error"> El monto es requerido</span>
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.PLAZO, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.PLAZO } })
+                            <span class="error"> El plazo es requerido</span>
+                        </td>
+                        <td>
+                            @Html.DropDownList("MONEDA", null, htmlAttributes: new { @class = "form-control" })
+                            <span class="error"> La moneda es requerida</span>
+                        </td>
+                    </tr>
+                </table>
+                <div class="col-md-12"></div>
+                <div class="col-md-12"> </div>
+                <div class="form-group">
+                    <div class="col-md-offset-5 col-md-10">
+                        <input id="submit" type="button" value="Formalizar" style="padding:5px 15px" class="btn btn-info " />| @Html.ActionLink("Atrás", "Create", null, new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+}
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+@section scripts{
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            //Save button click function
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+
+                if ($('#MONTO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#MONTO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#MONTO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#SOCIO_ID').val().trim() == '') {
+                    isAllValid = false;
+                    $('#SOCIO_ID').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#SOCIO_ID').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#TIPO_DEDUCCION').val().trim() == '') {
+                    isAllValid = false;
+                    $('#TIPO_DEDUCCION').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#TIPO_DEDUCCION').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //if ($('#FIADOR').val().trim() == '') {
+                //    isAllValid = false;
+                //    $('#FIADOR').siblings('span.error').css('visibility', 'visible');
+                //}
+                //else {
+                //    $('#FIADOR').siblings('span.error').css('visibility', 'hidden');
+                //}
+
+                if ($('#TIPO_PRESTAMO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#TIPO_PRESTAMO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#TIPO_PRESTAMO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#SOLICITUD').val().trim() == '') {
+                    isAllValid = false;
+                    $('#SOLICITUD').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#SOLICITUD').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#PERIODO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#PERIODO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#PERIODO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                               
+                if ($('#RAZON').val().trim() == '') {
+                    isAllValid = false;
+                    $('#RAZON').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#RAZON').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#REFERENCIA').val().trim() == '') {
+                    isAllValid = false;
+                    $('#REFERENCIA').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#REFERENCIA').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#PLAZO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#PLAZO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#PLAZO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (isAllValid) {
+                    var data = {
+                        SOCIO_ID: $('#SOCIO_ID').val().trim(),
+                        MONTO: $('#MONTO').val().trim(),
+                        PLAZO: $('#PLAZO').val().trim(),
+                        RAZON: $('#RAZON').val().trim(),
+                        PERIODO: $('#PERIODO').val().trim(),
+                        MONEDA: $('#MONEDA').val().trim(),
+                        REFERENCIA: $('#REFERENCIA').val().trim(),
+                        TIPO_PRESTAMO: $('#TIPO_PRESTAMO').val().trim(),
+                        SOLICITUD: $('#SOLICITUD').val().trim(),
+                        SOCIO_ID_FIADOR: $('#SOCIO_ID_FIADOR').val().trim(),
+                        TIPO_PAGO: $('#TIPO_PAGO').val().trim(),
+                        TIPO_DEDUCCION: $('#TIPO_DEDUCCION').val().trim()
+
+                    }
+
+
+                    $(this).val('Procesando...');
+
+                    $.ajax({
+                        url: '/Prestamos/Formalizacion',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Préstamo',
+                                    text: 'Se creo el préstamo No:' + d.NoPrestamo,
+                                    showConfirmButton: true
+
+                                }).then((result) => {
+                                    if (result.value) {
+                                        window.location.href = '/Prestamos/FormatoAmortizacion?NoPrestamo=' + d.NoPrestamo;
+
+                                    }
+                                })
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+                            $('#submit').val('Guardar');
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente.',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#submit').val('Guardar');
+                        }
+                    });
+                }
+
+            });
+
+        });
+    </script>
+   
+ }
+        <style>
+            /*Adding some css for looks good*/
+            span.error {
+                display: block;
+            visibility: hidden;
+            color: red;
+            font-size: 90%;
+        }
+
+
+        /*css for table*/
+        .container td {
+                vertical - align: top;
+        }
+
+        .tablecontainer table {
+                width: 80%;
+            border-collapse: collapse;
+            border-top: 1px solid #BFAEAE;
+            border-right: 1px solid #BFAEAE;
+            margin: auto;
+        }
+
+        .tablecontainer th {
+                border - bottom: 2px solid #BFAEAE !important;
+        }
+
+        .tablecontainer th, .tablecontainer td {
+                text - align: left;
+            border-left: 1px solid #BFAEAE;
+            padding: 5px;
+            border-bottom: 1px solid #BFAEAE;
+        }
+
+        .ui-widget {
+                font - size: 12px !important;
+        }
+
+        table.space {
+                border: 0px solid black;
+            border-spacing: 8px 2px;
+            border-collapse: separate;
+            margin: auto;
+        }
+        table.space2 {
+                border: 0px solid black;
+            border-spacing: 3px 2px;
+            border-collapse: separate;
+            margin: auto;
+        }
+</style>

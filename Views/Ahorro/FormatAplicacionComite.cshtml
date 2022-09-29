@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "Formato Aplicación de Ahorro-Comite ";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+
+
+
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "ViewerFormatAplicacionComite";
+}).Bind(Model).GetHtml()
+

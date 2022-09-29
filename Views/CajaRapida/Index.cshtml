@@ -1,0 +1,153 @@
+﻿@model IEnumerable<CoopJFK.Models.CAJA>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TIPO_CAMBIO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CORDOBA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DOLAR)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NUMERO_DEPOSITO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FECHA_DEPOSITO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FECHA_RECEPCION)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FECHA_TRANSACCION)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CONCEPTO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ANULADA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.USUARIO_ANULACION)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FECHA_ANULACION)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.USUARIO_CREACION)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FECHA_CREACION)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.USUARIO_MODIFICACION)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FECHA_MODIFICACION)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NOMBRE_FALLECIDO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FECHA_OCURRENCIA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PARENTESCO1.DESCRIPCION)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TIPO_FONDO.DESCRIPCION)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TRANSACCION_CAJA.DESCRIPCION)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PERSONA.NO_EMPLEADO)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TIPO_CAMBIO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CORDOBA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DOLAR)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NUMERO_DEPOSITO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FECHA_DEPOSITO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FECHA_RECEPCION)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FECHA_TRANSACCION)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CONCEPTO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ANULADA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.USUARIO_ANULACION)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FECHA_ANULACION)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.USUARIO_CREACION)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FECHA_CREACION)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.USUARIO_MODIFICACION)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FECHA_MODIFICACION)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NOMBRE_FALLECIDO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FECHA_OCURRENCIA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PARENTESCO1.DESCRIPCION)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TIPO_FONDO.DESCRIPCION)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TRANSACCION_CAJA.DESCRIPCION)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PERSONA.NO_EMPLEADO)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

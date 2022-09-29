@@ -1,0 +1,145 @@
+﻿@model IEnumerable<CoopJFK.Models.TRANSACCION_CAJA>
+    @{
+    ViewBag.Title = "Transaccion de Caja";
+    }
+    <link href="~/Content/dx.common.css" rel="stylesheet" />
+    <link href="~/Content/dx.light.css" rel="stylesheet" />
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+            <ol class="breadcrumb">
+                <li><a href="#">Sistema de Gestión de Crédito</a></li>
+                <li>Catálogos</li>
+                <li class="active">Transaccion de Caja</li>
+            </ol>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <p>
+                    <a class="btn btn-default" href="@Url.Action(" Create","TRANSACCION_CAJA")">Crear Transaccion</a>
+                </p>
+                <hr />
+                <div id="gridTransaccionCaja"></div>
+            </div>
+        </div>
+    </div>
+    @*<table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DESCRIPCION)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.USUARIO_CREACION)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FECHA_CREACION)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.USUARIO_MODIFICACION)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FECHA_MODIFICACION)
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DESCRIPCION)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.USUARIO_CREACION)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FECHA_CREACION)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.USUARIO_MODIFICACION)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FECHA_MODIFICACION)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID_TRANSACCION_CAJA }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID_TRANSACCION_CAJA }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID_TRANSACCION_CAJA })
+            </td>
+        </tr>
+        }
+
+    </table>*@
+    <script src="~/Scripts/dx.all.js"></script>
+    @section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            CargarGrid();
+        });
+
+        function CargarGrid() {
+            $.ajax({
+                url: "/TRANSACCION_CAJA/ListadoTransaccionCaja",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    var fillData = data.datos;
+                    var dataGrid = $("#gridTransaccionCaja").dxDataGrid({
+                        filterRow: { visible: false },
+                        dataSource: fillData,
+                        keyExpr: "ID_TRANSACCION_CAJA",
+                        sorting: {
+                            mode: "multiple"
+                        },
+                        paging: {
+                            pageSize: 10
+                        },
+                        pager: {
+                            showPageSizeSelector: true,
+                            allowedPageSizes: [5, 10, 20],
+                            showInfo: true
+                        },
+                        filterRow: {
+                            visible: true
+                        },
+                        searchPanel: {
+                            visible: true,
+                            width: 340,
+                            placeholder: "Search..."
+                        },
+                        loadPanel: {
+                            enabled: true
+                        },
+                        showBorders: true,
+                        columns: [
+                            {
+                                dataField: "DESCRIPCION",
+                                caption: "Transaccion",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "TIPOFONDO",
+                                caption: "Tipo de Fondo",
+                                alignment: "center"
+                            },
+                            {
+                                alignment: "center",
+                                cellTemplate: function (container, cellInfo) {
+                                    $("<a>", { "class": "btn btn-info", "href": "Edit/" + cellInfo.data.ID_TRANSACCION_CAJA, "text": "Editar" }).appendTo(container);
+                                }
+                            }
+                        ]
+                    }).dxDataGrid("instance");
+                }, error: function (xhr, status, error) {
+                    alert(status);
+                }
+            });
+        }
+    </script>
+    }

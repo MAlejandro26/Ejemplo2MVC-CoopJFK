@@ -1,0 +1,309 @@
+﻿@model CoopJFK.Models.ViewModels.EstadoCuentaViewModels
+
+@{
+    ViewBag.Title = "Generar Estado de Cuenta";
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Estado de Cuenta</li>
+            <li class="active">Generar Estado de Cuenta</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            @*<p>
+                <a class="btn btn-success" href="@Url.Action("Ayuda_Voluntaria","Planilla")">Ayuda Voluntaria</a>
+
+            </p>*@
+            <hr />
+            @using (Html.BeginForm())
+            {
+
+            <div class="form-horizontal">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PERIODO, "Periodo", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.EditorFor(model => model.PERIODO, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="error">El periodo es obligatorio</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Tipo de Pago", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.DropDownList("TIPOPAGO", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                        <span class="error">El Tipo de Pago es obligatorio</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Socio", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                       
+                        @Html.DropDownList("SOCIO", new SelectList(string.Empty, "Value", "Text"), "--Seleccione--", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input id="Generar" type="button" value="Generar" class="btn btn-info" /> | <input id="Reporte" type="button" value="Reporte" class="btn btn-primary" /> | @Html.ActionLink("Atrás", "Estado_Cuenta", null, new { @class = "btn btn-warning" })
+                    </div>
+
+                </div>
+
+
+            </div>
+            }
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#TIPOPAGO').change(function () {
+                $("#SOCIO").empty();
+                $.ajax({
+
+                             type: 'POST',
+                             url: '@Url.Action("GetSocio_TipoPago")', 
+                             dataType: 'json',
+                            data: { TipoPago: $("#TIPOPAGO").val() },
+
+                             success: function (states) {
+                                 $("#SOCIO").append('<option value="0">--Seleccione--</option>');
+                                 $.each(states, function (i, state) {
+
+                                $("#SOCIO").append('<option value="' + state.Value + '">' +
+                                     state.Text + '</option>');
+                                
+                                });
+                            },
+                            error: function (ex) {
+                                alert('Failed to retrieve states.' + ex);
+                            }
+                             }); 
+                
+        })
+
+
+
+            $('#Generar').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#PERIODO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#PERIODO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#PERIODO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#TIPOPAGO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#TIPOPAGO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#TIPOPAGO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        TIPOPAGO: $('#TIPOPAGO').val().trim(),
+                        PERIODO: $('#PERIODO').val().trim(),
+                        SOCIO: $('#SOCIO').val().trim()
+                    }
+
+                    $(this).val('Procesando...');
+
+                    $.ajax({
+                        url: '/Prestamos/GenerarEstadoCuenta',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Se generaron los estado de cuenta',
+                                    showConfirmButton: true
+
+                                })
+
+
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+                            $('#Generar').val('Generar');
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente.',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#Generar').val('Generar');
+                        }
+                    });
+                }
+
+            });
+
+
+            $('#Reporte').click(function () {
+                window.open('/Prestamos/ReporteEstadoCuenta','_blank');
+                
+
+            });
+            //$('#Aplicar').click(function () {
+            //    //validation of order
+            //    var isAllValid = true;
+
+            //    if ($('#periodo').val().trim() == '') {
+            //        isAllValid = false;
+            //        $('#periodo').siblings('span.error').css('visibility', 'visible');
+            //    }
+            //    else {
+            //        $('#periodo').siblings('span.error').css('visibility', 'hidden');
+            //    }
+
+            //    if ($('#pago').val().trim() == '') {
+            //        isAllValid = false;
+            //        $('#pago').siblings('span.error').css('visibility', 'visible');
+            //    }
+            //    else {
+            //        $('#pago').siblings('span.error').css('visibility', 'hidden');
+            //    }
+
+
+            //    //Save if valid
+            //    if (isAllValid) {
+            //        var data = {
+            //            pago: $('#pago').val().trim(),
+            //            periodo: $('#periodo').val().trim()
+            //        }
+
+            //        $(this).val('Procesando...');
+
+            //        $.ajax({
+            //            url: '/Planilla/Aplicar',
+            //            type: "POST",
+            //            data: JSON.stringify(data),
+            //            dataType: "JSON",
+            //            contentType: "application/json",
+            //            success: function (d) {
+            //                //check is successfully save to database
+            //                if (d.status == true) {
+            //                    //will send status from server side
+            //                    Swal.fire({
+            //                        position: 'center',
+            //                        type: 'success',
+            //                        title: 'Se aplico la planilla de cobro',
+            //                        showConfirmButton: true
+
+            //                    })
+
+
+
+            //                }
+            //                else {
+            //                    Swal.fire({
+            //                        type: 'error',
+            //                        title: 'Error!',
+            //                        text: d.messageerror,
+            //                        footer: ''
+            //                    })
+
+            //                }
+            //                $('#Aplicar').val('Aplicar');
+            //            },
+            //            error: function () {
+            //                Swal.fire({
+            //                    type: 'error',
+            //                    title: 'Error!',
+            //                    text: 'Intente Nuevamente.',
+            //                    footer: ''
+            //                })
+            //                //alert('Error. Intente Nuevamente.');
+            //                $('#Aplicar').val('Aplicar');
+            //            }
+            //        });
+            //    }
+
+            //});
+            
+
+            
+        });
+    </script>
+}
+
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>

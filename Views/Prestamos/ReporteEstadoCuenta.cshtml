@@ -1,0 +1,211 @@
+﻿
+@{
+    ViewBag.Title = "Reporte de Estado de Cuenta";
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Estado de Cuenta</li>
+            <li class="active">Reporte Estado de Cuenta</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            @*<p>
+                    <a class="btn btn-success" href="@Url.Action("Ayuda_Voluntaria","Planilla")">Ayuda Voluntaria</a>
+
+                </p>*@
+            <hr />
+            @using (Html.BeginForm())
+            {
+
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.Label("Tipo de Pago", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-5">
+                            @Html.DropDownList("TIPOPAGO", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                            <span class="error">El Tipo de Pago es obligatorio</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Actualizado al:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-5">
+                            @Html.Editor("PERIODOACTUALIZADO", new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="error">El periodo es obligatorio</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Pp Inicio:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-5">
+                            @Html.Editor("PPINICIO", new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="error">El periodo es obligatorio</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Pp Fin:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-5">
+                            @Html.Editor("PPFIN", new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="error">El periodo es obligatorio</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Socio", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-5">
+
+                            @Html.DropDownList("SOCIO", new SelectList(string.Empty, "Value", "Text"), "--Seleccione--", new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input id="Reporte" type="button" value="Reporte" class="btn btn-primary" /> | @Html.ActionLink("Atrás", "GenerarEstadoCuenta", null, new { @class = "btn btn-warning" })
+                        </div>
+
+                    </div>
+
+
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#TIPOPAGO').change(function () {
+                $("#SOCIO").empty();
+                $.ajax({
+
+                             type: 'POST',
+                             url: '@Url.Action("GetSocio_TipoPago")',
+                             dataType: 'json',
+                            data: { TipoPago: $("#TIPOPAGO").val() },
+
+                             success: function (states) {
+                                 $("#SOCIO").append('<option value="0">--Seleccione--</option>');
+                                 $.each(states, function (i, state) {
+
+                                $("#SOCIO").append('<option value="' + state.Value + '">' +
+                                     state.Text + '</option>');
+
+                                });
+                            },
+                            error: function (ex) {
+                                alert('Failed to retrieve states.' + ex);
+                            }
+                             });
+
+        })
+
+
+
+            $('#Reporte').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#PERIODOACTUALIZADO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#PERIODOACTUALIZADO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#PERIODOACTUALIZADO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#TIPOPAGO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#TIPOPAGO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#TIPOPAGO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+        if ($('#PPINICIO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#PPINICIO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#PPINICIO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+        if ($('#PPFIN').val().trim() == '') {
+                    isAllValid = false;
+                    $('#PPFIN').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#PPFIN').siblings('span.error').css('visibility', 'hidden');
+                }
+        if ($('#SOCIO').val().trim() == '' || $('#SOCIO').val().trim() == 0) {
+                    isAllValid = false;
+                    $('#SOCIO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#SOCIO').siblings('span.error').css('visibility', 'hidden');
+                }
+                //Save if valid
+                if (isAllValid) {
+                   
+
+                 window.open('/Prestamos/rptEstadosCuenta?PERIODOACTUALIZADO=' + $('#PERIODOACTUALIZADO').val().trim() + '&TIPOPAGO=' + $('#TIPOPAGO').val().trim()+'&SOCIO=+'+$('#SOCIO').val().trim()+'&PPINICIO='+$('#PPINICIO').val().trim()+'&PPFIN='+$('#PPFIN').val().trim(), '_blank');
+                }
+
+            });
+           
+
+        });
+    </script>
+}
+
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>

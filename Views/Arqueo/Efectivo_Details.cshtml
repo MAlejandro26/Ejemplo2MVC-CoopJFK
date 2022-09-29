@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Reporte Detalle de Efectivo";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+
+
+
+
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "ViewerDetalleEfectivo";
+}).Bind(Model).GetHtml()

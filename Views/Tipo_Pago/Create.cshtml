@@ -1,0 +1,199 @@
+﻿@model CoopJFK.Models.TIPO_PAGO
+
+@{
+    ViewBag.Title = "Crear Tipo de Pago";
+}
+
+<h2>Crear</h2>
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title"></h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Catalogos</li>
+            <li class="active">Tipo de Pago</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+
+                @using (Html.BeginForm())
+                {
+                <div class="form-horizontal">
+                    <h4>Tipo de Pago</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DESCRIPCION, "Descripción", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.DESCRIPCION, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DESCRIPCION, "", new { @class = "text-danger" })
+                            <span class="error">La descripción es requerida</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DIAS, "Cantidad en dias", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.DIAS, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DESCRIPCION, "", new { @class = "text-danger" })
+                            <span class="error">Los dias son requeridos</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-4 col-md-10">
+                            <input id="submit" type="button" value="Guardar" style="padding:10px 20px" />|@Html.ActionLink("Atrás", "Index")
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+@section Scripts {
+    
+    <script>
+
+        $(document).ready(function () {
+            //Save button click function
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#DESCRIPCION').val().trim() == '') {
+                    isAllValid = false;
+                    $('#DESCRIPCION').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#DESCRIPCION').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#DIAS').val().trim() == '') {
+                    isAllValid = false;
+                    $('#DIAS').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#DIAS').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        DESCRIPCION: $('#DESCRIPCION').val().trim(),
+                        DIAS: $('#DIAS').val().trim()
+                    }
+
+                    $(this).val('Procesando...');
+
+                    $.ajax({
+                        url: '/Tipo_Pago/Create',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Se guardaron los datos',
+                                    showConfirmButton: true
+
+                                }).then((result) => {
+                                    if (result.value) {
+                                        window.location.href = '/Tipo_Pago/Index';
+
+                                    }
+                                })
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+                            $('#submit').val('Guardar');
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente.',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#submit').val('Guardar');
+                        }
+                    });
+                }
+
+            });
+
+        });
+
+
+    </script>
+}
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>

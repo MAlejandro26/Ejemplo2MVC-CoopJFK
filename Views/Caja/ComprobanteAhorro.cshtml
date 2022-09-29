@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "Comprobante de Caja";
+}
+
+<h2>Comprobante de Recuperación</h2>
+<p>
+    <a class="btn btn-success" href="@Url.Action("Create","Caja")">Depósito</a> <a class="btn btn-success" href="@Url.Action("Retiro","Caja")">Retiro</a>
+
+</p>
+
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+
+
+
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "ViewerComprobanteCaja";
+}).Bind(Model).GetHtml()

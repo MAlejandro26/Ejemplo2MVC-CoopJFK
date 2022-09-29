@@ -1,0 +1,133 @@
+﻿
+@{
+    ViewBag.Title = "Estado Cuenta";
+}
+
+
+<link href="~/Content/dx.common.css" rel="stylesheet" />
+<link href="~/Content/dx.light.css" rel="stylesheet" />
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Estado de Cuenta</li>
+            <li class="active">Estado de Cuenta</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            @*<button type="submit" class="btn btn-success" onclick="CargarGrid();">Activos</button>
+        <button type="submit" class="btn btn-info" onclick="CargarGrid2();">Excepciones</button>*@
+           
+            <p>
+                <a class="btn btn-success" href="@Url.Action("GenerarEstadoCuenta","Prestamos")">Generar</a>
+
+            </p>
+            <div id="gridEstadoCuenta"></div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/dx.all.js"></script>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            CargarGrid();
+
+        });
+
+
+        function CargarGrid() {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetEstadoCuenta")',
+                dataType: "json",
+                success: function (data) {
+                    var fillData = data.estado;
+                    var dataGrid = $("#gridEstadoCuenta").dxDataGrid({
+                        filterRow: { visible: false },
+                        dataSource: fillData,
+
+                        keyExpr: "PERIODODESC",
+                        sorting: {
+                            mode: "multiple"
+                        },
+                        editing: {
+                            mode: "popup",
+                            allowUpdating: false,
+                            allowDeleting: false,
+                            allowAdding: false,
+
+                        },
+                        paging: {
+                            pageSize: 30
+                        },
+                        pager: {
+                            showPageSizeSelector: true,
+                            allowedPageSizes: [10, 20, 50],
+                            showInfo: true
+                        },
+                        filterRow: {
+                            visible: true
+                        },
+                        searchPanel: {
+                            visible: true,
+                            width: 340,
+                            placeholder: "Search..."
+                        },
+                        loadPanel: {
+                            enabled: true
+                        },
+                        showBorders: true,
+                        columns: [
+                            {
+                                dataField: "PERIODODESC",
+                                caption: "Periodo",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "TIPO_PAGO",
+                                caption: "Tipo de Pago",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "APLICADO",
+                                caption: "Aplicado",
+                                alignment: "center"
+                            },
+                            
+                           //,
+                            //{
+                            //    alignment: "center",
+                            //    cellTemplate: function (container, cellInfo) {
+                            //        $("<a>", { "class": "btn btn-info", "href": "Aportaciones/" + cellInfo.data.ID, "text": "Aportaciones" }).appendTo(container);
+
+                            //    }
+                            //}
+                        ]
+
+                    }).dxDataGrid("instance");
+                }, error: function (xhr, status, error) {
+                    alert(status);
+                }
+            });
+
+        }
+
+
+
+    </script>
+
+
+}
+
+

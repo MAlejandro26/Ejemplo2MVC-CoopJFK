@@ -1,0 +1,18 @@
+﻿@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+@{
+    ViewBag.Title = "Aportaciones por Socio";
+}
+
+<h2>Aportaciones por Socio</h2>
+
+<p>
+    <a class="btn btn-success" href="@Url.Action("Historial_Aportaciones","Aportacion")">Atrás</a>
+
+</p>
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "ViewerAportacion_Periodo_Socio";
+}).Bind(Model).GetHtml()

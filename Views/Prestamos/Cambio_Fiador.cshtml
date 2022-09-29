@@ -1,0 +1,248 @@
+﻿@model CoopJFK.Models.ViewModels.CambioFiadorViewModel
+@{
+    ViewBag.Title = "Cambio de Fiador";
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="~/Views/Home/Index.cshtml">Sistema de Gestión de Crédito</a></li>
+            <li class="active">Cambio de Fiador</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            @using (Html.BeginForm())
+            {
+
+                <div class="form-horizontal">
+                    <h4>Cambio de Fiador</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PRESTAMO, "No Préstamo", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-6">
+
+                            @Html.EditorFor(model => model.PRESTAMO, new { htmlAttributes = new { @id = "PRESTAMO", @class = "form-control", @readonly = "true" } })
+                            <span class="error">El Numero de Prestamo es requerido</span>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("No de Socio", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-6">
+                            @Html.Editor("SOCIO", new { htmlAttributes = new { @id = "SOCIO", @class = "form-control", @readonly = "true" } })
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Cédula", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-6">
+                            @Html.Editor("CEDULA", new { htmlAttributes = new { @id = "CEDULA", @class = "form-control", @readonly = "true" } })
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Nombre y Apellidos", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-6">
+                            @Html.Editor("NOMBRE", new { htmlAttributes = new { @id = "NOMBRE", @class = "form-control", @readonly = "true" } })
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("No de Fiador", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-6">
+                            @Html.Editor("FIADOR", new { htmlAttributes = new { @id = "FIADOR", @class = "form-control", @readonly = "true" } })
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Nombre y Apellidos Fiador", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-6">
+                            @Html.Editor("NOMBREFIADOR", new { htmlAttributes = new { @id = "NOMBREFIADOR", @class = "form-control", @readonly = "true" } })
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Ptamo X Cobrar", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-6">
+                            @Html.Editor("MONTO", new { htmlAttributes = new { @id = "MONTO", @class = "form-control", @readonly = "true" } })
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Nuevo Fiador", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-1">
+                            @Html.Editor("FIADOR_NEW", new { htmlAttributes = new { @id = "FIADOR_NEW", @class = "form-control", @readonly = "true" } })
+                           <span class="error">El Nuevo fiador es requerido</span>
+                        </div>
+                        <div class="col-md-1">
+                            @Html.Editor("FIADOR_NO_EMPLEADO", new { htmlAttributes = new { @id = "FIADOR_NO_EMPLEADO", @class = "form-control", @readonly = "true" } })
+                            <span class="error">El Nuevo fiador es requerido</span>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.Editor("NOMBREFIADOR_NEW", new { htmlAttributes = new { @id = "NOMBREFIADOR_NEW", @class = "form-control", @readonly = "true" } })
+                            <span class="error">El Nuevo fiador es requerido</span>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="form-group">
+                        <div class="col-md-offset-4 col-md-10">
+                            <input id="submit" type="button" value="Cambiar" style="padding:5px 15px" class="btn btn-info"
+ /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-primary" })
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+        </div>
+    </div>
+</div>
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+@section Scripts{
+
+    "    @EntitySelectorGridChangeFiador.selectorGrid(ViewBag.PrestamoListFiador, "PRESTAMO", "SOCIO", "CEDULA", "NOMBRE", "FIADOR", "NOMBREFIADOR", "MONTO", "prestamo", "Id", "Name", "Socio", "Cedula", "Fiador", "NameFiador", "Monto");
+    @EntitySelectorGridSocio.selectorGrid(ViewBag.PersonaList, "FIADOR_NEW", "FIADOR_NO_EMPLEADO", "NOMBREFIADOR_NEW", "persona", "ID",  "NOMBRES", "NO_EMPLEADO");
+
+    <script>
+        $('#submit').click(function () {
+            //validation of order
+            var isAllValid = true;
+
+            if ($('#PRESTAMO').val().trim() == '') {
+                isAllValid = false;
+                $('#PRESTAMO').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#PRESTAMO').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#FIADOR_NEW').val().trim() == '') {
+                isAllValid = false;
+                $('#FIADOR_NEW').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#FIADOR_NEW').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            //Save if valid
+            if (isAllValid) {
+                var data = {
+                    PRESTAMO: $('#PRESTAMO').val().trim(),
+                    FIADOR_NEW: $('#FIADOR_NEW').val().trim(),
+                    SOCIO: $('#SOCIO').val().trim()
+                   
+                }
+
+                $(this).val('Procesando...');
+
+                $.ajax({
+                    url: '/Prestamos/ChangeFiador',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database
+                        if (d.status == true) {
+                            //will send status from server side
+                            Swal.fire({
+                                position: 'center',
+                                type: 'success',
+                                title: 'Se realizo el cambio de fiador',
+                                showConfirmButton: true
+
+                            }).then((result) => {
+                                if (result.value) {
+                                    $('#PRESTAMO').val('');
+                                    $('#FIADOR_NEW').val('');
+                                }
+                            })
+
+                        }
+                        else {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: d.messageerror,
+                                footer: ''
+                            })
+
+                        }
+                        $('#submit').val('Cambiar');
+                    },
+                    error: function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Intente Nuevamente.',
+                            footer: ''
+                        })
+                        //alert('Error. Intente Nuevamente.');
+                        $('#submit').val('Cambiar');
+                    }
+                });
+            }
+
+        });
+    </script>
+}
+
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>
+

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<CoopJFK.Models.MUNICIPIO>
+
+@{
+    ViewBag.Title = "Municipios";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Catalogos</li>
+            <li class="active">Municipio</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="white-box">
+            <p>
+                <a class="btn btn-default" href="@Url.Action("Create","MUNICIPIO")">Nuevo Municipio</a>
+            </p>
+            <hr />
+            <table class="table" id="jqueryTable">
+                <thead>
+                    <tr>
+                        <th>
+                            MUNICIPIO
+                        </th>
+                        <th>
+                            DEPARTAMENTO
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.ActionLink(item.MUNICIPIO1, "Edit", new { id = item.ID })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DEPARTAMENTO1.DEPARTAMENTO1)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    @GridTemplateWB.GridMVCTemplate(" ")
+}
+

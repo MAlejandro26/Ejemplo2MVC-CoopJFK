@@ -1,0 +1,131 @@
+﻿@model CoopJFK.Models.BENEFICIARIOS
+
+@{
+    ViewBag.Title = "Detalle Beneficiario";
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Afiliación</li>
+            <li class="active">Socios-Beneficiarios</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+@*<div class="container">
+    <div class="row">*@
+@*<div class="col-md-12">*@
+<div class="white-box">
+    <div>
+        <h4>Beneficiarios</h4>
+        <hr />
+        <dl class="dl-horizontal">
+
+            <dt>
+                @Html.DisplayName("Socio")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PERSONA.NOMBRES)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.NOMBRE)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NOMBRE)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CEDULA)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CEDULA)
+            </dd>
+            <dt>
+                @Html.DisplayName("Parentesco")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PARENTESCO1.DESCRIPCION)
+            </dd>
+            <dt>
+                @Html.DisplayName("Tipo de Beneficiario")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TIPO_BENEFICIARIO1.DESCRIPCION)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.FECHA_NACIMIENTO)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.FECHA_NACIMIENTO)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DIRECCION)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DIRECCION)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PORCENTAJE)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PORCENTAJE)
+            </dd>
+            <hr />
+            <dt>
+                @Html.DisplayNameFor(model => model.USUARIO_CREACION)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.USUARIO_CREACION)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.FECHA_CREACION)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.FECHA_CREACION)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.USUARIO_MODIFICACION)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.USUARIO_MODIFICACION)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.FECHA_MODIFICACION)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.FECHA_MODIFICACION)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+       
+        @Html.ActionLink("Atrás", "BeneficiarioSocio", new { id = Request.Params["id"] }, new { @class = "btn btn-primary" })
+    </p>
+</div>
+
+
+  

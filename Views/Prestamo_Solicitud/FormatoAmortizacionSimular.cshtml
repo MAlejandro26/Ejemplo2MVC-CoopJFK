@@ -1,0 +1,16 @@
+﻿@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+@{
+    ViewBag.Title = "Formato Amortización de Préstamos Simulacion";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h2>@ViewBag.DatosPrestamo</h2>
+
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "viewerrptAmortizacionSimular";
+}).Bind(Model).GetHtml()

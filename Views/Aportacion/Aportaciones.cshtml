@@ -1,0 +1,320 @@
+﻿@model CoopJFK.Models.APORTACION
+
+@{
+    ViewBag.Title = "Aportaciones";
+}
+@*<link href="~/Content/dx.common.css" rel="stylesheet" />
+<link href="~/Content/dx.light.css" rel="stylesheet" />*@
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title"></h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Aportaciones</li>
+            <li class="active">Detalle de Aportaciones</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                @using (Html.BeginForm())
+                {
+
+
+                    <div class="form-horizontal">
+                        <h4>GENERAR APORTACIONES</h4>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.ID)
+                        @Html.HiddenFor(model => model.ESTADO)
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.SOCIO, "No. Socio")
+                                @Html.TextBoxFor(model => model.SOCIO, new { @class = "form-control", @readonly = "true" })
+                                @Html.ValidationMessageFor(model => model.SOCIO, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.SOCIO, "Socio")
+                                @Html.TextBoxFor(model => model.PERSONA.NOMBRES, new { @class = "form-control", @readonly = "true" })
+                                @Html.ValidationMessageFor(model => model.SOCIO, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.PERSONA.NO_EMPLEADO, "No. Empleado")
+                                @Html.TextBoxFor(model => model.PERSONA.NO_EMPLEADO, new { @class = "form-control", @readonly = "true" })
+                                @Html.ValidationMessageFor(model => model.SOCIO, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.SOCIO, "Agencia")
+                                @Html.TextBoxFor(model => model.PERSONA.AGENCIA1.NOMBRE, new { @class = "form-control", @readonly = "true" })
+                                @Html.ValidationMessageFor(model => model.SOCIO, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.PERSONA.PERIODO_INGRESO, "Periodo Ingreso")
+                                @Html.EditorFor(model => model.PERSONA.PERIODO_INGRESO, new { htmlAttributes = new { @class = "form-control" } })
+                               
+                            </div>
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.PERSONA.FECHA_INGRESO, "Fecha de Ingreso")
+                                @Html.EditorFor(model => model.PERSONA.FECHA_INGRESO, new { htmlAttributes = new { @class = "form-control" , @Value=Model.PERSONA.FECHA_INGRESO.ToString("dd/MM/yyyy")} })
+                               
+                            </div>
+                            <div class="col-md-4">
+                                @Html.LabelFor(model => model.TIPO_DEDUCCION, "Forma de Deducción")
+                                @Html.DropDownList("TIPO_DEDUCCION", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.TIPO_DEDUCCION, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.ANIO, "Año")
+                                @Html.EditorFor(model => model.ANIO, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ANIO, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-10">
+                                
+                                <input id="submit" type="button" value="Generar" class="btn btn-info" /> | @Html.ActionLink("Atrás", "Index",null,  new { @class = "btn btn-warning" })
+                            </div>
+                        </div>
+                        <div id="gridAportacionesDetalle"></div>
+                        
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<script src="~/Scripts/dx.all.js"></script>*@
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            CargarGrid();
+
+
+
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+
+                //if ($('#TIPO_CAMBIO').val().trim() == '') {
+                //    isAllValid = false;
+                //    $('#TIPO_CAMBIO').siblings('span.error').css('visibility', 'visible');
+                //}
+                //else {
+                //    $('#TIPO_CAMBIO').siblings('span.error').css('visibility', 'hidden');
+                //}
+
+                if ($('#TIPO_DEDUCCION').val().trim() == '') {
+                    isAllValid = false;
+                    $('#TIPO_DEDUCCION').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#TIPO_DEDUCCION').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#ANIO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#ANIO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#ANIO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        ID:$('#ID').val().trim(),
+                        SOCIO:$('#SOCIO').val().trim(),
+                        //TIPO_CAMBIO:$('#TIPO_CAMBIO').val().trim(),
+                        TIPO_DEDUCCION:$('#TIPO_DEDUCCION').val().trim(),
+                        ANIO: $('#ANIO').val().trim(),
+                        ESTADO: $('#ESTADO').val().trim()
+
+                    }
+
+                    $(this).val('Procesando...');
+
+                    $.ajax({
+                        url: '/Aportacion/Aportaciones',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Se guardaron los datos',
+                                    showConfirmButton: true
+
+                                })
+                                CargarGrid();
+                                // window.location.href = '/Periodo/Index';
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+                            $('#submit').val('Generar');
+                        },
+                        error: function (req, err) {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente.',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#submit').val('Generar');
+                            console.log(err)
+                        }
+                    });
+                }
+
+            });
+
+        });
+        
+
+        function CargarGrid() {
+            var apor = get('aportacion');
+
+            function get(name) {
+                if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))
+                    return decodeURIComponent(name[1]);
+            };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetAportacionesDetalle")',
+                dataType: "json",
+                data: { aportacion: apor },
+                success: function (data) {
+                    var fillData = data.aportacion_detalle;
+                    var dataGrid = $("#gridAportacionesDetalle").dxDataGrid({
+                        filterRow: { visible: false },
+                        dataSource: fillData,
+
+                        keyExpr: "ID",
+                        sorting: {
+                            mode: "multiple"
+                        },
+                        editing: {
+                            mode: "popup",
+                            allowUpdating: false,
+                            allowDeleting: false,
+                            allowAdding: false,
+
+                        },
+                        paging: {
+                            pageSize: 30
+                        },
+                        pager: {
+                            showPageSizeSelector: true,
+                            allowedPageSizes: [10, 20, 50],
+                            showInfo: true
+                        },
+                        filterRow: {
+                            visible: true
+                        },
+                        searchPanel: {
+                            visible: true,
+                            width: 340,
+                            placeholder: "Search..."
+                        },
+                        loadPanel: {
+                            enabled: true
+                        },
+                        showBorders: true,
+                        columns: [
+                            {
+                                dataField: "ANIO",
+                                caption: "Año",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "FECHA_TRANSACCION",
+                                caption: "Fecha",
+                                dataType: "date",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "CUOTA",
+                                caption: "No. Cuota",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "MONTO",
+                                caption: "Córdobas",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "MONTO_DOLAR",
+                                caption: "Dólar",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "PERIODO",
+                                caption: "Periodo de pago",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "TIPO_DEDUCCION",
+                                caption: "Forma de Deducción",
+                                alignment: "center"
+                            },
+                            
+                            {
+                                dataField: "PAGADO",
+                                caption: "Pagado",
+                                alignment: "center"
+                            }//,
+                            //{
+                            //    alignment: "center",
+                            //    cellTemplate: function (container, cellInfo) {
+                            //        $("<a>", { "class": "btn btn-info", "href": "Aportaciones/" + cellInfo.data.ID, "text": "Aportaciones" }).appendTo(container);
+
+                            //    }
+                            //}
+                        ]
+
+                    }).dxDataGrid("instance");
+                }, error: function (xhr, status, error) {
+                    alert(status);
+                }
+            });
+
+        }
+
+   
+
+    </script>
+
+
+}
+
+

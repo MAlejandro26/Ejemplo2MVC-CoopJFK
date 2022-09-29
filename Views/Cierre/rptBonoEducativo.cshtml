@@ -1,0 +1,13 @@
+﻿@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+@{
+    ViewBag.Title = "Reporte de Bono Educativo";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "ViewerrptBonoEducativo";
+}).Bind(Model).GetHtml()

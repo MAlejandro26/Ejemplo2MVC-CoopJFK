@@ -1,0 +1,130 @@
+@{
+    var transaccion = Request["transaccion"];
+}
+@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "_gArqueo";
+        settings.KeyFieldName = "ID";
+        settings.CallbackRouteValues = new { Controller = "Arqueo", Action = "_Arqueo" };
+        settings.ClientSideEvents.BeginCallback = "beginGridCallback";
+        //settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Arqueo", Action = "_ArqueoAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Arqueo", Action = "_ArqueoUpdate" };
+        //settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Arqueo", Action = "_ArqueoDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.Inline;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = false;
+        settings.CommandColumn.ShowDeleteButton = false;
+        settings.CommandColumn.ShowEditButton = true;
+
+
+
+        settings.SettingsPager.PageSize = 50;
+        settings.SettingsPager.FirstPageButton.Visible = true;
+        settings.SettingsPager.LastPageButton.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "50", "100", "150" };
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+        settings.CellEditorInitialize += (s, e) =>
+        {
+            if (e.Column.FieldName == "INICIO")
+            {
+                e.Editor.ReadOnly = false;
+            }
+
+            //  e.Editor.ReadOnly = false;
+
+        };
+
+
+        settings.Columns.Add("ID").Visible = false;
+        settings.Columns.Add("ARQUEO").Visible = false;
+        settings.Columns.Add("Nombre").ReadOnly = true;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DESCRIPCION";
+            c.Caption = "Denominación";
+            c.ReadOnly = true;
+
+        });
+        settings.Columns.Add("DENOMINACION").Visible = false;
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "INICIO";
+            c.Caption = "Inicio";
+            c.EditorProperties().TextBox(de =>
+            {
+                de.DisplayFormatString = "N";
+                de.DisplayFormatInEditMode = true;
+            });
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "RECIBIDA";
+            c.Caption = "Recibida";
+            c.EditorProperties().TextBox(de =>
+            {
+                de.DisplayFormatString = "N";
+                de.DisplayFormatInEditMode = true;
+            });
+            c.ReadOnly = true;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "SALIDA";
+            c.Caption = "Salida";
+            c.EditorProperties().TextBox(de =>
+            {
+                de.DisplayFormatString = "N";
+                de.DisplayFormatInEditMode = true;
+            });
+            c.ReadOnly = true;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "FINAL";
+            c.Caption = "Final";
+            c.EditorProperties().TextBox(de =>
+            {
+                de.DisplayFormatString = "N";
+                de.DisplayFormatInEditMode = true;
+
+            });
+            c.ReadOnly = true;
+            c.UnboundExpression = "INICIO + RECIBIDA - SALIDA ";
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "TOTAL";
+            c.Caption = "Total";
+            c.EditorProperties().TextBox(de =>
+            {
+                de.DisplayFormatString = "N";
+                de.DisplayFormatInEditMode = true;
+            });
+
+        });
+
+
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

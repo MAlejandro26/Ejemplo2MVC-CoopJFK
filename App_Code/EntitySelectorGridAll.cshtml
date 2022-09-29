@@ -1,0 +1,118 @@
+﻿
+@helper selectorGrid(dynamic listaObjetos, string idControl, string descriptionControl, string Columns3, string Columns4, string Columns5, string modalName = "default", string IdColumnName = "ID", string DescriptionColumnName = "Descripcion", string Column3 = "Column3", string Column4 = "Column4", string Column5 = "Column5")
+{
+    <div id="marco_@modalName" class="modal fade" style="padding-top: 3em;">
+        <div id="gridDialog_@modalName" class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Seleccione un registro</h4>
+                </div>
+                <div id="grid_@modalName" class="modal-body">
+                    <table id="tabla_@modalName" class="table table-striped table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                    No Prestamo
+                                </th>
+                                <th>
+                                    No Socio
+                                </th>
+                                <th>
+                                    Cédula
+                                </th>
+                                <th>
+                                    Nombre y Apellidos
+                                </th>
+                                <th>
+                                    Monto
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablebody_@modalName">
+                            @foreach (dynamic obj in listaObjetos)
+                            {
+                            <tr>
+                                @{
+                                    var id = obj.GetType().GetProperty(@IdColumnName).GetValue(obj);
+                                    var column3 = obj.GetType().GetProperty(@Column3).GetValue(obj);
+                                    var column4 = obj.GetType().GetProperty(@Column4).GetValue(obj);
+                                    var desc = obj.GetType().GetProperty(@DescriptionColumnName).GetValue(obj);
+                                    var column5 = obj.GetType().GetProperty(@Column5).GetValue(obj);
+                                }
+
+                                <td>@id</td>
+                                <td>@column3</td>
+                                <td>@column4</td>
+                                <td>@desc</td>
+                                <td>@column5</td>
+                            </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables/css/buttons.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTableSearch.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet">
+    <script type="text/javascript" src="~/Scripts/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+
+    <script type="text/javascript" language="javascript" src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="~/Scripts/DataTables/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" language="javascript" src="~/scripts/DataTables/buttons.flash.js"></script>
+    <script type="text/javascript" language="javascript" src="~/Scripts/DataTables/dataTables.select.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tabla_@modalName tbody').on('dblclick', 'tr', function () {
+                var tr = table.row(this).data();
+                $('#@idControl').val(tr[0]);
+                $('#@descriptionControl').val(tr[1]);
+                $('#@Columns3').val(tr[2]);
+                $('#@Columns4').val(tr[3]);
+                $('#@Columns5').val(tr[4]);
+                /*alert(tr[0] + '-' + tr[1])*/
+                if (tr != undefined)
+                    $('#marco_@modalName').modal('hide');
+            })
+            /*$("#grid").dblclick(function () {
+                var tr = table.row(this).data();
+                $('profesionId').val(tr[0]);
+                $('profesionDesc').val(tr[1]);
+
+                if (tr != undefined)
+                    $('#marco').modal('hide');
+            })*/
+            $('#@idControl').dblclick(function () {
+                $('#marco_@modalName').modal('show');
+            })
+            $('#tabla_@modalName').DataTable({
+                "pagingType": "simple" // "simple" option for 'Previous' and 'Next' buttons only
+            });
+            var table = $('#tabla_@modalName').DataTable();
+            $('#tabla_@modalName tbody').on('click', 'tr', function () {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    /*var tr = table.row(this).data();
+                    console.log(this);
+                    console.log(tr);
+                    console.log(JSON.stringify(tr));*/
+                }
+            });
+        })
+
+    </script>
+}
+

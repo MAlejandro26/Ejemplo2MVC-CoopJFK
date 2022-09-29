@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Detalle de Deduccion de Préstamos Caja Rápida";
+    Layout = null;
+}
+
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+
+@Html.DevExpress().GetStyleSheets(
+                        new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+                        new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+                        new StyleSheet { ExtensionSuite = ExtensionSuite.Report }
+                    )
+@Html.DevExpress().GetScripts(
+                new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+                new Script { ExtensionSuite = ExtensionSuite.Editors },
+                 new Script { ExtensionSuite = ExtensionSuite.Report }
+            )
+<h2>@ViewBag.Title</h2>
+
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "documentViewer6";
+}).Bind(Model).GetHtml()

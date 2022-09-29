@@ -1,0 +1,1298 @@
+﻿@model CoopJFK.Models.ViewModels.DisponibilidadViewModel
+@{
+    ViewBag.Title = "Consulta Caja Rapida";
+}
+@*<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <link href="~/Content/animate.css" rel="stylesheet" />*@
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Caja Rapida</li>
+            <li class="active">Consultas</li>
+        </ol>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <h4>Datos de Consulta</h4>
+                <hr />
+                <div class="row" style="margin-bottom:15px">
+                    <div class="col-md-4">
+                        @Html.Label("Socio")
+                        @Html.TextBoxFor(model => model.nombre, new { @class = "form-control", placeholder = "Escriba el nombre de un socio", id = "NOMBRE_SOCIO" })
+                        @Html.ValidationMessageFor(model => model.nombre, "", new { @class = "text-danger" })
+                        <span class="error">El socio es requerido</span>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.Label("Equivalencia")
+                        @{
+                            List<SelectListItem> _tipoprestamo = new List<SelectListItem>();
+                            _tipoprestamo.Add(new SelectListItem { Text = "1x1", Value = "1x1" });
+                            _tipoprestamo.Add(new SelectListItem { Text = "1.5x1", Value = "1.5x1" });
+                            _tipoprestamo.Add(new SelectListItem { Text = "2x1", Value = "2x1" });
+
+                        }
+                        @Html.DropDownListFor(model => model.derecho, _tipoprestamo, "--Seleccione--", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.derecho, "", new { @class = "text-danger" })
+                        <span class="error">La equivalencia es requerida</span>
+                    </div>
+                    <div class="col-md-4">
+                        <fieldset disabled>
+                            @Html.Label("Tipo de Prestamo")
+                            @Html.DropDownList("TipoPrestamo", null, "--Seleccione--", htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.TipoPrestamo, "", new { @class = "text-danger" })
+                            <span class="error">El Tipo de prestamo es requerido</span>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom:15px">
+                    <div class="col-md-3">
+                        @Html.Label("No Socio")
+                        @Html.TextBoxFor(model => model.Socio, new { @class = "form-control", @readonly = "true" })
+                        @Html.ValidationMessageFor(model => model.Socio, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("Cédula")
+                        @Html.TextBoxFor(model => model.cedula, new { @class = "form-control", @readonly = "true" })
+                        @Html.ValidationMessageFor(model => model.cedula, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("No. Empleado")
+                        @Html.TextBoxFor(model => model.empleado, new { @class = "form-control", @readonly = "true" })
+                        @Html.ValidationMessageFor(model => model.empleado, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("Salario")
+                        @Html.TextBoxFor(model => model.Salario, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+                        @Html.ValidationMessageFor(model => model.Salario, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom:15px">
+                    <div class="col-md-3">
+                        @Html.Label("Cuota de Ahorro")
+                        @Html.TextBoxFor(model => model.Cuota_Ahorro, new { @class = "form-control", @readonly = "true" })
+                        @Html.ValidationMessageFor(model => model.Cuota_Ahorro, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("Periodo")
+                        @Html.DropDownList("periodo", new SelectList(string.Empty, "Value", "Text"), "--Seleccione--", new { @class = "form-control" })
+                        <span class="error">El periodo es obligatorio</span>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("Principal X Cobrar $:")
+                        @Html.TextBoxFor(model => model.Monto_solicitado, new { @class = "form-control", type = "number", min = 10, max = 2000 })
+                        <span class="error">El monto principal por cobrar es requerido</span>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group row has-warning">
+                            @Html.Label("No Cuotas Plazo:")
+                            @Html.TextBoxFor(model => model.plazo, new { @class = "form-control", type = "number", min = 1, max = 10 })
+                            <span class="error">El numero de cuota es requerido</span>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row" style="margin-bottom:50px">
+                    <div class="col-md-4">
+                        @Html.Label("Interés por Cobrar Trasl $:")
+                        @Html.TextBoxFor(model => model.intereses, new { @class = "form-control", @style = "background:#FFE082", @readonly = "true" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.Label("Total Prest x Cobrar (P+I) $:")
+                        @Html.TextBoxFor(model => model.total_solicitado, new { @class = "form-control", @style = "background:#FFE082", @readonly = "true" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.Label("Cuota")
+                        @Html.TextBoxFor(model => model.cuota, new { @class = "form-control", @style = "background:#FFE082", @readonly = "true" })
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom:15px">
+                    <div class="col-md-3" style="text-align:center">
+                        <i class="fa fa-calculator"></i> <input id="submit" type="button" value="Consultar" class="btn btn-success btn-lg" style="padding:5px 15px" />
+                    </div>
+                    <div class="col-md-3" style="text-align:center">
+                        <i class="glyphicon glyphicon-floppy-disk"></i> <input id="BtnAplicarPrestamo" type="button" value="Aplicar Prestamo" class="btn btn-warning btn-lg" onclick="ValidarAplicar()" style="padding:5px 15px" />
+                    </div>
+                    <div class="col-md-3" style="text-align:center">
+                        <i class="glyphicon glyphicon-usd"></i> <input id="BtnAplicarRetiroAhorro" type="button" value="Retiro Ahorro" class="btn btn-dark btn-lg" onclick="ValidarRetiro()" style="padding:5px 15px" />
+                    </div>
+                    <div class="col-md-3" style="text-align:center">
+                        <i class="glyphicon glyphicon-usd"></i> <input id="BtnAplicarMembresiaPricesmart" type="button" value="Membresía Pricesmart" class="btn btn-dark btn-lg" onclick="ValidarPricesmart()" style="padding:5px 15px" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <h4>Datos de Ahorro y Prestamos</h4>
+                <hr />
+                <div class="row" style="margin-bottom:15px">
+                    @*<div class="col-md-1"></div>*@
+                    <div class="col-md-2">
+                        @Html.Label("Total de Ahorros")
+                        @Html.TextBoxFor(model => model.Ahorros, new { @class = "form-control", @style = "background:#E8F5E9", @readonly = "true" })
+                        @Html.ValidationMessageFor(model => model.Ahorros, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-2">
+                        @Html.Label("Total de Aportaciones")
+                        @Html.TextBoxFor(model => model.Aportaciones, new { @class = "form-control", @style = "background:#E8F5E9", @readonly = "true" })
+                        @Html.ValidationMessageFor(model => model.Aportaciones, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-2">
+                        @Html.Label("Cantidad de Prestamos")
+                        @Html.TextBoxFor(model => model.CantPrestamos, new { @class = "form-control", @style = "background:#FFEBEE", @readonly = "true" })
+                        @Html.ValidationMessageFor(model => model.CantPrestamos, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-2">
+                        @Html.Label("Total en Prestamos")
+                        @Html.TextBoxFor(model => model.MontoPrestamo, new { @class = "form-control", @style = "background:#F44336", @readonly = "true" })
+                        @Html.ValidationMessageFor(model => model.MontoPrestamo, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-2">
+                        @Html.Label("Capacidad de Pago")
+                        @Html.TextBoxFor(model => model.disponibilidad40, new { @class = "form-control", @style = "background:#FFD54F", @readonly = "true" })
+                        @Html.ValidationMessageFor(model => model.disponibilidad40, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-2">
+                        @Html.Label("Cantidad x Derecho")
+                        @Html.TextBoxFor(model => model.MontoaPrestar, new { @class = "form-control", @style = "background:#E8F5E9", @readonly = "true" })
+                        @Html.ValidationMessageFor(model => model.MontoaPrestar, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="display:none">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <h4>Reestructuraciones</h4>
+                <hr />
+                <div class="row" style="margin-bottom:15px">
+                    <div class="form-inline">
+
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            @Html.Label("Cantidad de Prestamos")
+                            @Html.TextBoxFor(model => model.CantPrestamosRes, "{0:N}", new { @class = "form-control", @readonly = "true" })
+                            @Html.ValidationMessageFor(model => model.Salario, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            @Html.Label("Total en Prestamos")
+                            @Html.TextBoxFor(model => model.MontoPrestamoRest, new { @class = "form-control", @readonly = "true" })
+                            @Html.ValidationMessageFor(model => model.Cuota_Ahorro, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        @Html.Label("")
+                        <i class="fa fa-eye"></i>  <input id="rptRestructurar" type="button" value="Reporte" class="btn btn-info" style="padding:5px 15px" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ModalAplicarPrestamo" tabindex="-1" role="dialog" aria-labelledby="ModalAplicarPrestamoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalAplicarPrestamoLabel">Aplicacion De Prestamo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.Label("Tipo de Deduccion")
+                            @Html.DropDownList("TIPO_DEDUCCION", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.TipoPrestamo, "", new { @class = "text-danger" })
+                            <span class="error">El Tipo de deduccion es requerido</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.Label("Razon del prestamo:")
+                            <textarea type="text" class="form-control" id="razon_fiador" placeholder="Agregue una razon"></textarea>
+                            <span class="error">La razon del prestamo es requerido</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:30px">
+                    <div class="alert alert-info">Nota:Al dar click a "Registrar Prestamo" , se le realizara el prestamo al socio por la deduccion seleccionada.</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="CancelarRetiro()" data-dismiss="modal">Cancelar</button>
+                <button id="btnregistrarprestamo" type="button" class="btn btn-primary" onclick="RegistrarPrestamo()">Registrar Retiro</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalAplicarRetiroAhorro" tabindex="-1" role="dialog" aria-labelledby="ModalAplicarRetiroAhorro" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalAplicarRetiroAhorroLabel">Aplicacion De Retiro De Ahorro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12" style="margin-top:10px">
+                        @Html.Label("Nota:")
+                        <div class="alert alert-info" id="MensajeMontoRetiro" style="text-align:justify"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" style="margin-top:20px">
+                        <div class="form-group">
+                            @Html.Label("Monto a retirar:")
+                            <input type="number" id="MontoRetirar" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="CancelarRetiro()" data-dismiss="modal">Cancelar</button>
+                <button id="btnregistrarprestamo" type="button" class="btn btn-primary" onclick="AplicarRetiro()">Registrar Retiro</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal membresia pricesmart-->
+<div class="modal fade" id="ModalMembresiaPricesmart" tabindex="-1" role="dialog" aria-labelledby="ModalMembresiaProcesmartLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalMembresiaProcesmartLabel">Membresía de Pricesmart</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <p>Socio: <input type="text" name="id_socio_pricesmart" id="id_socio_pricesmart" class="form-control" @*onchange="CambiarSocio();"
+onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"*@> </p>
+                               
+                                <span class="error">El socio es requerido</span>
+                            </div>
+                            <div class="col-md-4">
+                                <p>
+                                    No. Empleado:  <input type="text" name="empleado_pricesmart" id="empleado_pricesmart" readonly="readonly" class="form-control">
+                                </p>
+                                <span class="error">El empleado es requerido</span>
+                            </div>
+                            
+                        </div>
+
+
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                           
+                            <div class="col-md-12">
+                                <p>Nombre y Apellidos: <input type="text" name="nombre_pricesmart" id="nombre_pricesmart" readonly="readonly" class="form-control"> </p>
+                                <span class="error">El nombre es requerido</span>
+                            </div>
+                            
+
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <p>Cuotas: <input type="text" name="Cuota_pricesmart" value="2" id="Cuota_pricesmart" class="form-control"> </p>
+                               
+                                <span class="error">El numero de cuotas es requerido</span>
+                            </div>
+                            <div class="col-md-3">
+                                <p>Monto: <input type="text" name="Monto_pricesmart" id="Monto_pricesmart" class="form-control"> </p>
+                               
+                                <span class="error">El MOnto es requerido</span>
+                            </div>
+                            <div class="col-md-3">
+                                <p>Periodo: <input type="text" name="Periodo_pricesmart" id="Periodo_pricesmart" class="form-control"> </p>
+                                <span class="error">El periodo es requerido</span>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+
+                           
+                            <div class="col-md-12">
+                                @Html.Label("Razon del prestamo:")
+                                <textarea type="text" class="form-control" id="razon_membresia" placeholder="Agregue una razon"></textarea>
+                                <span class="error">La razon del prestamo es requerido</span>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="CancelarRetiro()" data-dismiss="modal">Cancelar</button>
+                <button id="btnregistrarmembresia" type="button" class="btn btn-primary" onclick="RegistrarMembresiaPricesmart()">Registrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/DataTables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.bootstrap.min.js"></script>
+<!-- jQuery library -->
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>*@
+<!-- Latest compiled JavaScript -->
+@*<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+<script src="~/Scripts/Boostrap/bootstrap.min.js"></script>
+
+@section Scripts{
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script src="~/Scripts/bootstrap-notify.js"></script>
+    <script src="~/Scripts/jquery.inputmask.js"></script>
+    <script src="~/Scripts/jquery-mask-as-number.min.js"></script>
+    <script>
+        var pago;
+   
+        //function CambiarSocio()
+        //{
+        //    var t = document.getElementById('id_socio_pricesmart');
+
+        //            var valido = true;
+
+        //            if (valido) {
+        //                var data = {
+        //                    Socio: $("#id_socio_pricesmart").val()
+        //                }
+
+        //                alert(t);
+        //                $.ajax({
+        //                    url: '/CajaRapida/GetDatoSocio',
+        //                    type: "POST",
+        //                    data: JSON.stringify(data),
+        //                    dataType: "JSON",
+        //                    contentType: "application/json",
+        //                    success: function (d) {
+        //                        if (d.status == true) {
+
+        //                            $("#empleado_pricesmart").val(d.empleado);
+        //                            $("#nombre_pricesmart").val(d.nombre);
+
+        //                        }
+        //                        else {
+
+        //                            Swal.fire({
+        //                                type: 'error',
+        //                                title: 'Error!',
+        //                                text: d.messageerror,
+        //                                footer: ''
+        //                            })
+
+        //                        }
+
+        //                    },
+        //                    error: function () {
+        //                        Swal.fire({
+        //                            type: 'error',
+        //                            title: 'Error!',
+        //                            text: 'Error al obtener datos del socio',
+        //                            footer: ''
+        //                        })
+
+        //                    }
+        //                })
+
+        //            }
+
+           
+        //}
+
+    
+
+        function Getperiodo(tipo_pagos)
+        {
+            $("#periodo").empty();
+            $.ajax({
+                     type: 'POST',
+                     url: '@Url.Action("GetPeriodos")', // we are calling json method
+                     dataType: 'json',
+                     data: { tipo_pago: 1},
+                     success: function (states) {
+                                 $("#periodo").append('<option value="0">--Seleccione--</option>');
+                                 $.each(states, function (i, state) {
+
+                                $("#periodo").append('<option value="' + state.Value + '">' +
+                                     state.Text + '</option>');
+                                // here we are adding option for States
+
+                                });
+                            },
+                     error: function (ex) {
+                         alert('Failed to retrieve states.' + ex);
+                     }
+            });
+        }
+        function RegistrarPrestamo() {
+
+            var isAllValid = true;
+           // var deduccion = $('#TIPO_DEDUCCION');
+          //  var razon = $('#txtrazonprestamo');
+
+            if ($('#TIPO_DEDUCCION').val().trim() == '') {
+                isAllValid = false;
+                $('#TIPO_DEDUCCION').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#TIPO_DEDUCCION').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#razon_fiador').val().trim() == '') {
+                isAllValid = false;
+                $('#razon_fiador').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#razon_fiador').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if (isAllValid) {
+                AplicarPrestamo()
+            }
+
+        }
+        function CancelarPrestamo() {
+
+
+            $('#TIPO_DEDUCCION').val('');
+            $('#razon_fiador').val('');
+
+            $('#ModalAplicarPrestamo').modal('hide');
+        }
+        function CancelarRetiro() {
+            $('#TIPO_DEDUCCION').val('');
+            $('#razon_fiador').val('');
+            $('#MontoRetirar').val('');
+            $('#ModalAplicarRetiroAhorro').modal('hide');
+        }
+        $(document).ready(function () {
+            /* Autocomplete , jquery UI */
+            $('#plazo').maskAsNumber({ decimal: true, min: 1, max: 10 });
+            $('#Monto_solicitado').maskAsNumber({ decimal: true, min: 10, max: 2000 });
+            $("#NOMBRE_SOCIO").autocomplete({
+                dataType: 'JSON',
+                source: function (request, response) {
+                    jQuery.ajax({
+                        url: "/CajaRapida/BuscarSocio",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            nombre: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    id: item.Id,
+                                    value: item.Name,
+                                    cedula: item.Cedula,
+                                    empleado: item.Empleado,
+                                    cuota: item.Cuota,
+                                    salario: item.Salario,
+                                    tipo_pago: item.Tipo_Pago,
+                                    antiguedad: item.antiguedad
+                                }
+                            }))
+                        }
+                    })
+                },
+                select: function (e, ui) {
+                    $("#Socio").val(ui.item.id);
+                    $("#empleado").val(ui.item.empleado);
+                    $("#cedula").val(ui.item.cedula);
+                    $("#Salario").val(ui.item.salario);
+                    $("#Cuota_Ahorro").val(ui.item.cuota);
+                    pago = ui.item.tipo_pago;
+
+                    if (ui.item.antiguedad >= 2 && ui.item.antiguedad < 12) { equivalencia = '1x1' }
+                    else if (ui.item.antiguedad >= 12 && ui.item.antiguedad < 36) { equivalencia = '1.5x1' }
+                    else if (ui.item.antiguedad >= 36) { equivalencia = '2x1' }
+
+                    $("#derecho").val(equivalencia).change();
+                    Getperiodo(ui.item.tipo_pago)
+
+                }
+            });
+
+            $("input[name=id_socio_pricesmart]").change(function () {
+               
+                var valido = true;
+
+                if (valido) {
+                    var data = {
+                        Socio: $(this).val()
+                    }
+
+                    
+                    $.ajax({
+                        url: '/CajaRapida/GetDatoSocio',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            if (d.status == true) {
+
+                                $("#empleado_pricesmart").val(d.empleado);
+                                $("#nombre_pricesmart").val(d.nombre);
+
+                            }
+                            else {
+
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+                                $("#empleado_pricesmart").val('');
+                                $("#nombre_pricesmart").val('');
+                            }
+
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Error al obtener datos del socio',
+                                footer: ''
+                            });
+                            $("#empleado_pricesmart").val('');
+                            $("#nombre_pricesmart").val('');
+
+                        }
+                    })
+
+                }
+            });
+
+         
+
+        });
+        $(document).ready(function () {
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'decimal',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            })
+            const formatter_money = new Intl.NumberFormat('en-US', {
+                style: 'decimal',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            })
+            $('#Monto_solicitado').blur(function () {
+                var monto = $('#Monto_solicitado').val();
+            });
+            $('#submit').click(function ()
+            {
+               //validation of order
+               var isAllValid = true;
+               if ($('#NOMBRE_SOCIO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#NOMBRE_SOCIO').siblings('span.error').css('visibility', 'visible');
+                                        }
+               else {
+                    $('#NOMBRE_SOCIO').siblings('span.error').css('visibility', 'hidden');
+                                        }
+               if ($('#periodo').val().trim() == '' || $('#periodo').val().trim() == '0') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+               else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+               if ($('#TipoPrestamo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#TipoPrestamo').siblings('span.error').css('visibility', 'visible');
+                }
+               else {
+                    $('#TipoPrestamo').siblings('span.error').css('visibility', 'hidden');
+               }
+               if ($('#derecho').val().trim() == '') {
+                    isAllValid = false;
+                    $('#derecho').siblings('span.error').css('visibility', 'visible');
+                }
+               else {
+                    $('#derecho').siblings('span.error').css('visibility', 'hidden');
+                                        }
+               if ($('#Monto_solicitado').val().trim() == '') {
+                    $("#Monto_solicitado").val(0);
+                }
+               if ($('#plazo').val().trim() == '') {
+                    $("#plazo").val(1);
+               }
+                //Save if valid
+                if (isAllValid) {
+                       var data = {
+                            Socio: $('#Socio').val().trim(),
+                            TipoPrestamo: $('#TipoPrestamo').val().trim(),
+                            derecho: $('#derecho').val().trim(),
+                            Salario: $('#Salario').val().trim(),
+                            Cuota_Ahorro: $('#Cuota_Ahorro').val().trim(),
+                            Monto_solicitado: $('#Monto_solicitado').val().trim(),
+                            plazo: $('#plazo').val().trim(),
+                            periodo: $('#periodo').val().trim(),
+                            TipoPago:pago
+                        }
+                       $(this).val('Procesando...');
+                       $.ajax({
+                                url: '/CajaRapida/Disponibilidad_Credito',
+                                type: "POST",
+                                data: JSON.stringify(data),
+                                dataType: "JSON",
+                                contentType: "application/json",
+                                success: function (d) {
+                                    //check is successfully save to database
+                                    if (d.status == true) {
+
+                                        if (d.sobre_giro > 0) {
+                                            Swal.fire({
+                                                position: 'center',
+                                                type: 'success',
+                                                title: 'Se analizó la información, la cuota tendrá un sobre giro de: ' + formatter_money.format(Math.round(d.sobre_giro)),
+                                                showConfirmButton: true
+
+                                            })
+                                        }
+                                        else {
+                                            Swal.fire({
+                                                position: 'center',
+                                                type: 'success',
+                                                title: 'Se analizo la información.',
+                                                showConfirmButton: true
+
+                                            })
+                                        }
+
+                                        $("#Ahorros").val(formatter_money.format(d.ahorro_s));
+                                        $("#Aportaciones").val(formatter_money.format(d.apor));
+                                        $("#CantPrestamos").val(d.cant_prest);
+                                        $("#MontoPrestamo").val(formatter_money.format(d.monto_prest));
+                                        $("#CantPrestamosRes").val(d.cant_prest_rees);
+                                        $("#MontoPrestamoRest").val(formatter_money.format(d.monto_prest_rees));
+                                        $("#MontoaPrestar").val(formatter_money.format(d.monto_prestar));
+                                        $("#disponibilidad40").val(formatter_money.format(d.total40));
+                                        $("#intereses").val(formatter_money.format(d.interes));
+                                        $("#total_solicitado").val(formatter_money.format(d.saldo_principal));
+                                        //$("#cant_cuota").val(d.cant_cuota);
+                                        $("#cuota").val(formatter_money.format(d.cuota));
+
+                                        if (d.saldo_principal > 0) {
+                                            window.open('/Prestamo_Solicitud/FormatoAmortizacionSimular?NoPrestamo=' + d.NoPrestamo, '_blank');
+                                           // window.location.href = '/Prestamos/FormatoAmortizacion?NoPrestamo=' + d.NoPrestamo;
+                                        }
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            type: 'error',
+                                            title: 'Error!',
+                                            text: d.messageerror,
+                                            footer: ''
+                                        })
+                                        $("#Ahorros").val('0');
+                                        $("#Aportaciones").val('0');
+                                        $("#CantPrestamos").val('0');
+                                        $("#MontoPrestamo").val('0');
+                                        $("#CantPrestamosRes").val('0');
+                                        $("#MontoPrestamoRest").val('0');
+                                        $("#MontoaPrestar").val('0');
+                                        $("#disponibilidad40").val(formatter_money.format(d.total40));
+                                    }
+                                    $('#submit').val('Evaluar');
+
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Intente Nuevamente.',
+                                        footer: ''
+                                    })
+                                    //alert('Error. Intente Nuevamente.');
+                                    $('#submit').val('Evaluar');
+                                    $("#Ahorros").val('0');
+                                    $("#Aportaciones").val('0');
+                                    $("#CantPrestamos").val('0');
+                                    $("#MontoPrestamo").val('0');
+                                    $("#CantPrestamosRes").val('0');
+                                    $("#MontoPrestamoRest").val('0');
+                                    $("#MontoaPrestar").val('0');
+                                    $("#disponibilidad40").val(formatter_money.format(d.total40));
+                                }
+                       });
+                   }
+             });
+        });
+        function ValidarAplicar() {
+            var isAllValid = true;
+            if ($('#NOMBRE_SOCIO').val().trim() == '') {
+                isAllValid = false;
+                $('#NOMBRE_SOCIO').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#NOMBRE_SOCIO').siblings('span.error').css('visibility', 'hidden');
+            }
+            if ($('#periodo').val().trim() == '' || $('#periodo').val().trim() == '0') {
+                isAllValid = false;
+                $('#periodo').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#periodo').siblings('span.error').css('visibility', 'hidden');
+            }
+            if ($('#TipoPrestamo').val().trim() == '') {
+                isAllValid = false;
+                $('#TipoPrestamo').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#TipoPrestamo').siblings('span.error').css('visibility', 'hidden');
+            }
+            if ($('#derecho').val().trim() == '') {
+                isAllValid = false;
+                $('#derecho').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#derecho').siblings('span.error').css('visibility', 'hidden');
+            }
+            if ($('#Monto_solicitado').val().trim() == '') {
+                isAllValid = false;
+                $("#Monto_solicitado").siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#Monto_solicitado').siblings('span.error').css('visibility', 'hidden');
+            }
+            if ($('#plazo').val().trim() == '') {
+                isAllValid = false;
+                $("#plazo").siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#plazo').siblings('span.error').css('visibility', 'hidden');
+            }
+            if (isAllValid) {
+                $('#ModalAplicarPrestamo').modal('show');
+            }
+            else {
+                Swal.fire({
+                    type: 'error',
+                    title: 'Error!',
+                    text: 'Debe de llenar todos los datos',
+                    footer: ''
+                });
+            }
+        }
+        function ValidarRetiro() {
+            var isAllValid = true;
+            if ($('#NOMBRE_SOCIO').val().trim() == '') {
+                isAllValid = false;
+                $('#NOMBRE_SOCIO').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#NOMBRE_SOCIO').siblings('span.error').css('visibility', 'hidden');
+            }
+            if ($('#periodo').val().trim() == '' || $('#periodo').val().trim() == '0') {
+                isAllValid = false;
+                $('#periodo').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#periodo').siblings('span.error').css('visibility', 'hidden');
+            }
+            if ($('#TipoPrestamo').val().trim() == '') {
+                isAllValid = false;
+                $('#TipoPrestamo').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#TipoPrestamo').siblings('span.error').css('visibility', 'hidden');
+            }
+            $('#derecho').val('');
+            $('#Monto_solicitado').val('');
+            $('#plazo').val('');
+            if (isAllValid) {
+                //AplicarRetiro();
+                // $('#ModalAplicarRetiroAhorro').modal('show');
+                CalcularRetiro();
+            }
+            else {
+                Swal.fire({
+                    type: 'error',
+                    title: 'Error!',
+                    text: 'Debe de llenar todos los datos',
+                    footer: ''
+                });
+            }
+        }
+        function AplicarPrestamo() {
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'decimal',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            })
+            const formatter_money = new Intl.NumberFormat('en-US', {
+                style: 'decimal',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            })
+            var data = {
+                Socio: $('#Socio').val().trim(),
+                TipoPrestamo: $('#TipoPrestamo').val().trim(),
+                derecho: $('#derecho').val().trim(),
+                Salario: $('#Salario').val().trim(),
+                Cuota_Ahorro: $('#Cuota_Ahorro').val().trim(),
+                Monto_solicitado: $('#Monto_solicitado').val().trim(),
+                plazo: $('#plazo').val().trim(),
+                periodo: $('#periodo').val().trim(),
+                razon_fiador: $('#razon_fiador').val().trim(),
+                TIPO_DEDUCCION: $('#TIPO_DEDUCCION').val().trim(),
+                TipoPago: pago
+            }
+            $("#btnregistrarprestamo").val('Procesando...');
+            $.ajax({
+                url: '/CajaRapida/Aplicacion_Credito',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    //check is successfully save to database
+                    if (d.status == true) {
+                        if (d.sobre_giro > 0) {
+                            Swal.fire({
+                                position: 'center',
+                                type: 'warning',
+                                title: 'No se ha podido realizar el préstamo ya que tiene un sobre giro de: ' + formatter_money.format(Math.round(d.sobre_giro)),
+                                    //+ '.Siendo el monto maximo de la cuota de:' + formatter_money.format(Math.round(d.monto_prestar)),
+                                showConfirmButton: true
+                            })
+                              //console.log(formatter_money.format(Math.round(d.monto_prestar)));
+                           //  $("#Monto_solicitado").val(Math.round(d.monto_prestar));
+                              //$("#Monto_solicitado").val(formatter_money.format(d.monto_prestar));
+                             // $("#Monto_solicitado").val(formatter_money.format(Math.round(d.monto_prestar)));
+                        }
+
+                        else {
+                            Swal.fire({
+                                position: 'center',
+                                type: 'success',
+                                text: 'Se creo el préstamo No:' + d.NoPrestamo,
+                                showConfirmButton: true
+
+                            })
+
+                           
+                            $("#Monto_solicitado").val(formatter_money.format(Math.round(d.monto_prestar)));
+                            $("#Ahorros").val(formatter_money.format(d.ahorro_s));
+                            $("#CantPrestamos").val(d.cant_prest);
+                            $("#MontoPrestamo").val(formatter_money.format(d.monto_prest));
+                            $("#CantPrestamosRes").val(d.cant_prest_rees);
+                            $("#MontoPrestamoRest").val(formatter_money.format(d.monto_prest_rees));
+                            $("#MontoaPrestar").val(formatter_money.format(d.monto_prestar));
+                            $("#disponibilidad40").val(formatter_money.format(d.total40));
+                            $("#intereses").val(formatter_money.format(d.interes));
+                            $("#total_solicitado").val(formatter_money.format(d.saldo_principal));
+                            $("#cuota").val(formatter_money.format(d.cuota));
+                            if (d.saldo_principal > 0) {
+                                window.open('/CajaRapida/FormatComprobanteCaja1?comprobante=' + d.NoPrestamo, '_blank');
+                                window.open('/CajaRapida/FormarComprobanteCajaRapida2?comprobante=' + d.NoPrestamo, '_blank');
+                            }
+                        }
+                    }
+                    else {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: d.messageerror,
+                            footer: ''
+                        })
+                        $("#Ahorros").val('0');
+                        $("#CantPrestamos").val('0');
+                        $("#MontoPrestamo").val('0');
+                        $("#CantPrestamosRes").val('0');
+                        $("#MontoPrestamoRest").val('0');
+                        $("#MontoaPrestar").val('0');
+                        $("#disponibilidad40").val(formatter_money.format(d.total40));
+                    }
+                    $('#ModalAplicarPrestamo').modal('hide');
+                },
+                error: function () {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Intente Nuevamente.',
+                        footer: ''
+                    })
+                    $('#submit').val('Evaluar');
+                    $("#Ahorros").val('0');
+                    $("#CantPrestamos").val('0');
+                    $("#MontoPrestamo").val('0');
+                    $("#CantPrestamosRes").val('0');
+                    $("#MontoPrestamoRest").val('0');
+                    $("#MontoaPrestar").val('0');
+                    $("#disponibilidad40").val(formatter_money.format(d.total40));
+                    $('#ModalAplicarPrestamo').modal('hide');
+                }
+            });
+        }
+        function AplicarRetiro() {
+            if ($('#MontoRetirar').val() != '') {
+                const formatter = new Intl.NumberFormat('en-US', {
+                    style: 'decimal',
+                    currency: 'USD',
+                    minimumFractionDigits: 2
+                })
+                const formatter_money = new Intl.NumberFormat('en-US', {
+                    style: 'decimal',
+                    currency: 'USD',
+                    minimumFractionDigits: 2
+                })
+                var data = {
+                    Socio: $('#Socio').val().trim(),
+                    TipoPrestamo: $('#TipoPrestamo').val().trim(),
+                    derecho: $('#derecho').val().trim(),
+                    Salario: $('#Salario').val().trim(),
+                    Cuota_Ahorro: $('#Cuota_Ahorro').val().trim(),
+                    Monto_solicitado: $('#MontoRetirar').val().trim(),
+                    plazo: $('#plazo').val().trim(),
+                    periodo: $('#periodo').val().trim(),
+                    razon_fiador: $('#razon_fiador').val().trim(),
+                    TIPO_DEDUCCION: $('#TIPO_DEDUCCION').val().trim(),
+                    TipoPago: pago
+                }
+                $.ajax({
+                    url: '/CajaRapida/Aplicacion_Retiro',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database
+                        if (d.status == true) {
+
+                            Swal.fire({
+                                position: 'center',
+                                type: 'success',
+                                title: 'Préstamo',
+                                text: 'Se creo el préstamo No:' + d.NoPrestamo,
+                                showConfirmButton: true
+
+                            })
+
+                            $("#Ahorros").val(formatter_money.format(d.ahorro_s));
+                            $("#CantPrestamos").val(d.cant_prest);
+                            $("#MontoPrestamo").val(formatter_money.format(d.monto_prest));
+                            $("#CantPrestamosRes").val(d.cant_prest_rees);
+                            $("#MontoPrestamoRest").val(formatter_money.format(d.monto_prest_rees));
+                            $("#MontoaPrestar").val(formatter_money.format(d.monto_prestar));
+                            $("#disponibilidad40").val(formatter_money.format(d.total40));
+                            $("#intereses").val(formatter_money.format(d.interes));
+                            $("#total_solicitado").val(formatter_money.format(d.saldo_principal));
+                            //$("#cant_cuota").val(d.cant_cuota);
+                            $("#cuota").val(formatter_money.format(d.cuota));
+
+                            if (d.saldo_principal > 0) {
+                                window.open('/CajaRapida/FormatComprobanteCaja1?comprobante=' + d.NoPrestamo, '_blank');
+                                window.open('/CajaRapida/FormarComprobanteCajaRapida2?comprobante=' + d.NoPrestamo, '_blank');
+                                // window.location.href = '/Prestamos/FormatoAmortizacion?NoPrestamo=' + d.NoPrestamo;
+                            }
+                        }
+                        else {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: d.messageerror,
+                                footer: ''
+                            })
+                            $("#Ahorros").val('0');
+                            $("#CantPrestamos").val('0');
+                            $("#MontoPrestamo").val('0');
+                            $("#CantPrestamosRes").val('0');
+                            $("#MontoPrestamoRest").val('0');
+                            $("#MontoaPrestar").val('0');
+                            $("#disponibilidad40").val(formatter_money.format(d.total40));
+                        }
+                        $('#ModalAplicarRetiroAhorro').modal('hide');
+                    },
+                    error: function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Intente Nuevamente.',
+                            footer: ''
+                        })
+                        $('#submit').val('Evaluar');
+                        $("#Ahorros").val('0');
+                        $("#CantPrestamos").val('0');
+                        $("#MontoPrestamo").val('0');
+                        $("#CantPrestamosRes").val('0');
+                        $("#MontoPrestamoRest").val('0');
+                        $("#MontoaPrestar").val('0');
+                        $("#disponibilidad40").val(formatter_money.format(d.total40));
+                        $('#ModalAplicarRetiroAhorro').modal('hide');
+                    }
+                });
+            }
+            else {
+                Swal.fire({
+                    position: 'center',
+                    type: 'error',
+                    title: 'Digite el monto a retirar.',
+                    showConfirmButton: true
+
+                })
+            }
+        }
+        function CalcularRetiro() {
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'decimal',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            })
+            const formatter_money = new Intl.NumberFormat('en-US', {
+                style: 'decimal',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            })
+            var data = {
+                Socio: $('#Socio').val().trim(),
+                TipoPrestamo: $('#TipoPrestamo').val().trim(),
+                derecho: $('#derecho').val().trim(),
+                Salario: $('#Salario').val().trim(),
+                Cuota_Ahorro: $('#Cuota_Ahorro').val().trim(),
+                Monto_solicitado: $('#Monto_solicitado').val().trim(),
+                plazo: $('#plazo').val().trim(),
+                periodo: $('#periodo').val().trim(),
+                razon_fiador: $('#razon_fiador').val().trim(),
+                TIPO_DEDUCCION: $('#TIPO_DEDUCCION').val().trim(),
+                TipoPago: pago
+            }
+            $.ajax({
+                url: '/CajaRapida/Calcular_Retiro',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    //check is successfully save to database
+                    if (d.status == true) {
+
+                        //MensajeMontoRetiro
+                        //$("#Ahorros").val(formatter_money.format(d.ahorro_s));
+                        //$("#CantPrestamos").val(d.cant_prest);
+                        //$("#MontoPrestamo").val(formatter_money.format(d.monto_prest));
+                        //$("#CantPrestamosRes").val(d.cant_prest_rees);
+                        //$("#MontoPrestamoRest").val(formatter_money.format(d.monto_prest_rees));
+                        //$("#MontoaPrestar").val(formatter_money.format(d.monto_prestar));
+                        //$("#disponibilidad40").val(formatter_money.format(d.total40));
+                        //$("#intereses").val(formatter_money.format(d.interes));
+                        //$("#total_solicitado").val(formatter_money.format(d.saldo_principal));
+                        //$("#cant_cuota").val(d.cant_cuota);
+                        //$("#cuota").val(formatter_money.format(d.cuota));
+
+                        //if (d.saldo_principal > 0) {
+                        //    window.open('/CajaRapida/FormatComprobanteCaja1?comprobante=' + d.NoPrestamo, '_blank');
+                        //    window.open('/CajaRapida/FormarComprobanteCajaRapida2?comprobante=' + d.NoPrestamo, '_blank');
+                        //    // window.location.href = '/Prestamos/FormatoAmortizacion?NoPrestamo=' + d.NoPrestamo;
+                        //}
+                        var mensaje = '';
+                        $('#MensajeMontoRetiro').empty();
+                        var mensaje = 'El socio posee un total de ahorro de: <strong>' + formatter_money.format(d.ahorro_s) + '</strong>, teniendo  <strong>' + d.cant_prest + '</strong> prestamos. Por consiguiente tiene derecho de retirar el ';
+                        if (d.cant_prest == 0) {
+                            mensaje += '<strong>90%</strong> de sus ahorros';
+                        }
+                        else {
+                            mensaje += '<strong>25%</strong> de sus ahorros';
+                        }
+                        mensaje += ' sin sobre giro equivalente a <strong>' + formatter_money.format(d.amortizacion)+'</strong>'
+                        $('#MensajeMontoRetiro').append(mensaje);
+                        $('#ModalAplicarRetiroAhorro').modal('show');
+                        //console.log(formatter_money.format(d.amortizacion).replace(/,(?=.*\.\d+)/g, ''), d.amortizacion);
+                        $('#MontoRetirar').maskAsNumber({ decimal: true, min: 10, max: formatter_money.format(d.amortizacion).replace(/,(?=.*\.\d+)/g, '')});
+                    }
+                    else {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: d.messageerror,
+                            footer: ''
+                        })
+                        $("#Ahorros").val('0');
+                        $("#CantPrestamos").val('0');
+                        $("#MontoPrestamo").val('0');
+                        $("#CantPrestamosRes").val('0');
+                        $("#MontoPrestamoRest").val('0');
+                        $("#MontoaPrestar").val('0');
+                        $("#disponibilidad40").val(formatter_money.format(d.total40));
+                        $('#ModalAplicarRetiroAhorro').modal('hide');
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Intente Nuevamente.',
+                        footer: ''
+                    })
+                    $('#submit').val('Evaluar');
+                    $("#Ahorros").val('0');
+                    $("#CantPrestamos").val('0');
+                    $("#MontoPrestamo").val('0');
+                    $("#CantPrestamosRes").val('0');
+                    $("#MontoPrestamoRest").val('0');
+                    $("#MontoaPrestar").val('0');
+                    $("#disponibilidad40").val(formatter_money.format(d.total40));
+                    $('#ModalAplicarRetiroAhorro').modal('hide');
+                }
+            });
+        }
+
+        function RegistrarMembresiaPricesmart() {
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'decimal',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            })
+            const formatter_money = new Intl.NumberFormat('en-US', {
+                style: 'decimal',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            })
+
+            var isAllValid = true;
+      
+            if ($('#id_socio_pricesmart').val()=='' ) {
+                isAllValid = false;
+                $('#id_socio_pricesmart').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#id_socio_pricesmart').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if (isAllValid) {
+                var data = {
+                    Socio: $('#id_socio_pricesmart').val(),
+                    Cuota: $('#Cuota_pricesmart').val(),
+                    Monto: $('#Monto_pricesmart').val(),
+                    Razon: $('#razon_membresia').val(),
+                    Periodo: $('#Periodo_pricesmart').val()
+
+                }
+
+                $.ajax({
+                    url: '/CajaRapida/Calcular_MembresiaPricesmart',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database
+                        if (d.status == true) {
+                            //will send status from server side
+                            Swal.fire({
+                                position: 'center',
+                                type: 'success',
+                                title: 'Préstamo',
+                                text: 'Se creo el préstamo No:' + d.NoPrestamo,
+                                showConfirmButton: true
+
+                            }).then((result) => {
+                                if (result.value) {
+                                    window.open('/CajaRapida/FormatComprobanteCaja1?comprobante=' + d.NoPrestamo, '_blank');
+                                    window.open('/CajaRapida/FormarComprobanteCajaRapida2?comprobante=' + d.NoPrestamo, '_blank');
+
+                                }
+                            })
+
+                        }
+                        else {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: d.messageerror,
+                                footer: ''
+                            })
+
+                        }
+
+
+
+                        $('#ModalMembresiaPricesmart').modal('hide');
+                    },
+                    error: function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Intente Nuevamente.',
+                            footer: ''
+                        })
+                        
+                    }
+                });
+                
+            }
+            else {
+                Swal.fire({
+                    type: 'error',
+                    title: 'Error!',
+                    text: 'Debe de llenar todos los datos',
+                    footer: ''
+                });
+            }
+
+        }
+        function ValidarPricesmart() {
+            var isAllValid = true;
+          
+                $('#ModalMembresiaPricesmart').modal('show');
+        }
+
+        
+    </script>
+}
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+</style>
+

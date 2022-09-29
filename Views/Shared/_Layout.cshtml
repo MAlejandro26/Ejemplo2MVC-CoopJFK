@@ -1,0 +1,651 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Crédito - @ViewBag.Title</title>
+    <title>Cooperativa John F. Kennedy</title>
+
+    <link rel="icon" type="image/png" href="~/favicon.ico" />
+    <!-- Bootstrap Core CSS -->
+    <link href="~/Content/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Menu CSS -->
+    <link href="~/Content/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet" />
+    <!-- Animation CSS -->
+    <link href="~/Content/css/animate.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <!-- color CSS you can use different color css from css/colors folder -->
+    <!-- We have chosen the skin-blue (blue.css) for this starter
+              page. However, you can choose any other skin from folder css / colors .
+    -->
+    <link href="~/Content/css/colors/blue-dark.css" rel="stylesheet" />
+    @*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+    <!-- jQuery -->
+    @*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+    <script src="~/Content/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Content/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Menu Plugin JavaScript -->
+    <script src="~/Content/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
+    <!--slimscroll JavaScript -->
+    <script src="~/Content/js/jquery.slimscroll.js"></script>
+    <!--Wave Effects -->
+    <script src="~/Content/js/waves.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="~/Content/js/custom.min.js"></script>
+    <script src="~/Scripts/sweetalert2.all.min.js"></script>
+    @Html.DevExpress().GetStyleSheets(
+                                                    new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+                                                    new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+                                                    new StyleSheet { ExtensionSuite = ExtensionSuite.Report },
+                                                    new StyleSheet { ExtensionSuite = ExtensionSuite.GridView }
+                                                )
+
+
+    @Html.DevExpress().GetScripts(
+                                                 new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+                                                 new Script { ExtensionSuite = ExtensionSuite.Editors },
+                                                 new Script { ExtensionSuite = ExtensionSuite.Report },
+                                               new Script { ExtensionSuite = ExtensionSuite.GridView }
+                                            )
+
+</head>
+
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top m-b-0" style="padding: 0px">
+            <div class="navbar-header">
+                <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse"><i class="fa fa-bars"></i></a>
+                <div class="top-left-part"><a class="logo" href="../Home/Index"><b>Coop.</b><span class="hidden-xs" />JFK</a></div>
+                @Html.Partial("_LoginPartial")
+            </div>
+            <!-- /.navbar-header -->
+            <!-- /.navbar-top-links -->
+            <!-- /.navbar-static-side -->
+        </nav>
+        <!-- Left navbar-header -->
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse slimscrollsidebar">
+                <ul class="nav menu" id="side-menu">
+                    <li style="padding: 10px 0 0;">
+                        <a href="../Home/Index" class="waves-effect"><i class="fa fa-home fa-fw" aria-hidden="true"></i><span class="hide-menu">Inicio</span></a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                            <span class="pcoded-mtext"><i class="fa fa-user fa-fw" aria-hidden="true"></i>Afiliación<i style="float:right" class="derecha fa fa-chevron-down"></i></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="">
+                                <a href="~/Personas/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Socios</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Beneficiarios/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Beneficiarios</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Personas/FormatoAfiliacion/" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Formato de Afiliación</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Personas/FormatoAutorizacion/" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Formato Aceptación para afiliarse y pago de Aportación</span>
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                            <span class="pcoded-mtext"><i class="fa fa-legal fa-fw" aria-hidden="true"></i>Préstamo<i style="float:right" class="derecha fa fa-chevron-down"></i></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="">
+                                <a href="~/Prestamo_Solicitud/Disponibilidad_Credito" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Análisis de Crédito</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="~/Prestamo_Solicitud/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Solicitudes</span>
+                                </a>
+                            </li>
+
+                            <li class="">
+                                <a href="~/APROBACION/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Aprobaciones</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Prestamos/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Formalización</span>
+                                </a>
+                            </li>
+
+                            <li class="">
+                                <a href="~/Prestamos/Desembolso" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Desembolso</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Personas/Liquidacion/" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Liquidación</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Prestamo_Solicitud/FormatoSolicitud" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Formato de Solicitud</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Prestamos/Reestructuracion" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Reestructuración</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Prestamos/Estado_Cuenta" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Estado de Cuenta</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Prestamos/FormatoElaboracionDoctoLegal" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Formato Elaboración Documento Legal</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/APROBACION/FormatoAprobacionComite" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Formato Comentario Aprobacion del Comite</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/APROBACION/FormatoAprobacionConsejo" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Formato Comentario Aprobacion del Consejo</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                            <span class="pcoded-mtext"><i class="fa fa-dollar fa-fw" aria-hidden="true"></i>Caja<i style="float:right" class="derecha fa fa-chevron-down"></i></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="active">
+                                <a href="~/Caja/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Abono</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Caja/Caja_Historial" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Historial</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Arqueo/Transaccion" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Arqueo</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Arqueo/Detalle_Efectivo" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Detalle de Efectivo</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Arqueo/DetalleEfectivoDolar" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Reporte Efectivo Entregado por comprobante compra y venta Dolar</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Arqueo/DetalleEfectivoCordoba" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Reporte Efectivo Entregado por comprobante compra y venta Cordoba</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                            <span class="pcoded-mtext"><i class="fa fa-credit-card-alt fa-fw" aria-hidden="true"></i>Caja Rapidas<i style="float:right" class="derecha fa fa-chevron-down"></i></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="active">
+                                <a href="~/CajaRapida/Consulta" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Consulta</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="~/CajaRapida/rptDetalleDeduccionesCajaRapida" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Reporte Detalle de deducciones Caja Rapida</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                            <span class="pcoded-mtext"><i class="fa fa-money fa-fw" aria-hidden="true"></i>Ahorro<i style="float:right" class="derecha fa fa-chevron-down"></i></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="active">
+                                <a href="~/Ahorro/Consulta_Ahorro" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Consulta</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Ahorro/RetiroAhorro" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Retiro de Ahorro via Cheque</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Ahorro/AplicacionAhorroPtmo" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Aplicación de Ahorro a Ptmo</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Ahorro/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Historial</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Ahorro/FormatoCambioCuotaConsejo" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Formato Cambio Cuota-Consejo</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Ahorro/FormatoCambioCuotaComite" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Formato Cambio Cuota-Comite</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Ahorro/FormatAplicacionConsejo" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Formato Aplicació Ahorro-Consejo</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Ahorro/FormatAplicacionComite" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Formato Aplicación Ahorro-Comite</span>
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                            <span class="pcoded-mtext"><i class="fa fa-money fa-fw" aria-hidden="true"></i>Aportaciones<i style="float:right" class="derecha fa fa-chevron-down"></i></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="active">
+                                <a href="~/Aportacion/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Generar aportaciones (Nuevos socios)</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="~/Aportacion/GenerarSociosGeneral" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Generar aportaciones para todos los Socios</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Aportacion/Historial_Aportaciones" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Historial</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Aportacion/FormatPagoAportacion" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Formato Pago Aportación</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Aportacion/Socios" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Datos del Socio</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Ayuda Funeraria -->
+                    <li>
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                            <span class="pcoded-mtext"><i class="fa fa fa-handshake-o" aria-hidden="true"></i>Ayuda Funeraria<i style="float:right" class="derecha fa fa-chevron-down"></i></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="active">
+                                <a href="~/AFUNERAL/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Consulta</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/AFUNERAL/Create" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Generar</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/AFUNERAL/V_FormatoAyuda" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Formato Entrega</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li><!-- Fin Ayuda Funeraria -->
+                    <li>
+                        <a href="~/Planilla/Planilla" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                            <span class="pcoded-mtext"><i class="fa fa-clipboard fa-fw" aria-hidden="true"></i>Planilla</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                            <span class="pcoded-mtext"><i class="fa fa-th fa-fw" aria-hidden="true"></i>Catálogos<i style="float:right" class="derecha fa fa-chevron-down"></i></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+
+                            <li class="">
+                                <a href="~/Agencia/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Agencias</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Tipo_Pago/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Tipo de Pago</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/TRANSACCION_CAJA/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Transaccion de Caja</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Parentesco/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Parentesco</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Tipo_Beneficiario/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Tipo de Beneficiario</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Tipo_Fondo/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Tipo de Fondo</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Tipo_Moneda/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Tipo de Moneda</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Tipo_Prestamo/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Tipo de Prestamo</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Referencia_Prestamo/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Referencias de Prestamo</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/DEPARTAMENTO/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Departamento</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/MUNICIPIO/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Municipio</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Profesions/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Profesiones</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                            <span class="pcoded-mtext"><i class="fa fa-clipboard fa-fw" aria-hidden="true"></i>Reportes<i style="float:right" class="derecha fa fa-chevron-down"></i></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="active">
+                                <a href="~/Aportacion/FormatAyudaVoluntaria" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Formato de Ayuda Voluntaria</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="~/Personas/BitacoraSociosRetirados" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Bitácora de Socios Retirados</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="~/Personas/ListaSociosGenerales" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Lista de Socio con sus generales</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="~/Personas/BeneficiariosAll" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Reporte de Beneficiarios</span>
+                                </a>
+                            </li>
+                            @*<li class="active">
+                                    <a href="~/Beneficiarios/BeneficiariosPorSocio" class="waves-effect waves-dark">
+                                        <span class="pcoded-mtext">Reporte de Beneficiarios por Socio</span>
+                                    </a>
+                                </li>*@
+                            <li class="active">
+                                <a href="~/AFUNERAL/Reporte" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Reportes Ayuda Funeral </span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="~/Caja/rptPagoAfilicacion" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Reporte de Pago de Afiliación</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="~/Aportacion/Saldos_Aportaciones" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Reporte de asociados con saldo de aportaciones</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="~/Aportacion/Retiro_Aportaciones" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Reporte de retiro de aportaciones</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="~/Ahorro/rptAsociadosSaldosAhorro" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Reporte de asociados con saldo de ahorro</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="~/Ahorro/rptRetiroAhorro" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Reporte retiro de ahorro</span>
+                                </a>
+                            </li>
+
+                            <li class="active">
+                                <a href="~/Prestamos/Reporte" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Reportes Cartera y Crédito</span>
+                                </a>
+                            </li>
+
+
+
+                            <li class="active">
+                                <a href="~/Planilla/Planilla_Por_Agencia" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Reporte de planilla deduccion por Agencia</span>
+                                </a>
+                            </li>
+
+
+
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                            <span class="pcoded-mtext"><i class="fa fa-briefcase fa-fw" aria-hidden="true"></i>Administración<i style="float:right" class="derecha fa fa-chevron-down"></i></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="active">
+                                <a href="~/Prestamo_config/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Prestamo Configuracion</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="~/TipoCambio/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Tipo de Cambio</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Periodo/Index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Periodos de Pago</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Personal/PersonalEditar" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Configurar Personal</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Revalorizacion/Revalorizacion" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Revalorización</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                            <span class="pcoded-mtext"><i class="fa fa-user-secret fa-fw" aria-hidden="true"></i>Acceso<i style="float:right" class="derecha fa fa-chevron-down"></i></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="active">
+                                <a href="~/Users/Users" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Usuarios</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Role/index" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Roles</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                            <span class="pcoded-mtext"><i class="fa fa-reply-all fa-fw" aria-hidden="true"></i>Excedentes<i style="float:right" class="derecha fa fa-chevron-down"></i></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="active">
+                                <a href="~/Cierre/Excedente" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Excedentes</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Cierre/rptExcedente" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Historial</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                            <span class="pcoded-mtext"><i class="fa fa-reply fa-fw" aria-hidden="true"></i>Bono Educativo<i style="float:right" class="derecha fa fa-chevron-down"></i></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="active">
+                                <a href="~/Cierre/Bono_Educativo" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Bono Educativo</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="~/Cierre/rptBonoEducativo" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Historial</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                </ul>
+
+            </div>
+        </div>
+        <!-- Left navbar-header end -->
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid" style="min-height:900px !important">
+                @RenderBody()
+            </div>
+            <!-- /.container-fluid -->
+            <footer class="footer text-center"> <a href="http://corpsoftsa.com/cswp/">Corpsoft S.A.</a>  &copy; @DateTime.Now.Year - Cooperativa John F. Kennedy</footer>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    @RenderSection("scripts", required: false)
+    <script>
+        $(document).ready(function () {
+            $('.menu li ul').slideUp();
+
+            $('.menu li:has(ul)').click(function (e) {
+                e.preventDefault();
+
+                if ($(this).hasClass('activado')) {
+                    $(this).removeClass('activado');
+                    $(this).children('ul').slideUp();
+                } else {
+                    $('.menu li ul').slideUp();
+                    $('.menu li').removeClass('activado');
+                    $(this).addClass('activado');
+                    $(this).children('ul').slideDown();
+                }
+            });
+
+            $('.btn-menu').click(function () {
+                $('.contenedor-menu .menu').slideToggle();
+            });
+
+            $(window).resize(function () {
+                if ($(document).width() > 450) {
+                    $('.contenedor-menu .menu').css({ 'display': 'block' });
+                }
+
+                if ($(document).width() < 450) {
+                    $('.contenedor-menu .menu').css({ 'display': 'none' });
+                    $('.menu li ul').slideUp();
+                    $('.menu li').removeClass('activado');
+                }
+            });
+
+            $('.menu li ul li a').click(function () {
+                window.location.href = $(this).attr("href");
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+﻿@model IEnumerable<CoopJFK.Models.APORTACION>
+@{
+    ViewBag.Title = "Aportaciones";
+}
+@*<link href="~/Content/dx.common.css" rel="stylesheet" />
+    <link href="~/Content/dx.light.css" rel="stylesheet"/>*@ 
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Aportaciones</li>
+            <li class="active">Aportaciones</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            @*<p>
+                    <a class="btn btn-info" href="@Url.Action("Create","Periodo")">Crear Periodo</a>
+
+                </p>*@
+            <hr />
+
+            <div id="gridAportaciones"></div>
+        </div>
+    </div>
+</div>
+
+@*<script src="~/Scripts/dx.all.js"></script>*@
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            CargarGrid();
+
+        });
+
+        function CargarGrid() {
+
+            $.ajax({
+                url: "/Aportacion/GetAportaciones",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    var fillData = data.aportacion;
+                    var dataGrid = $("#gridAportaciones").dxDataGrid({
+                        filterRow: { visible: false },
+                        dataSource: fillData,
+
+                        keyExpr: "ID",
+                        sorting: {
+                            mode: "multiple"
+                        },
+                        editing: {
+                            mode: "popup",
+                            allowUpdating: false,
+                            allowDeleting: false,
+                            allowAdding: false,
+
+                        },
+                        paging: {
+                            pageSize: 30
+                        },
+                        pager: {
+                            showPageSizeSelector: true,
+                            allowedPageSizes: [10, 20, 50],
+                            showInfo: true
+                        },
+                        filterRow: {
+                            visible: true
+                        },
+                        searchPanel: {
+                            visible: true,
+                            width: 340,
+                            placeholder: "Search..."
+                        },
+                        loadPanel: {
+                            enabled: true
+                        },
+                        showBorders: true,
+                        columns: [
+                            {
+                                dataField: "SOCIO",
+                                caption: "No. Socio",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "NO_EMPLEADO",
+                                caption: "No. Empleado",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "NOMBRES",
+                                caption: "Nombres y apellidos",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "FECHA_INGRESO",
+                                caption: "Fecha de Ingreso",
+                                dataType: "date",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "PERIODO_INGRESO",
+                                caption: "Periodo de Ingreso",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "TIPO_DEDUCCION",
+                                caption: "Deducción",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "ANIO",
+                                caption: "Año",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "ESTADO",
+                                caption: "Estado",
+                                alignment: "center"
+                            },
+                            {
+                                alignment: "center",
+                                cellTemplate: function (container, cellInfo) {
+                                    $("<a>", { "class": "btn btn-info", "href": "Aportaciones?aportacion=" + cellInfo.data.ID, "text": "Aportaciones" }).appendTo(container);
+
+                                }
+                            }
+                        ]
+
+                    }).dxDataGrid("instance");
+                }, error: function (xhr, status, error) {
+                    alert(status);
+                }
+            });
+
+        }
+
+    </script>
+
+
+}

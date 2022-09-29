@@ -1,0 +1,325 @@
+﻿@model CoopJFK.Models.BENEFICIARIOS
+
+@{
+    ViewBag.Title = "Editar Beneficiario";
+}
+
+
+@*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+<script src="~/Scripts/gijgo/combined/gijgo.min.js"></script>
+<link href="~/Content/gijgo/combined/gijgo.min.css" rel="stylesheet" />
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Afiliación</li>
+            <li class="active">Socios-Beneficiarios</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+@*<div class="container">
+    <div class="row">*@
+@*<div class="col-md-12">*@
+<div class="white-box">
+    @using (Html.BeginForm())
+    {
+
+        <div class="form-horizontal">
+            <h4>Beneficiarios</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @Html.HiddenFor(model => model.FECHA_CREACION)
+            @Html.HiddenFor(model => model.USUARIO_CREACION)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ID, "Id", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                    @Html.ValidationMessageFor(model => model.ID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SOCIO, "Socio", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownList("SOCIO", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SOCIO, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.CEDULA,"No. Cédula", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.CEDULA, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CEDULA, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.NOMBRE,"Nombre", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.NOMBRE, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.NOMBRE, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.PARENTESCO, "Parentesco", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownList("PARENTESCO", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.PARENTESCO, "", new { @class = "text-danger" })
+                    <span class="error">El Parentesco es requerido</span>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.TIPO_BENEFICIARIO, "Tipo de Beneficiario", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownList("TIPO_BENEFICIARIO", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TIPO_BENEFICIARIO, "", new { @class = "text-danger" })
+                    <span class="error">El tipo de beneficiario es requerido</span>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.FECHA_NACIMIENTO,"Fecha de Nacimiento", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    <input type="text" id="FECHA_NACIMIENTO" />
+                    <script>
+                        var hoy = new Date().toLocaleTimeString();
+                        $('#FECHA_NACIMIENTO').datepicker({
+                            uiLibrary: 'bootstrap', format: 'dd/mm/yyyy'
+                        });
+                    </script>
+
+                    @Html.ValidationMessageFor(model => model.FECHA_NACIMIENTO, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DIRECCION,"Dirección", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.DIRECCION, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DIRECCION, "", new { @class = "text-danger" })
+                    <span class="error">La direccion es requerido</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PORCENTAJE,"Porcentaje", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.PORCENTAJE, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PORCENTAJE, "", new { @class = "text-danger" })
+                    <span class="error">El porcentaje es requerido</span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-4 col-md-10">
+                    <input id="submit" type="button" value="Guardar" style="padding:5px 15px" class="btn btn-info" />|@Html.ActionLink("Atrás", "BeneficiarioSocio", new { id = Request.Params["id"] }, new { @class = "btn btn-primary" })
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+   
+
+    <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+
+    @section Scripts {
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        @*<script src="//code.jquery.com/jquery-1.12.4.js"></script>*@
+        @*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                //Save button click function
+                $('#submit').click(function () {
+                    //validation of order
+                    var isAllValid = true;
+
+                    if ($('#SOCIO').val().trim() == '') {
+                        isValidItem = false;
+                        $('#SOCIO').siblings('span.error').css('visibility', 'visible');
+                    }
+                    else {
+                        $('#SOCIO').siblings('span.error').css('visibility', 'hidden');
+                    }
+
+                    if ($('#NOMBRE').val().trim() == '') {
+                        isValidItem = false;
+                        $('#NOMBRE').siblings('span.error').css('visibility', 'visible');
+                    }
+                    else {
+                        $('#NOMBRE').siblings('span.error').css('visibility', 'hidden');
+                    }
+
+                    if ($('#PARENTESCO').val().trim() == '') {
+                        isValidItem = false;
+                        $('#PARENTESCO').siblings('span.error').css('visibility', 'visible');
+                    }
+                    else {
+                        $('#PARENTESCO').siblings('span.error').css('visibility', 'hidden');
+                    }
+
+                    if ($('#TIPO_BENEFICIARIO').val().trim() == '') {
+                        isValidItem = false;
+                        $('#TIPO_BENEFICIARIO').siblings('span.error').css('visibility', 'visible');
+                    }
+                    else {
+                        $('#TIPO_BENEFICIARIO').siblings('span.error').css('visibility', 'hidden');
+                    }
+
+                    if ($('#DIRECCION').val().trim() == '') {
+                        isValidItem = false;
+                        $('#DIRECCION').siblings('span.error').css('visibility', 'visible');
+                    }
+                    else {
+                        $('#DIRECCION').siblings('span.error').css('visibility', 'hidden');
+                    }
+
+                    if ($('#PORCENTAJE').val().trim() == '') {
+                        isValidItem = false;
+                        $('#PORCENTAJE').siblings('span.error').css('visibility', 'visible');
+                    }
+                    else {
+                        $('#PORCENTAJE').siblings('span.error').css('visibility', 'hidden');
+                    }
+
+
+                    //Save if valid
+                    if (isAllValid) {
+                        var data = {
+                            ID: $('#ID').val().trim(),
+                            CEDULA: $('#CEDULA').val().trim(),
+                            NOMBRE: $('#NOMBRE').val().trim(),
+                            TIPO_BENEFICIARIO: $('#TIPO_BENEFICIARIO').val().trim(),
+                            FECHA_NACIMIENTO: $('#FECHA_NACIMIENTO').val().trim(),
+                            DIRECCION: $('#DIRECCION').val().trim(),
+                            PARENTESCO: $('#PARENTESCO').val().trim(),
+                            PORCENTAJE: $('#PORCENTAJE').val().trim(),
+                            SOCIO: $('#SOCIO').val().trim(),
+                            FECHA_CREACION: $('#FECHA_CREACION').val().trim(),
+                            USUARIO_CREACION: $('#USUARIO_CREACION').val().trim()
+
+                        }
+
+                        $(this).val('Procesando...');
+                        $.ajax({
+                            url: '/Beneficiarios/Edit',
+                            type: "POST",
+                            data: JSON.stringify(data),
+                            dataType: "JSON",
+                            contentType: "application/json",
+                            success: function (d) {
+                                //check is successfully save to database
+                                if (d.status == true) {
+                                    //will send status from server side
+                                    Swal.fire({
+                                        position: 'center',
+                                        type: 'success',
+                                        title: 'Se modifico el beneficiario',
+                                        showConfirmButton: true
+
+                                    }).then((result) => {
+                                        if (result.value) {
+                                            window.location.href = '/Beneficiarios/BeneficiarioSocio?id=' + d.id_socio;
+
+                                        }
+                                    })
+                                    //alert('Se guardaron los datos.');
+
+                                    ////clear form
+                                    //SocioItems = [];
+                                    //$('#orderNo').val('');
+                                    //$('#orderDate').val('');
+                                    //$('#orderItems').empty();
+                                }
+                                else {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: d.messageerror,
+                                        footer: ''
+                                    })
+
+                                }
+                                $('#submit').val('Guardar');
+                            },
+                            error: function () {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: 'Intente Nuevamente.',
+                                    footer: ''
+                                })
+                                //alert('Error. Intente Nuevamente.');
+                                $('#submit').val('Guardar');
+                            }
+                        });
+
+                    }
+
+                });
+
+            });
+        </script>
+    }
+    <style>
+        table.space {
+            border: 0px solid black;
+            border-spacing: 8px 2px;
+            border-collapse: separate;
+            margin: auto;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center; /* center horizontally */
+            align-items: center; /* center vertically */
+        }
+
+        .box {
+            margin: 0 auto;
+        }
+        /*Adding some css for looks good*/
+        span.error {
+            display: block;
+            visibility: hidden;
+            color: red;
+            font-size: 90%;
+        }
+
+
+        /*css for table*/
+        .container td {
+            vertical-align: top;
+        }
+
+        .tablecontainer table {
+            width: 80%;
+            border-collapse: collapse;
+            border-top: 1px solid #BFAEAE;
+            border-right: 1px solid #BFAEAE;
+            margin: auto;
+        }
+
+        .tablecontainer th {
+            border-bottom: 2px solid #BFAEAE !important;
+        }
+
+        .tablecontainer th, .tablecontainer td {
+            text-align: left;
+            border-left: 1px solid #BFAEAE;
+            padding: 5px;
+            border-bottom: 1px solid #BFAEAE;
+        }
+
+        .ui-widget {
+            font-size: 12px !important;
+        }
+    </style>

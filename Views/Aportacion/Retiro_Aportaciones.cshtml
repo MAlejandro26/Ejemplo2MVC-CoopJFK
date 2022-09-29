@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "Retiro_Aportaciones";
+}
+
+<h2>Reporte de Retiro de Aportaciones</h2>
+
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+
+@Html.DevExpress().WebDocumentViewer(settings => {
+    settings.Name = "ViewRetiroAportaciones";
+}).Bind(new rptRetiroAportaciones()).GetHtml()

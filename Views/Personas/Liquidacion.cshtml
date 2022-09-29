@@ -1,0 +1,370 @@
+﻿@model CoopJFK.Models.ViewModels.LiquidarViewModel
+
+@{
+    ViewBag.Title = "Liquidar Socio";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/gijgo/combined/gijgo.min.js"></script>
+<link href="~/Content/gijgo/combined/gijgo.min.css" rel="stylesheet" />
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title"></h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Socio</li>
+            <li class="active">Lliquidación</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <div class="master">
+                    
+                    @using (Html.BeginForm())
+                    {
+                        <div class="form-horizontal">
+                            <h4>Crear Liquidación</h4>
+                            <hr />
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SOCIO, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.SOCIO, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                                    @Html.ValidationMessageFor(model => model.SOCIO, "", new { @class = "text-danger" })
+                                    <span class="error">El socio es obligatorio</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.NO_EMPLEADO, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.NO_EMPLEADO, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                                    @Html.ValidationMessageFor(model => model.NO_EMPLEADO, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CEDULA, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.CEDULA, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                                    @Html.ValidationMessageFor(model => model.CEDULA, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.NOMBRES, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(model => model.NOMBRES, new { @class = "form-control", placeholder = "Escriba el nombre de un socio", id = "NOMBRES" })
+                                    @Html.ValidationMessageFor(model => model.NOMBRES, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ULTIMO_PP, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.ULTIMO_PP, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ULTIMO_PP, "", new { @class = "text-danger" })
+                                    <span class="error">El último Periodo de Pago es obligatorio</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FECHA_ULTIMOPP, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                <div class="col-md-6">
+                                    <input type="text" id="FECHA_ULTIMOPP" />
+                                    <script>
+                                        var hoy = new Date().toLocaleTimeString();
+                                        $('#FECHA_ULTIMOPP').datepicker({
+                                            uiLibrary: 'bootstrap', format: 'yyyy-mm-dd'
+                                        });
+                                    </script>
+
+                                    <span class="error">La fecha de último Periodo de Pago es obligatorio</span>
+                                </div>
+
+
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FECHA_BAJA, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                <div class="col-md-6">
+                                    <input type="text" id="FECHA_BAJA" />
+                                    <span class="error">La fecha de baja es obligatorio</span>
+                                    <script>
+                                        var hoy = new Date().toLocaleTimeString();
+                                        $('#FECHA_BAJA').datepicker({
+                                            uiLibrary: 'bootstrap', format: 'yyyy-mm-dd'
+                                        });
+                                    </script>
+
+
+                                </div>
+
+
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MOTIVO_BAJA, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.MOTIVO_BAJA, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.MOTIVO_BAJA, "", new { @class = "text-danger" })
+                                    <span class="error">El motivo de la baja es obligatorio</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FECHA_RECUEPRACION, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.FECHA_RECUEPRACION, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FECHA_RECUEPRACION, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DOCTO_LEGAL, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.DOCTO_LEGAL, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DOCTO_LEGAL, "", new { @class = "text-danger" })
+                                    <span class="error">El pago del documento legal es obligatorio</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.NOTA_CREDITO, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.NOTA_CREDITO, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DOCTO_LEGAL, "", new { @class = "text-danger" })
+                                    <span class="error">N/C es obligatorio</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input id="Generar" type="button" value="Generar" class="btn btn-info" />  | <a class="btn btn-success" href="@Url.Action("Liquidacion_Aplicacion","Personas")">Aplicaciones</a> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-warning" })
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+@section Scripts{
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+            var pago
+            $("#NOMBRES").autocomplete({
+                dataType: 'JSON',
+                source: function (request, response) {
+                    jQuery.ajax({
+                        url: "/Personas/BuscarSocio",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            nombre: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    id: item.Id,
+                                    value: item.Name,
+                                    cedula: item.Cedula,
+                                    empleado: item.Empleado,
+                                    cuota: item.Cuota,
+                                    salario: item.Salario,
+                                    tipo_pago: item.Tipo_Pago
+                                }
+                            }))
+                        }
+                    })
+                },
+                select: function (e, ui) {
+                    $("#SOCIO").val(ui.item.id);
+                    $("#NO_EMPLEADO").val(ui.item.empleado);
+                    $("#CEDULA").val(ui.item.cedula);
+                    pago = ui.item.tipo_pago;
+                }
+            });
+
+
+          
+                $('#Generar').click(function () {
+                    //validation of order
+                    var isAllValid = true;
+                   
+                    if ($('#SOCIO').val().trim() == '') {
+                        isAllValid = false;
+                        $('#SOCIO').siblings('span.error').css('visibility', 'visible');
+                    }
+                    else {
+                        $('#SOCIO').siblings('span.error').css('visibility', 'hidden');
+                    }
+
+                    if ($('#FECHA_BAJA').val().trim() == '') {
+                        isAllValid = false;
+                        alert('La fecha de baja es Obligatorio');
+                        $('#FECHA_BAJA').siblings('span.error').css('visibility', 'visible');
+                    }
+                    else {
+                        $('#FECHA_BAJA').siblings('span.error').css('visibility', 'hidden');
+                    }
+
+                    if ($('#MOTIVO_BAJA').val().trim() == '') {
+                        isAllValid = false;
+                        $('#MOTIVO_BAJA').siblings('span.error').css('visibility', 'visible');
+                    }
+                    else {
+                        $('#MOTIVO_BAJA').siblings('span.error').css('visibility', 'hidden');
+                    }
+
+                    if ($('#ULTIMO_PP').val().trim() == '') {
+                        isAllValid = false;
+                        $('#ULTIMO_PP').siblings('span.error').css('visibility', 'visible');
+                    }
+                    else {
+                        $('#ULTIMO_PP').siblings('span.error').css('visibility', 'hidden');
+                    }
+
+                    if ($('#DOCTO_LEGAL').val().trim() == '') {
+                        isAllValid = false;
+                        $('#DOCTO_LEGAL').siblings('span.error').css('visibility', 'visible');
+                    }
+                    else {
+                        $('#DOCTO_LEGAL').siblings('span.error').css('visibility', 'hidden');
+                    }
+
+                    if ($('#NOTA_CREDITO').val().trim() == '') {
+                        isAllValid = false;
+                        $('#NOTA_CREDITO').siblings('span.error').css('visibility', 'visible');
+                    }
+                    else {
+                        $('#NOTA_CREDITO').siblings('span.error').css('visibility', 'hidden');
+                    }
+
+                    if ($('#FECHA_ULTIMOPP').val().trim() == '') {
+                        isAllValid = false;
+                        alert('La fecha del último periodo de pago es Obligatorio');
+                        $('#FECHA_ULTIMOPP').siblings('span.error').css('visibility', 'visible');
+                    }
+                    else {
+                        $('#FECHA_ULTIMOPP').siblings('span.error').css('visibility', 'hidden');
+                    }
+
+                   
+                    //Save if valid
+                    if (isAllValid) {
+                        var data = {
+                            SOCIO:$('#SOCIO').val().trim(),
+                            NO_EMPLEADO:$('#NO_EMPLEADO').val().trim(),
+                            TIPO_PAGO:pago,
+                            FECHA_BAJA:$('#FECHA_BAJA').val().trim(),
+                            MOTIVO_BAJA:$('#MOTIVO_BAJA').val().trim(),
+                            ULTIMO_PP:$('#ULTIMO_PP').val().trim(),
+                            DOCTO_LEGAL:$('#DOCTO_LEGAL').val().trim(),
+                            NOTA_CREDITO:$('#NOTA_CREDITO').val().trim(),
+                            FECHA_RECUEPRACION:$('#FECHA_RECUEPRACION').val().trim(),
+                            FECHA_ULTIMOPP:$('#FECHA_ULTIMOPP').val().trim()
+                        }
+
+                        $(this).val('Procesando...');
+
+                        $.ajax({
+                            url: '/Personas/Generar',
+                            type: "POST",
+                            data: JSON.stringify(data),
+                            dataType: "JSON",
+                            contentType: "application/json",
+                            success: function (d) {
+                                //check is successfully save to database
+                                if (d.status == true) {
+                                    //will send status from server side
+                                    Swal.fire({
+                                        position: 'center',
+                                        type: 'success',
+                                        title: 'Se genero la liquidación para el socio:' + $('#SOCIO').val().trim() ,
+                                        showConfirmButton: true
+
+                                    })
+
+
+
+                                }
+                                else {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: d.messageerror,
+                                        footer: ''
+                                    })
+
+                                }
+                                $('#Generar').val('Generar');
+                            },
+                            error: function () {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: 'Intente Nuevamente.',
+                                    footer: ''
+                                })
+                                //alert('Error. Intente Nuevamente.');
+                                $('#Generar').val('Generar');
+                            }
+                        });
+                    }
+
+                });
+        })
+    </script>
+}
+    <style>
+        /*Adding some css for looks good*/
+        span.error {
+            display: block;
+            visibility: hidden;
+            color: red;
+            font-size: 90%;
+        }
+
+
+        /*css for table*/
+        .container td {
+            vertical-align: top;
+        }
+
+        .tablecontainer table {
+            width: 80%;
+            border-collapse: collapse;
+            border-top: 1px solid #BFAEAE;
+            border-right: 1px solid #BFAEAE;
+            margin: auto;
+        }
+
+        .tablecontainer th {
+            border-bottom: 2px solid #BFAEAE !important;
+        }
+
+        .tablecontainer th, .tablecontainer td {
+            text-align: left;
+            border-left: 1px solid #BFAEAE;
+            padding: 5px;
+            border-bottom: 1px solid #BFAEAE;
+        }
+
+        .ui-widget {
+            font-size: 12px !important;
+        }
+
+        table.space {
+            border: 0px solid black;
+            border-spacing: 8px 2px;
+            border-collapse: separate;
+            margin: auto;
+        }
+    </style>

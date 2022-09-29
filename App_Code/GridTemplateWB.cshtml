@@ -1,0 +1,21 @@
+﻿@helper GridMVCTemplate(string entity)
+    {
+        <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+        <link href="../Content/DataTables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+        @*<script type="text/javascript" src="~/Scripts/jquery-3.3.1.js"></script>*@
+        <script type="text/javascript" language="javascript" src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" language="javascript" src="~/Scripts/DataTables/responsive.bootstrap4.min.js"></script>
+
+        <script src="~/Scripts/pdfmake.min.js"></script>
+        <script src="~/Scripts/vfs_fonts.js"></script>
+
+        <script type="text/javascript">
+            /* Table initialisation */
+            $(document).ready(function () {
+                var table = $('#jqueryTable').DataTable();
+            });
+        </script>
+
+
+}

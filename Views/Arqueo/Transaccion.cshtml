@@ -1,0 +1,157 @@
+﻿@model CoopJFK.Models.ViewModels.Hist_CajaViewModels
+@{
+    ViewBag.Title = "Arqueo de Caja";
+}
+
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Caja</li>
+            <li class="active">Arqueo</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container">
+    <div class="row">
+        @*<div class="col-md-12">*@
+        <div class="white-box">
+            @using (Html.BeginForm())
+            {
+            <div class="form-horizontal">
+                <div class="form-group">
+
+                    <div class="col-md-6">
+                        @Html.Label("Transacción")
+                        @Html.DropDownList("TRANSACCION", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                        <span class="error">La transacción es requerida</span>
+
+                    </div>
+                    
+
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        @Html.Label("Fecha")
+
+                        @Html.EditorFor(model => model.Desde, "{0:dd/MM/yyyy}")
+
+                        @*<input type="text" placeholder="" data-mask="99/9999" class="form-control" id="PpInicio">*@
+                        <span class="error">La fecha es Obligatorio</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.Label(" ")
+                        <input id="submit" type="button" value="Arqueo" style="padding:5px 15px" class="btn btn-info" />|  @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+
+
+            }
+        </div>
+
+
+        @*</div>*@
+
+    </div>
+</div>
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+@section scripts{
+    <script src="~/Scripts/jquery-ui.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            //Save button click function
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+
+                if ($('#TRANSACCION').val().trim() == '') {
+                    isAllValid = false;
+                    $('#TRANSACCION').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#TRANSACCION').siblings('span.error').css('visibility', 'hidden');
+                }
+                if ($('#Desde').val().trim() == '') {
+                    isAllValid = false;
+                    $('#Desde').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#Desde').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                if (isAllValid) {
+                    var data = {
+                        transaccion: $('#TRANSACCION').val().trim(),
+                        fechatransact: $('#Desde').val().trim()
+
+
+                    }
+                    window.location.href = '/Arqueo/Arqueo?transaccion=' + $('#TRANSACCION').val().trim() + '&fechatransact=' + $('#Desde').val().trim();
+                }
+
+            });
+
+        });
+    </script>
+
+}
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>

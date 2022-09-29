@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "ListaSociosGenerales";
+}
+
+<h2>ListaSociosGenerales</h2>
+
+
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+
+@Html.DevExpress().WebDocumentViewer(settings => {
+    settings.Name = "WebDocumentViewer7";
+}).Bind(new ListaSociosGenerales()).GetHtml()

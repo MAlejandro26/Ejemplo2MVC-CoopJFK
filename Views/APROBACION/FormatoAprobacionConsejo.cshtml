@@ -1,0 +1,15 @@
+﻿@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+@{
+    ViewBag.Title = "Formato Comentario de Aprobacion por parte del Consejo Administrativo";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "ViewerPagoAportacion";
+}).Bind(Model).GetHtml()

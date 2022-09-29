@@ -1,0 +1,958 @@
+﻿@model CoopJFK.Models.ViewModels.AhorroConsultaViewModels
+@{
+    ViewBag.Title = "Aplicación de Ahorro";
+}
+
+@*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title"></h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Ahorro</li>
+            <li class="active">Aplicación de Ahorro</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <div class="form-horizontal">
+                    <h4>SOLICITUD DE APLICACION DE AHORRO A PRESTAMOS</h4>
+                    <hr />
+
+                    <div class="form-group">
+                        <div class="col-md-1">
+                            @Html.Label("No. Socio")
+                            @Html.TextBoxFor(model => model.socio, new { @class = "form-control", placeholder = "Digitar", id = "SOCIO_ID" })
+                            <span class="error">El id del socio es requerido</span>
+                        </div>
+                        <div class="col-md-5">
+                            @Html.Label("Nombres y apellidos")
+                            @Html.TextBoxFor(model => model.nombres, new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-2">
+                            @Html.Label("No.Empleado")
+                            @Html.TextBoxFor(model => model.no_empleado, new { @class = "form-control", @readonly = "true" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Agencia")
+                            @Html.TextBoxFor(model => model.agencia, new { @class = "form-control", @readonly = "true" })
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.Label("Aplicar de mi Ahorro U$")
+                            @Html.TextBoxFor(model => model.monto_aplicar, new { @class = "form-control", placeholder = "Total Aplicar" ,@type = "number", @readonly=true })
+                            <span class="error">Debe detallar los préstamos a cancelar</span>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.Label("Para el P/Pago")
+                            @Html.TextBoxFor(model => model.periodo, new { @class = "form-control", @readonly = "true" })
+                            <span class="error">Debe aperturar un periodo</span>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.Label("Fecha de Pago")
+                            @Html.TextBoxFor(model => model.fecha_pago, new { @class = "form-control", @readonly = "true" })
+                        </div>
+
+                    </div>
+     
+                    <div class="form-group">
+
+
+
+                        <form class="form-box" id="cuadro">
+
+
+                            <div class="form-group" id="detalle_prestamo">
+                                <div> @Html.Label("Aplicar de mi ahorro al préstamo:")</div>
+                                <div class="col-md-3">
+                                    @Html.Label("No. Préstamo")
+
+                                    @Html.DropDownList("prestamo", new SelectList(string.Empty, "Value", "Text"), "--Seleccione--", new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.Label("Tipo de Pago")
+                                    @Html.DropDownList("Pago", new SelectList(string.Empty, "Value", "Text"), "--Seleccione--", new { @class = "form-control" })
+                                    <span class="error">El tipo  es Obligatorio</span>
+                                </div>
+                                <div class="col-md-1">
+                                    @Html.Label("Cant/Cuotas")
+                                    @Html.Editor("cant_cuotas", new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01" } })
+
+                                    <span class="error">Ingrese la Cantidad de cuotas</span>
+                                </div>
+                                <div class="col-md-1">
+                                    @Html.Label("Monto")
+                                    @Html.Editor("monto_cuotas", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    <span class="error">El monto es Obligatorio</span>
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.Label("Total")
+                                    @Html.Editor("total_monto_cuotas", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    <span class="error">El total es Obligatorio</span>
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.Label("Rebaja Interés")
+                                    @Html.Editor("rebajainteres", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    <span class="error">El total es Obligatorio</span>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="AgregardetPago()" style="margin-top:0px;margin-bottom:0px">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <span class="error">El total es Obligatorio</span>
+                                </div>
+
+                            </div>
+
+
+
+
+                            <table id="tblpagos">
+                                <thead>
+                                    <tr>
+                                        <th id="id">No. de Ptmo</th>
+                                        <th>Tipo Ptmo</th>
+                                        <th>Tipo de Pago</th>
+                                        <th>Cant/Cuotas</th>
+                                        <th>Monto/Cuota</th>
+                                        <th>Total</th>
+                                        <th>Interés/Rebaja</th>
+                                        <th>Quitar</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="5">
+                                            Totales
+                                        </th>
+                                        <th id="total_aplicar">
+                                            0.00
+                                        </th>
+                                        <th id="total_rebaja">
+                                            0.00
+                                        </th>
+                                    </tr>
+
+
+                                </tfoot>
+                            </table>
+
+                            <div id="errorptmo">
+
+                            </div>
+                            <span class="error">Debe de agregar al menos un ptmo.</span>
+                        </form>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            @Html.Label("Motivo de la aplicacion del Ahorro:")
+                            <br />
+                            <textarea name="message" id="message" > </textarea>
+                           
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <form id="cuadro">
+                            <table>
+                                <tr>
+                                    <th colspan="4">
+                                        @Html.Label("DATOS DE AHORRO Y PRESTAMOS")
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.Label("Ahorro acumulado + aportaciones")
+                                    </td>
+                                    <td>
+                                        @Html.Label("Deuda actual")
+                                    </td>
+                                    <td>
+                                        @Html.Label("Balance ahorro/deuda")
+                                    </td>
+                                    <td>
+                                        @Html.Label("Rebaja interés proyectadas")
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.Editor("disponible", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                  
+                                    </td>
+                                    <td>
+                                        @Html.Editor("deuda", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                     
+                                    </td>
+                                    <td>
+                                        @Html.Editor("balance", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                       
+                                    </td>
+                                    <td>
+                                        @Html.Editor("rebaja", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                      
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-9 col-md-6"><i class="glyphicon glyphicon-save"></i> <input id="submit" type="button" value="Guardar" class="btn btn-success btn-lg glyphicon glyphicon-search" style="padding:5px 15px" /> | <i class="glyphicon glyphicon-new-window"></i> <input id="Nuevo" type="button" value="Nuevo" onclick="location.reload()" class="btn btn-info btn-lg glyphicon glyphicon-search" style="padding:5px 15px" /> </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+@section Scripts{
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            var total_cuotas = 0;
+
+            $('#SOCIO_ID').change(function () {
+                var soc = $(this).val();
+                var data = {
+                    Socio: $(this).val()
+                }
+
+
+                $.ajax({
+                    url: '/Ahorro/GetDatoSocio',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        if (d.status == true) {
+
+                            $("#no_empleado").val(d.empleado);
+                            $("#nombres").val(d.nombre);
+                            $("#agencia").val(d.agencia);
+
+
+                            $("#disponible").val(d.disponible);
+                            $("#deuda").val(d.saldo_deuda);
+                            $("#balance").val(d.balance);
+                            $("#rebaja").val(0.00);
+                            $("#periodo").val(d.pp);
+                            $("#fecha_pago").val(d.fecha_pp);
+                                                    
+                            CargarPrestamos(soc);
+                            CargarTiposp();
+                        }
+                        else {
+
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: d.messageerror,
+                                footer: ''
+                            })
+                          
+                        }
+
+                    },
+                    error: function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Error al obtener datos del socio',
+                            footer: ''
+                        });
+                      
+                    }
+                })
+            });
+
+            $('#Pago').change(function () {
+                var valor = 6;
+                var tipo = $("#Pago").val();
+           
+                if (valor == 6) {
+                    if (tipo == 'AB') {
+                        $("#cant_cuotas").removeAttr("disabled");
+                        $("#monto_cuotas").prop('disabled', true);
+                        $("#total_monto_cuotas").prop('disabled', true);
+                    }
+                    else {
+
+                        $("#cant_cuotas").prop('disabled', true);
+                        $("#monto_cuotas").prop('disabled', true);
+                        $("#total_monto_cuotas").prop('disabled', true);
+                     
+                    }
+
+
+                }
+
+                if ($("#prestamo").val().trim() == '' || $("#prestamo").val()==0 ) {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Debe seleccionar un ptmo',
+                        footer: ''
+                    })
+                }
+                else
+                {
+                    var data = {
+                        prestamo: $("#prestamo").val().trim(),
+                        paga: $("#Pago").val().trim()
+                    };
+
+                    $.ajax({
+                        url: '/Caja/GetDatoPrestamo',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            if (d.status == true) {
+
+                                if (tipo == 'AB') {
+                                    $("#monto_cuotas").val(d.cuota);
+                                    $("#cant_cuotas").val(0);
+                                    total_cuotas = d.cant_cuotas;
+                                }
+                                else {
+                                    $("#cant_cuotas").val(d.cant_cuotas);
+                                    $("#monto_cuotas").val(d.cuota);
+                                }
+
+                                if (tipo == 'PT') {
+                                    GetDispInteres();
+                                }
+                                else {
+
+                                    $("#rebajainteres").val(0);
+                                }
+                               
+
+                                var t = d.cant_cuotas * d.monto_cuota;
+                                $("#total_monto_cuotas").val(d.monto_cuota);
+
+                                total_cuotas = d.cuotas;
+
+                            }
+                            else {
+
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Error al obtener los montos del prestamo',
+                                footer: ''
+                            })
+
+                        }
+                    });
+
+
+                   
+
+
+                }
+                
+            })//fin pagos
+
+            //$('#cant_cuotas').change(function () {
+            //    var cantidad = $("#cant_cuotas").val().trim()
+            //    var valor_cuota = $("#monto_cuotas").val().trim()
+            //    if ($("#prestamo").val().trim() == '')
+            //    {
+            //        Swal.fire({
+            //            type: 'error',
+            //            title: 'Error!',
+            //            text: 'Debe seleccionar un préstamo',
+            //            footer: ''
+            //        });
+            //    }
+            //    else {
+            //        if (cantidad > total_cuotas) {
+            //            Swal.fire({
+            //                type: 'error',
+            //                title: 'Error!',
+            //                text: 'Error las cuotas digitadas no pueden superar el total de cuotas del préstamo',
+            //                footer: ''
+            //            });
+            //            $("#cant_cuotas").val('0');
+            //        }
+            //        else {
+            //            var t = cantidad * valor_cuota;
+            //            $("#total_monto_cuotas").val(t.toFixed(2));
+            //        }
+
+            //    }
+            //})
+
+            $('#cant_cuotas').change(function () {
+                var valor = $(this).val();
+                var tipo = $("#Pago").val();
+                var monto = $("#monto_cuotas").val();
+                var total = 0;
+
+                var cantidad = $("#cant_cuotas").val().trim()
+                var valor_cuota = $("#monto_cuotas").val().trim()
+
+                if ($("#prestamo").val().trim() == '')
+                {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Debe seleccionar un préstamo',
+                        footer: ''
+                    });
+                }
+                else {
+                    if (cantidad > total_cuotas) {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Error las cuotas digitadas no pueden superar el total de cuotas del préstamo',
+                            footer: ''
+                        });
+                        $("#cant_cuotas").val('0');
+                    }
+                    else if (valor < 0) {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Error las cuotas digitadas no pueden ser negativas',
+                            footer: ''
+                        });
+                        $("#cant_cuotas").val('0');
+                    }
+                    else {
+                        if (tipo == 'AB') {
+
+                            total = valor * monto;
+
+                            $("#total_monto_cuotas").val(total);
+                        }
+                    }
+                }
+         
+                    
+                    
+                               
+            })
+
+            $('#submit').click(function () {
+
+                
+                ptmoarray = [];
+
+                var isAllValid = true;
+
+                if ($('#SOCIO_ID').val().trim() == '') {
+                    isAllValid = false;
+                    $('#SOCIO_ID').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#SOCIO_ID').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#monto_aplicar').val().trim() == '') {
+                    isAllValid = false;
+                    $('#monto_aplicar').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    if ($('#monto_aplicar').val().trim() <= 0) {
+                        isAllValid = false;
+                        $('#monto_aplicar').siblings('span.error').css('visibility', 'visible');
+                    }
+                    else { $('#monto_aplicar').siblings('span.error').css('visibility', 'hidden'); }
+                }
+
+                var Countpagos = $('#tblpagos tr').length;
+
+                if (Countpagos == 2) {
+                    isAllValid = false;
+                    $('#tblpagos').siblings('span.error').css('visibility', 'visible');
+                    $("#errorptmo").show();
+                }
+                else {
+                    $("#errorptmo").hide();
+                    $('#tblpagos').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#periodo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (isAllValid) {
+                    
+
+                    $('#tblpagos tr').each(function () {
+                        var ptamo = $(this).find("td").eq(0).html();
+                        var tipo = $(this).find("td").eq(2).html();
+                        var cantidadcuota = $(this).find("td").eq(3).html();
+                        var ptmorebaja = $(this).find("td").eq(6).html();
+                        var ptmototal = $(this).find("td").eq(5).html();
+                        if (ptamo != null) {
+                            ptmoarray.push({
+                                PRESTAMO: ptamo,
+                                TIPO_PAGO: tipo,
+                                CANT_CUOTAS: cantidadcuota,
+                                REBAJA_INT: ptmorebaja,
+                                INTERES: 0,
+                                REBAJA_AMOR: 0,
+                                AMORTIZACION: 0,
+                                TOTAL: ptmototal
+                            });
+
+                        }
+
+                    });
+                    var datas = {
+                        socio: $("#SOCIO_ID").val().trim(),
+                        periodo: $("#periodo").val().trim(),
+                        aplication: ptmoarray,
+                        tot_aplicar: $("#monto_aplicar").val().trim(),
+                        motivo: $("#message").val()
+                    };
+
+                    $(this).val('Aplicando...');
+                    //  ACA ME QUEDE
+                    $.ajax({
+                        url: '/Ahorro/AplicacionAhorroPtmo',
+                        type: "POST",
+                        data: JSON.stringify(datas),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Se aplicaron los ahorros',
+                                    showConfirmButton: true
+
+                                }).then((result) => {
+                                    if (result.value) {
+                                        document.getElementById('submit').disabled = true;
+                                    //    if ((d.transac == 1) || (d.transac == 2)) { window.open('/Caja/ComprobanteDivisas?comprobante=' + d.comprobante + '&consecutivo=' + d.consecutivo, '_blank'); }
+                                      window.open('/Caja/ComprobanteRecuperacion?comprobante=' + d.comprobante + '&consecutivo=' + d.consecutivo, '_blank'); 
+                                    //    else if ((d.transac == 8) || (d.transac == 11) || (d.transac == 10) || (d.transac == 7)) { window.open('/Caja/ComprobanteAhorro?comprobante=' + d.comprobante + '&consecutivo=' + d.consecutivo, '_blank'); }
+                                    }
+
+
+                                })
+
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+                                $('#submit').val('Guardar');
+                            }
+                            $('#submit').val('Aplicado');
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente, Error al aplicar los ahorros',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#submit').val('Guardar');
+                        }
+                    });
+
+
+
+                  
+                }
+
+               
+            });
+
+
+            
+        });
+        function GetDispInteres()
+        {
+            var data = {
+                ptmo: $("#prestamo").val().trim(),
+                cant_cuotas: $("#cant_cuotas").val().trim(),
+                socio: $("#SOCIO_ID").val().trim(),
+                periodo: $("#periodo").val().trim()
+            }
+
+            $.ajax({
+                url: '/Ahorro/AplicacionInteresDispensado',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    if (d.status == true) {
+
+
+                        $("#rebajainteres").val(d.rebaja);
+                    }
+                    else {
+
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: d.messageerror,
+                            footer: ''
+                        })
+
+                    }
+
+                },
+                error: function () {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Error al obtener los intereses dispensados',
+                        footer: ''
+                    })
+
+                }
+            });
+        }
+
+        function CargarPrestamos(soc)
+        {
+             $("#prestamo").empty();
+
+                  
+                    $.ajax({
+
+                             type: 'POST',
+                             url: '/Caja/GetPrestamos',
+                             dataType: 'json',
+                         data: { socio: soc },
+
+                             success: function (states) {
+                                 $("#prestamo").append('<option value="0">--Seleccione--</option>');
+                                 $.each(states, function (i, state) {
+
+                                $("#prestamo").append('<option value="' + state.Value + '">' +
+                                     state.Text + '</option>');
+
+                                });
+                            },
+                            error: function (ex) {
+                                alert('Error al obtener los préstamos.' + ex);
+                            }
+                             });
+        }
+
+        function CargarTiposp()
+        {
+            $("#Pago").empty();
+                    $.ajax({
+                                type: 'POST',
+                                url: '/Caja/GetTipo_Pago',
+                                dataType: 'json',
+                                data: { transaccion: 6},
+
+                                success: function (states) {
+
+                                    $.each(states, function (i, state) {
+                                        $("#Pago").append('<option value="' + state.Value + '">' +
+                                            state.Text + '</option>');
+
+                                    });
+                                },
+                                error: function (ex) {
+                                    alert('Failed to retrieve states.' + ex);
+                                }
+                            });
+        }
+
+        function CalTot() {
+
+           
+            var table = document.getElementById("tblpagos"),sumVal = 0,sumValI=0, sumAplicar=0;
+
+            $('tr td.total_ptmo').each(function () {
+                sumVal += parseFloat($(this).text());
+            });
+
+            $('tr td.total_rebaja').each(function () {
+                sumValI += parseFloat($(this).text());
+            });
+
+            document.getElementById("total_aplicar").innerHTML = sumVal;
+            document.getElementById("total_rebaja").innerHTML = sumValI;
+           
+            
+            $("#monto_aplicar").val(sumVal)
+            $("#rebaja").val(sumValI)
+            console.log(sumVal);
+           
+        }
+   
+        //function RecalInteresDispensado()
+        //{
+        //    var table = document.getElementById("tblpagos"), sumVal = 0;
+        //    var disp_interes = 0;
+     
+        //    $('#tblpagos tr').each(function () {
+        //        var ptamo = $(this).find("td").eq(0).html();
+        //        var tipo =  $(this).find("td").eq(2).html();
+        //        var cantidadcuota = $(this).find("td").eq(3).html();
+
+        //        if (ptamo != null)
+        //        {
+        //            if (tipo.includes("Total"))//la cancelacion debe ser total
+        //            {
+        //                var data = {
+        //                    ptmo: ptamo,
+        //                    cant_cuotas: cantidadcuota,
+        //                    socio: $("#SOCIO_ID").val().trim(),
+        //                    periodo: $("#periodo").val().trim()
+        //                };
+
+        //                $.ajax({
+        //                    url: '/Ahorro/AplicacionInteresDispensado',
+        //                    type: "POST",
+        //                    data: JSON.stringify(data),
+        //                    dataType: "JSON",
+        //                    contentType: "application/json",
+        //                    success: function (d) {
+        //                        if (d.status == true) {
+
+        //                            disp_interes += d.rebaja;
+                                  
+        //                        }
+        //                        else {
+
+        //                            Swal.fire({
+        //                                type: 'error',
+        //                                title: 'Error!',
+        //                                text: d.messageerror,
+        //                                footer: ''
+        //                            })
+
+        //                        }
+
+        //                    },
+        //                    error: function () {
+        //                        Swal.fire({
+        //                            type: 'error',
+        //                            title: 'Error!',
+        //                            text: 'Error al obtener los intereses dispensados',
+        //                            footer: ''
+        //                        })
+
+        //                    }
+        //                });
+
+        //            }
+              
+        //        }
+                
+                
+        //    });
+        //    console.log(disp_interes);
+         
+        //    $("#rebaja").val(disp_interes);
+
+      
+          
+        //}
+
+
+     
+        function AgregardetPago() {
+            var examen = $("#prestamo").val();
+            var pago = $('select[name="Pago"] option:selected').text();
+            var pago_id = $("#Pago").val();
+            var cant = $("#cant_cuotas").val();
+            var monto = $("#monto_cuotas").val();
+            var total = $("#total_monto_cuotas").val();
+            var type = $('select[name="prestamo"] option:selected').text();
+            var disp_interes = $("#rebajainteres").val();
+            
+            if (examen != '') {
+                var allow = true;
+                $("#tblpagos").find("tr").each(function () {
+                    if ($(this).attr("id") == examen) {
+                        allow = false;
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'El préstamo ya fue agregado',
+                            footer: ''
+                        })
+
+
+                    }
+
+
+                });
+
+                if ($("#cant_cuotas").val() == '' || $("#cant_cuotas").val() <= 0)
+                {
+                    allow = false;
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Ingrese Una Cantidad de cuota válida',
+                        footer: ''
+                    })
+                }
+
+                if ($("#total_monto_cuotas").val() == '' || $("#total_monto_cuotas").val() <= 0) {
+                    allow = false;
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'El total del prestamo no puede ser cero o estar vacio',
+                        footer: ''
+                    })
+                }
+
+                if (allow)
+                {
+                 //sacamos los intereses a dispensar
+                    if (pago_id == 'AB') { disp_interes = 0; }
+                    
+                    $("#tblpagos").find('tbody')
+                        .append('<tr id="' + examen + '"><td class="idptmo">' + examen + '</td><td>' + type + ' </td><td class="tipodepago">' + pago + '</td><td class="cantcuotas">' + cant + '</td><td>' + monto + '</td><td  class="total_ptmo">' + total + '</td><td class="total_rebaja">' + disp_interes+'</td> <td><button type="button" class="btn btn-sm btn-danger" onclick="EliminarDetalle(' + examen + ')"><i class="fa fa-trash"></i></button></td></tr>');
+                   
+                    CalTot();
+                
+                }
+                
+                 }
+            else {
+                Swal.fire({
+                    type: 'error',
+                    title: 'Error!',
+                    text: 'Error agregar los prestamos a aplicar',
+                    footer: ''
+                })
+               
+            }
+        };
+        function EliminarDetalle(linea) {
+            $("#tblpagos").find("tr").each(function () {
+                if ($(this).attr("id") == linea) {
+                    $(this).remove();
+                    CalTot();
+                }
+            });
+
+           
+        };
+    </script>
+}
+<style>
+    /*Adding some css for looks good*/
+    .form-box {
+        padding: 8px; /*makes it look neat*/
+        border-radius: 4px; /*or 2px*/
+        border: 1px solid #BFAEAE;
+    }
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+ 
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+
+    table {
+        border: 1px solid gray;
+        width: 100%;
+    }
+
+    textarea {
+        width: 152%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+    }
+
+    th, td {
+        padding: 15px;
+        border-spacing: 0px;
+    }
+</style>
+@*  *@
+

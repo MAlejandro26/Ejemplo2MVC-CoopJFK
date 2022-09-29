@@ -1,0 +1,1052 @@
+﻿@model CoopJFK.Models.ViewModels.BeneficiariosViewModel
+
+@{
+    ViewBag.Title = "Crear Socios";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/gijgo/combined/gijgo.min.js"></script>
+<link href="~/Content/gijgo/combined/gijgo.min.css" rel="stylesheet" />
+
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">Nuevo Socio</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Préstamo</li>
+            <li class="active">Socio</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <div class="master">
+                    <h4>Datos Generales del Socio</h4>
+                    <hr />
+                    @using (Html.BeginForm())
+                    {
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <table class="space">
+                            <tr>
+                                <td> @Html.LabelFor(model => model.FECHA_INGRESO)</td>
+                                <td> @Html.LabelFor(model => model.ESTADO)</td>
+                                <td> @Html.LabelFor(model => model.NO_EMPLEADO)</td>
+                                <td colspan="2">@Html.LabelFor(model => model.CEDULA)</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.EditorFor(model => model.FECHA_INGRESO, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FECHA_INGRESO, "", new { @class = "text-danger" })
+                                    <span class="error">La fecha de Ingreso es obligatorio</span>
+                                    <script>
+
+                                        $('#FECHA_INGRESO').datepicker({
+                                            uiLibrary: 'bootstrap', format: 'dd/mm/yyyy'
+                                        });
+                                    </script>
+                                </td>
+                                <td>
+                                    @{
+                                        List<SelectListItem> _estado = new List<SelectListItem>();
+                                        _estado.Add(new SelectListItem { Text = "Primer Ingreso", Value = "P" });
+                                        _estado.Add(new SelectListItem { Text = "Actualización", Value = "U" });
+                                        _estado.Add(new SelectListItem { Text = "Reingreso", Value = "R" });
+                                        _estado.Add(new SelectListItem { Text = "Activo", Value = "A" });
+                                        _estado.Add(new SelectListItem { Text = "Retirado", Value = "T" });
+                                        _estado.Add(new SelectListItem { Text = "Fallecido", Value = "F" });
+                                    }
+                                    @Html.DropDownListFor(model => model.ESTADO, _estado, "--Seleccione--", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.ESTADO, "", new { @class = "text-danger" })
+                                    <span class="error">El estado es obligatorio</span>
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.NO_EMPLEADO, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.NO_EMPLEADO, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessage("Valid_empleado", "", new { @class = "text-danger" })
+                                    <span class="error">El numero de empleado es obligatorio</span>
+                                </td>
+                                <td colspan="2">
+                                    @Html.EditorFor(model => model.CEDULA, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.CEDULA, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessage("Valid_Cedula", "", new { @class = "text-danger" })
+                                    <span class="error">La cedula es obligatorio</span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>@Html.LabelFor(model => model.PERIODO_INGRESO)</td>
+                                <td colspan="2">@Html.LabelFor(model => model.NOMBRES)</td>
+                                <td>@Html.LabelFor(model => model.SEXO)</td>
+                                <td>@Html.LabelFor(model => model.ESTADO_CIVIL)</td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.EditorFor(model => model.PERIODO_INGRESO, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.PERIODO_INGRESO, "", new { @class = "text-danger" })
+                                    <span class="error">El periodo de ingreso es obligatorio</span>
+                                </td>
+                                <td colspan="2">
+                                    @Html.EditorFor(model => model.NOMBRES, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.NOMBRES, "", new { @class = "text-danger" })
+                                    <span class="error">El nombre del socio es obligatorio</span>
+                                </td>
+                                <td>
+                                    @{
+                                        List<SelectListItem> _sexo = new List<SelectListItem>();
+                                        _sexo.Add(new SelectListItem { Text = "Masculino", Value = "M", Selected = false });
+                                        _sexo.Add(new SelectListItem { Text = "Femenino", Value = "F" });
+                                    }
+                                    @Html.DropDownListFor(model => model.SEXO, _sexo, "--Seleccione--", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.SEXO, "", new { @class = "text-danger" })
+                                    <span class="error">El sexo es obligatorio</span>
+
+                                </td>
+
+                                <td>
+                                    @{
+                                        List<SelectListItem> _estadoCivil = new List<SelectListItem>();
+                                        _estadoCivil.Add(new SelectListItem { Text = "Soltero", Value = "S", Selected = false });
+                                        _estadoCivil.Add(new SelectListItem { Text = "Casado", Value = "C" });
+                                        _estadoCivil.Add(new SelectListItem { Text = "Unión Libre", Value = "U" });
+                                    }
+
+                                    @Html.DropDownListFor(model => model.ESTADO_CIVIL, _estadoCivil, "--Seleccione--", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.ESTADO_CIVIL, "", new { @class = "text-danger" })
+                                    <span class="error">El estado civil es obligatorio</span>
+                                </td>
+
+
+                            </tr>
+
+                            <tr>
+
+                                <td> @Html.Label("Agencia:")</td>
+                                <td>&nbsp;</td>
+                                <td> @Html.Label("Tipo de Pago:")</td>
+                                <td>&nbsp;</td>
+                                <td>@Html.LabelFor(model => model.PROFESION)</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.EditorFor(model => model.AGENCIA, new { htmlAttributes = new { @id = "AGENCIA_ID", @class = "form-control", @readonly = "true" } })
+                                    <span class="error">La agencia es obligatorio</span>
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.AGENCIADESC, new { htmlAttributes = new { @id = "txtAgenciaDesc", @class = "form-control", @readonly = "true" } })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.TIPO_PAGO, new { htmlAttributes = new { @id = "txtTipoPagoID", @class = "form-control", @readonly = "true" } })
+                                    <span class="error">El tipo de pago es obligatorio</span>
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.TIPO_PAGODESC, new { htmlAttributes = new { @id = "txtTipoPagoDesc", @class = "form-control", @readonly = "true" } })
+                                </td>
+                                <td>
+                                    @Html.DropDownList("PROFESION", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.PROFESION, "", new { @class = "text-danger" })
+                                    <span class="error">La profesion es obligatorio</span>
+                                </td>
+                            </tr>
+
+                            <tr>
+
+                                <td>@Html.LabelFor(model => model.SALARIO) </td>
+                                <td>@Html.LabelFor(model => model.CUENTA_BANCARIA)</td>
+                                <td>@Html.LabelFor(model => model.CUOTA_AHORRO)</td>
+                                <td>@Html.LabelFor(model => model.CELULAR)</td>
+                                <td> @Html.LabelFor(model => model.TELEFONO)</td>
+                            </tr>
+                            <tr>
+
+                                <td>
+                                    @Html.EditorFor(model => model.SALARIO, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.SALARIO, "", new { @class = "text-danger" })
+                                    <span class="error">El salario es obligatorio</span>
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.CUENTA_BANCARIA, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.CUENTA_BANCARIA, "", new { @class = "text-danger" })
+                                    <span class="error">La cta bancaria es obligatorio</span>
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.CUOTA_AHORRO, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.CUOTA_AHORRO, "", new { @class = "text-danger" })
+                                    <span class="error">La cuota de ahorro es obligatorio</span>
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.CELULAR, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.CELULAR, "", new { @class = "text-danger" })
+                                    <span class="error">El celular es obligatorio</span>
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.TELEFONO, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.TELEFONO, "", new { @class = "text-danger" })
+                                    <span class="error">El telefono es obligatorio</span>
+                                </td>
+                            </tr>
+
+                            <tr>
+
+
+                                <td>@Html.LabelFor(model => model.DEPARTAMENTO)</td>
+                                <td> @Html.LabelFor(model => model.MUNICIPIO)</td>
+                                <td colspan="4">@Html.LabelFor(model => model.DIRECCION)</td>
+                            </tr>
+                            <tr>
+
+
+                                <td>
+
+                                    @Html.DropDownList("DEPARTAMENTO", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+
+                                    @Html.ValidationMessageFor(model => model.DEPARTAMENTO, "", new { @class = "text-danger" })
+                                    <span class="error">La ciudad es obligatorio</span>
+                                </td>
+                                <td>
+                                    @Html.DropDownList("MUNICIPIO", new SelectList(string.Empty, "Value", "Text"), "--Seleccione--", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.MUNICIPIO, "", new { @class = "text-danger" })
+                                    <span class="error">El municipio es obligatorio</span>
+                                </td>
+                                <td colspan="4">
+                                    @Html.EditorFor(model => model.DIRECCION, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DIRECCION, "", new { @class = "text-danger" })
+                                    <span class="error">La direccion es obligatorio</span>
+                                </td>
+                            </tr>
+                            <tr>
+                               
+
+                            </tr>
+                            <tr>
+                                
+
+                            </tr>
+
+                        </table>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <div class="details">
+                    <h4>Beneficiario en caso de Fallecimiento</h4>
+                    <hr />
+                    <table class="space" width="80%">
+                        <tr>
+                            <td>Cédula</td>
+                            <td colspan="3">Nombre</td>
+                            <td>Fecha Nacimiento</td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @Html.EditorFor(model => model.CEDULA_LEGADO, new { htmlAttributes = new { @class = "form-control" } })
+                                <span class="error">La cédula es requerida</span>
+                            </td>
+                            <td colspan="3">
+                                @Html.EditorFor(model => model.NOMBRE_LEGADO, new { htmlAttributes = new { @class = "form-control" } })
+                                @*<input type="text" id="nombre" />*@
+                                <span class="error">El nombre es requerido</span>
+                            </td>
+                            <td>
+                                <input type="text" id="FECHA_NAC_LEGADO" />
+                                <script>
+                                    var hoy = new Date().toLocaleTimeString();
+                                    $('#FECHA_NAC_LEGADO').datepicker({
+                                        uiLibrary: 'bootstrap', format: 'dd/mm/yyyy'
+                                    });
+                                </script>
+                                <span class="error">Valid fecha required</span>
+                            </td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td>Parentesco</td>
+                            <td colspan="3">Dirección</td>
+                            <td>Tipo Beneficiario</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.DropDownList("PARENTESCO_LEGADO", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                                <span class="error">El parentesco es requerido</span>
+                            </td>
+                            <td colspan="3">
+                                @Html.EditorFor(model => model.DIRECCION_LEGADO, new { htmlAttributes = new { @class = "form-control" } })
+                                <span class="error">La direccion requerida</span>
+                            </td>
+
+                            <td>
+                                @Html.DropDownList("TIPO_BENE_LEGADO", null, htmlAttributes: new { @class = "form-control" })
+                                <span class="error">Tipo beneficiario es requerido</span>
+                            </td>
+
+                        </tr>
+                    </table>
+                                                                               
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <div class="details">
+                    <h4>Beneficiarios de Ahorro</h4>
+                    <hr />
+                    <table class="space" width="80%">
+                        <tr>
+                            <td>Cedula</td>
+                            <td>Nombre</td>
+                            <td>Fecha Nacimiento</td>
+                            <td>Tipo Beneficiario</td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @Html.Editor("cedula", new { htmlAttributes = new { @class = "form-control" } })
+                                @*<span class="error">Item cedula required</span>*@
+                            </td>
+                            <td>
+                                @Html.Editor("nombre", new { htmlAttributes = new { @class = "form-control" } })
+                                @*<input type="text" id="nombre" />*@
+                                <span class="error">El nombre es requerido</span>
+                            </td>
+                            <td>
+                                <input type="text" id="fecha_nacimiento" />
+                                <script>
+                                    var hoy = new Date().toLocaleTimeString();
+                                    $('#fecha_nacimiento').datepicker({
+                                        uiLibrary: 'bootstrap', format: 'dd/mm/yyyy'
+                                    });
+                                </script>
+                                <span class="error">Valid fecha required</span>
+                            </td>
+                            <td>
+                                @Html.DropDownList("tipo_beneficiario", null,  htmlAttributes: new { @class = "form-control" })
+                                <span class="error">Tipo beneficiario es requerido</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Direccion</td>
+                            <td>Parentesco</td>
+                            <td>Porcentaje</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+
+                            <td>
+                                @Html.Editor("direccion", new { htmlAttributes = new { @class = "form-control" } })
+                                <span class="error">La direccion requerida</span>
+                            </td>
+                            <td>
+                                @Html.DropDownList("parentesco", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                                <span class="error">El parentesco es requerido</span>
+                            </td>
+                            <td>
+                                @Html.Editor("porcentaje", new { htmlAttributes = new { @class = "form-control" } })
+                                <span class="error">El porcentaje es requerido</span>
+                            </td>
+                            <td>
+                                <input type="button" id="Agregar" value="Agregar" class="btn btn-success" />
+                            </td>
+                        </tr>
+                    </table>
+
+
+
+                    <div id="SocioItems" class="tablecontainer">
+
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <div class="details">
+                    <h4>Beneficiarios de Ayuda Funeral</h4>
+                    <hr />
+                    <table class="space" width="80%">
+                        <tr>
+                            <td>Cedula</td>
+                            <td>Nombre</td>
+                            <td>Fecha Nacimiento</td>
+                            <td>Tipo Beneficiario</td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @Html.Editor("cedulafuneral", new { htmlAttributes = new { @class = "form-control" } })
+                                @*<span class="error">Item cedula required</span>*@
+                            </td>
+                            <td>
+                                @Html.Editor("nombrefuneral", new { htmlAttributes = new { @class = "form-control" } })
+                                @*<input type="text" id="nombre" />*@
+                                <span class="error">El nombre es requerido</span>
+                            </td>
+                            <td>
+                                <input type="text" id="fecha_nacimientofuneral" />
+                                <script>
+                                    var hoy = new Date().toLocaleTimeString();
+                                    $('#fecha_nacimientofuneral').datepicker({
+                                        uiLibrary: 'bootstrap', format: 'dd/mm/yyyy'
+                                    });
+                                </script>
+                                <span class="error">Valid fecha required</span>
+                            </td>
+                            <td>
+                                @Html.DropDownList("tipo_beneficiario_funeral", null,  htmlAttributes: new { @class = "form-control" })
+                                <span class="error">Tipo beneficiario es requerido</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3">Direccion</td>
+                            <td>Parentesco</td>
+                            
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+
+                            <td colspan="3">
+                                @Html.Editor("direccionfuneral", new { htmlAttributes = new { @class = "form-control" } })
+                                <span class="error">La direccion requerida</span>
+                            </td>
+                            <td>
+                                @Html.DropDownList("parentesco_ayuda", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                                <span class="error">El parentesco es requerido</span>
+                            </td>
+                            
+                            <td>
+                                <input type="button" id="AgregarFuneral" value="Agregar" class="btn btn-success" />
+                            </td>
+                        </tr>
+                    </table>
+
+
+
+                    <div id="SocioItemsAyuda" class="tablecontainer">
+
+                    </div>
+                    <div style="padding:10px 0px; text-align:right">
+                        <input id="submit" type="button" value="Guardar" style="padding:5px 15px" class="btn btn-info" /> | @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+@section Scripts{
+ 
+    @EntitySelectorGrid.selectorGrid(ViewBag.TipoPagoList, "txtTipoPagoID", "txtTipoPagoDesc", "tipopago", "ID", "DESCRIPCION");
+    @EntitySelectorGrid.selectorGrid(ViewBag.AgenciaList, "AGENCIA_ID", "txtAgenciaDesc", "agencia", "ID", "NOMBRE");
+  
+    <script>
+
+
+        $(document).ready(function () {
+            var SocioItems = [];
+            var SocioItemsAyuda=[]
+            //Add button click function
+            $('#Agregar').click(function () {
+                //Check validation of order item
+                var isValidItem = true;
+                
+
+                if ($('#nombre').val().trim() == '') {
+                    isValidItem = false;
+                    $('#nombre').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#nombre').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#tipo_beneficiario').val().trim() == '') {
+                    isValidItem = false;
+                    $('#tipo_beneficiario').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#tipo_beneficiario').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                
+
+                if ($('#direccion').val().trim() == '') {
+                    isValidItem = false;
+                    $('#direccion').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#direccion').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#parentesco').val().trim() == '') {
+                    isValidItem = false;
+                    $('#parentesco').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#parentesco').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                if (!($('#porcentaje').val().trim() != '' && !isNaN($('#porcentaje').val().trim()))) {
+                    isValidItem = false;
+                    $('#porcentaje').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#porcentaje').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Add item to list if valid
+                if (isValidItem) {
+                    SocioItems.push({
+                        cedula: $('#cedula').val().trim(),
+                        nombre: $('#nombre').val().trim(),
+                        tipo_beneficiario: $('#tipo_beneficiario').val().trim(),
+                        fecha_nacimiento: $('#fecha_nacimiento').val().trim(),
+                        direccion: $('#direccion').val().trim(),
+                        parentesco: $('#parentesco').val().trim(),
+                        porcentaje: parseFloat($('#porcentaje').val().trim()),
+                        //TotalAmount: parseInt($('#quantity').val().trim()) * parseFloat($('#rate').val().trim())
+                    });
+
+                    //Clear fields
+                    $('#cedula').val('').focus();
+                    $('#nombre,#direccion').val('');
+
+                }
+                //populate order items
+                GeneratedItemsTable();
+
+            });
+
+            $('#AgregarFuneral').click(function () {
+                //Check validation of order item
+                var isValidItem = true;
+
+
+                if ($('#nombrefuneral').val().trim() == '') {
+                    isValidItem = false;
+                    $('#nombrefuneral').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#nombrefuneral').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                
+                if ($('#direccionfuneral').val().trim() == '') {
+                    isValidItem = false;
+                    $('#direccionfuneral').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#direccionfuneral').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#parentesco_ayuda').val().trim() == '') {
+                    isValidItem = false;
+                    $('#parentesco_ayuda').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#parentesco_ayuda').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                
+
+                //Add item to list if valid
+                if (isValidItem) {
+                    SocioItemsAyuda.push({
+                        cedula: $('#cedulafuneral').val().trim(),
+                        nombre: $('#nombrefuneral').val().trim(),
+                        tipo_beneficiario: $('#tipo_beneficiario_funeral').val().trim(),
+                        fecha_nacimiento: $('#fecha_nacimientofuneral').val().trim(),
+                        direccion: $('#direccionfuneral').val().trim(),
+                        parentesco: $('#parentesco_ayuda').val().trim()
+                       
+                        //TotalAmount: parseInt($('#quantity').val().trim()) * parseFloat($('#rate').val().trim())
+                    });
+
+                    //Clear fields
+                    $('#cedulafuneral').val('').focus();
+                    $('#nombrefuneral,#direccionfuneral').val('');
+
+                }
+                //populate order items
+                GeneratedItemsTableFuneral();
+
+            });
+            //Save button click function
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+                if (SocioItems.length == 0) {
+                    $('#SocioItems').html('<span style="color:red;">Por favor agregue beneficiarios de ahorro</span>');
+                    isAllValid = false;
+                }
+                if (SocioItemsAyuda.length == 0) {
+                    $('#SocioItemsAyuda').html('<span style="color:red;">Por favor agregue beneficiarios de ayuda funeral</span>');
+                    isAllValid = false;
+                }
+                /**************DATOS DEL BENEFICIARIO DE LEGADO*************/
+                if ($('#CEDULA_LEGADO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#CEDULA_LEGADO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#CEDULA_LEGADO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#NOMBRE_LEGADO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#NOMBRE_LEGADO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#NOMBRE_LEGADO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#FECHA_NAC_LEGADO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#FECHA_NAC_LEGADO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#FECHA_NAC_LEGADO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#PARENTESCO_LEGADO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#PARENTESCO_LEGADO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#PARENTESCO_LEGADO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#DIRECCION_LEGADO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#DIRECCION_LEGADO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#DIRECCION_LEGADO').siblings('span.error').css('visibility', 'hidden');
+                }
+                /**********************************************************/
+
+                if ($('#NO_EMPLEADO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#NO_EMPLEADO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#NO_EMPLEADO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#PERIODO_INGRESO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#PERIODO_INGRESO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#PERIODO_INGRESO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#CEDULA').val().trim() == '') {
+                    isAllValid = false;
+                    $('#CEDULA').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#CEDULA').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#NOMBRES').val().trim() == '') {
+                    isAllValid = false;
+                    $('#NOMBRES').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#NOMBRES').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#ESTADO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#ESTADO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#ESTADO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#SEXO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#SEXO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#SEXO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#FECHA_INGRESO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#FECHA_INGRESO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#FECHA_INGRESO').siblings('span.error').css('visibility', 'hidden');
+                }
+                if ($('#PROFESION').val().trim() == '') {
+                    isAllValid = false;
+                    $('#PROFESION').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#PROFESION').siblings('span.error').css('visibility', 'hidden');
+                }
+                if ($('#CUENTA_BANCARIA').val().trim() == '') {
+                    isAllValid = false;
+                    $('#CUENTA_BANCARIA').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#CUENTA_BANCARIA').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                if ($('#SALARIO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#SALARIO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#SALARIO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                if ($('#CUOTA_AHORRO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#CUOTA_AHORRO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#CUOTA_AHORRO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                if ($('#DIRECCION').val().trim() == '') {
+                    isAllValid = false;
+                    $('#DIRECCION').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#DIRECCION').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                if ($('#DEPARTAMENTO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#DEPARTAMENTO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#DEPARTAMENTO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+
+                if ($('#MUNICIPIO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#MUNICIPIO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#MUNICIPIO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+
+                if ($('#CELULAR').val().trim() == '') {
+                    isAllValid = false;
+                    $('#CELULAR').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#CELULAR').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+
+                if ($('#TELEFONO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#TELEFONO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#TELEFONO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+
+                if ($('#ESTADO_CIVIL').val().trim() == '') {
+                    isAllValid = false;
+                    $('#ESTADO_CIVIL').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#ESTADO_CIVIL').siblings('span.error').css('visibility', 'hidden');
+                }
+
+
+                if ($('#txtTipoPagoID').val().trim() == '') {
+                    isAllValid = false;
+                    $('#txtTipoPagoID').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtTipoPagoID').siblings('span.error').css('visibility', 'hidden');
+                }
+                if ($('#AGENCIA_ID').val().trim() == '') {
+                    isAllValid = false;
+                    $('#AGENCIA_ID').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#AGENCIA_ID').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        NO_EMPLEADO: $('#NO_EMPLEADO').val().trim(),
+                        CEDULA: $('#CEDULA').val().trim(),
+                        NOMBRES: $('#NOMBRES').val().trim(),
+                        ESTADO: $('#ESTADO').val().trim(),
+                        SEXO: $('#SEXO').val().trim(),
+                        FECHA_INGRESO: $('#FECHA_INGRESO').val().trim(),
+                        CUENTA_BANCARIA: $('#CUENTA_BANCARIA').val().trim(),
+                        CUOTA_AHORRO: $('#CUOTA_AHORRO').val().trim(),
+                        SALARIO: $('#SALARIO').val().trim(),
+                        DIRECCION: $('#DIRECCION').val().trim(),
+                        DEPARTAMENTO: $('#DEPARTAMENTO').val().trim(),
+                        MUNICIPIO: $('#MUNICIPIO').val().trim(),
+                        CELULAR: $('#CELULAR').val().trim(),
+                        TELEFONO: $('#TELEFONO').val().trim(),
+                        ESTADO_CIVIL: $('#ESTADO_CIVIL').val().trim(),
+                        TIPO_PAGO: $('#txtTipoPagoID').val().trim(),
+                        AGENCIA: $('#AGENCIA_ID').val().trim(),
+                        PROFESION: $('#PROFESION').val().trim(),
+                        PERIODO_INGRESO: $('#PERIODO_INGRESO').val().trim(),
+
+                        CEDULA_LEGADO: $('#CEDULA_LEGADO').val().trim(),
+                        NOMBRE_LEGADO: $('#NOMBRE_LEGADO').val().trim(),
+                        FECHA_NAC_LEGADO: $('#FECHA_NAC_LEGADO').val().trim(),
+                        PARENTESCO_LEGADO: $('#PARENTESCO_LEGADO').val().trim(),
+                        DIRECCION_LEGADO: $('#DIRECCION_LEGADO').val().trim(),
+                        TIPO_BENE_LEGADO: $('#TIPO_BENE_LEGADO').val().trim(),
+
+                        Beneficiario: SocioItems,
+                        BeneficiarioFuneral: SocioItemsAyuda
+                    }
+
+                    $(this).val('Procesando...');
+
+                    $.ajax({
+                        url: '/Personas/Create',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Se guardaron los datos',
+                                    showConfirmButton: true
+
+                                })
+                                //alert('Se guardaron los datos.');
+                             //   window.location.href = '/Personas/FormatoAutorizacion?id_socio=' + d.id_socio;
+                       
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+                            $('#submit').val('Guardar');
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente.',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#submit').val('Guardar');
+                        }
+                    });
+                }
+
+            });
+
+$('#DEPARTAMENTO').change(function () {
+                        var text = $(this).find('option:selected').text();
+                        var valor = $("#DEPARTAMENTO").val();
+    $("#MUNICIPIO").empty();
+
+                         $.ajax({
+                             type: 'POST',
+                             url: '@Url.Action("GetMUNICIPIO")', // we are calling json method
+                             dataType: 'json',
+                             data: { departamento: $("#DEPARTAMENTO").val() },
+
+                             success: function (states) {
+
+                                $.each(states, function (i, state) {
+                                $("#MUNICIPIO").append('<option value="' + state.Value + '">' +
+                                     state.Text + '</option>');
+                                // here we are adding option for States
+
+                                });
+                            },
+                            error: function (ex) {
+                                alert('Failed to retrieve states.' + ex);
+                            }
+                             });
+                         return false;
+
+
+                    });//fin funcion select transaccion der caja
+
+
+
+
+            //function for show added items in table
+            function GeneratedItemsTable() {
+                if (SocioItems.length > 0) {
+                    var $table = $('<table/>');
+                    $table.append('<thead><tr><th>Cedula</th><th>Nombre</th><th>Tipo Beneficiario</th><th>Fecha Nac</th><th>Direccion</th><th>Parentesco</th><th>Porcentaje</th><th></th></tr></thead>');
+                    var $tbody = $('<tbody/>');
+                    $.each(SocioItems, function (i, val) {
+                        var $row = $('<tr/>');
+                        $row.append($('<td/>').html(val.cedula));
+                        $row.append($('<td/>').html(val.nombre));
+                        $row.append($('<td/>').html(val.tipo_beneficiario));
+                        $row.append($('<td/>').html(val.fecha_nacimiento));
+                        $row.append($('<td/>').html(val.direccion));
+                        $row.append($('<td/>').html(val.parentesco));
+                        $row.append($('<td/>').html(val.porcentaje));
+                        var $remove = $('<a href="#">Quitar</a>');
+                        $remove.click(function (e) {
+                            e.preventDefault();
+                            SocioItems.splice(i, 1);
+                            GeneratedItemsTable();
+                        });
+                        $row.append($('<td/>').html($remove));
+                        $tbody.append($row);
+                    });
+                    console.log("current", SocioItems);
+                    $table.append($tbody);
+                    $('#SocioItems').html($table);
+                }
+                else {
+                    $('#SocioItems').html('');
+                }
+            }
+
+
+            function GeneratedItemsTableFuneral() {
+                if (SocioItemsAyuda.length > 0) {
+                    var $table = $('<table/>');
+                    $table.append('<thead><tr><th>Cedula</th><th>Nombre</th><th>Tipo Beneficiario</th><th>Fecha Nac</th><th>Direccion</th><th>Parentesco</th><th></th></tr></thead>');
+                    var $tbody = $('<tbody/>');
+                    $.each(SocioItemsAyuda, function (i, val) {
+                        var $row = $('<tr/>');
+                        $row.append($('<td/>').html(val.cedula));
+                        $row.append($('<td/>').html(val.nombre));
+                        $row.append($('<td/>').html(val.tipo_beneficiario));
+                        $row.append($('<td/>').html(val.fecha_nacimiento));
+                        $row.append($('<td/>').html(val.direccion));
+                        $row.append($('<td/>').html(val.parentesco));
+                       
+                        var $remove = $('<a href="#">Quitar</a>');
+                        $remove.click(function (e) {
+                            e.preventDefault();
+                            SocioItemsAyuda.splice(i, 1);
+                            GeneratedItemsTableFuneral();
+                        });
+                        $row.append($('<td/>').html($remove));
+                        $tbody.append($row);
+                    });
+                    console.log("current", SocioItemsAyuda);
+                    $table.append($tbody);
+                    $('#SocioItemsAyuda').html($table);
+                }
+                else {
+                    $('#SocioItemsAyuda').html('');
+                }
+            }
+        });
+
+        $(function () {
+            $("#accordion").accordion();
+        });
+
+    </script>
+}
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>
+@*  *@
+
+

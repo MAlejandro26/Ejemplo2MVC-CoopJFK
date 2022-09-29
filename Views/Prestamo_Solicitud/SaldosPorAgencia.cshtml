@@ -1,0 +1,18 @@
+﻿@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+@{
+	ViewBag.Title = "SaldosPorAgencia";
+}
+
+<h2>Saldos Por Agencia</h2>
+
+<p>
+	<a class="btn btn-success" href="@Url.Action("Reporte","Prestamos")">Atrás</a>
+
+</p>
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+	settings.Name = "Viewer_Bitacora_Deudores_Fiadores";
+}).Bind(Model).GetHtml()

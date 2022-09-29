@@ -1,0 +1,3926 @@
+﻿@model CoopJFK.Models.ViewModels.CajaViewModel
+
+@{
+    ViewBag.Title = "Crear";
+}
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/gijgo/combined/gijgo.min.js"></script>
+<link href="~/Content/gijgo/combined/gijgo.min.css" rel="stylesheet" />
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title"></h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Caja</li>
+            <li class="active">Crear Transacción de Depósito</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container">
+
+
+
+
+
+
+
+</div>
+
+<div class="row">
+    <div class="col-md-7">
+        <div class="white-box">
+            <div class="details">
+                <div class="form-horizontal">
+                    <h4>Retiros de Caja</h4>
+                    <hr />
+                    @using (Html.BeginForm())
+                    {
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-offset-10 col-md-3">
+                                    <input id="submit" type="button" value="Procesar" style="padding:5px 5px" class="btn btn-info btn-lg" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    @Html.LabelFor(model => model.transaccion)
+                                    @Html.DropDownList("TRANSACCION", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.Label("Forma de Pago")
+                                    @{
+                                        List<SelectListItem> _formapago = new List<SelectListItem>();
+                                        _formapago.Add(new SelectListItem { Text = "Efectivo", Value = "E" });
+                                        _formapago.Add(new SelectListItem { Text = "Depósito", Value = "D" });
+                                        _formapago.Add(new SelectListItem { Text = "Aplicar Ahorros", Value = "AA" });
+
+                                    }
+                                    @Html.DropDownListFor(model => model.FormaPago, _formapago, "--Seleccione--", new { @class = "form-control" })
+                                    <span class="error">La forma de pago  es Obligatorio</span>
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.tc)
+                                    @Html.EditorFor(model => model.tc, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.ID)
+                                    @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.consecutivo)
+                                    @Html.EditorFor(model => model.consecutivo, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                                    <span class="error">La forma de pago  es Obligatorio</span>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group" id="dato_socio">
+
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.socio)
+                                @Html.EditorFor(model => model.socio, new { htmlAttributes = new { @id = "socio", @class = "form-control", @readonly = "true" } })
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.Label("Nombres y Apellidos")
+                                @Html.TextBoxFor(model => model.nombres, new { @class = "form-control", placeholder = "Escriba el nombre de un socio", id = "nombres" })
+                                <span class="error"> "ERRORES "</span>
+
+                            </div>
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.empleado)
+                                @Html.Editor("empleado", new { htmlAttributes = new { @id = "empleado", @class = "form-control", @readonly = "true" } })
+
+                            </div>
+
+                        </div>
+                        <div class="form-group" id="dato_socioNOM">
+
+                        </div>
+
+
+
+
+
+
+                        <div class="form-group" id="detalle_prestamo">
+                            <div class="col-md-2">
+                                @Html.Label("No. Préstamo")
+
+                                @Html.DropDownList("prestamo", new SelectList(string.Empty, "Value", "Text"), "--Seleccione--", new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.Label("Tipo de Pago")
+                                @Html.DropDownList("Pago", new SelectList(string.Empty, "Value", "Text"), "--Seleccione--", new { @class = "form-control" })
+                                <span class="error">El tipo  es Obligatorio</span>
+                            </div>
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.cant_cuotas)
+                                @Html.EditorFor(model => model.cant_cuotas, new { htmlAttributes = new { @class = "form-control" } })
+                                <span class="error">Ingrese la Cantidad de cuotas</span>
+                            </div>
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.monto_cuotas)
+                                @Html.EditorFor(model => model.monto_cuotas, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                <span class="error">El monto es Obligatorio</span>
+                            </div>
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.total_monto_cuotas)
+                                @Html.EditorFor(model => model.total_monto_cuotas, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                <span class="error">El total es Obligatorio</span>
+                            </div>
+                        </div>
+                        <div class="form-group" id="detalle_aportacion">
+
+                            <div class="col-md-3">
+                                @Html.Label("No. Aportacion")
+
+                                @Html.EditorFor(model => model.aportacion, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.Label("Tipo de Pago")
+                                @Html.DropDownList("Pago_aportacion", new SelectList(string.Empty, "Value", "Text"), "--Seleccione--", new { @class = "form-control" })
+                                <span class="error">El tipo  es Obligatorio</span>
+                            </div>
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.cant_cuotas_aportacion)
+                                @Html.EditorFor(model => model.cant_cuotas_aportacion, new { htmlAttributes = new { @class = "form-control" } })
+                                <span class="error">Ingrese la Cantidad de cuotas</span>
+                            </div>
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.monto_cuotas_aportacion)
+                                @Html.EditorFor(model => model.monto_cuotas_aportacion, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                <span class="error">El monto es Obligatorio</span>
+                            </div>
+
+                        </div>
+                     
+                        <div class="form-group" id="div_fallecidomontos">
+                            <h5>Detalle de la Ayuda Funeral</h5>
+                            <hr />
+
+                            <table cellspacing="1" cellpadding="2" style="width: 100%;" id="tblayudafuneral" class="table table-striped table-hover table-bordered table-hd">
+                                <thead>
+                                    <tr class="gridheader">
+                                        <td valign="middle" align="center" style="width: 2%;">
+                                            <input id="chkAll" type="checkbox" />
+                                        </td>
+                                       
+                                        <td style="width: 25%;"><b>Periodo</b></td>
+                                        <td style="width: 25%;"><b>Tipo de Pago</b></td>
+                                        <td style="width: 25%;"><b>Descripción</b></td>
+                                        <td style="width: 25%;"><b>Nombre Fallecido</b></td>
+                                        <td style="width: 25%;"><b>Fecha de Ocurrencia</b></td>
+                                        <td style="width: 25%;"><b>Parentesco</b></td>
+                                        <td style="width: 25%;"><b>Monto C$</b></td>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodytblayudafuneral"></tbody>
+
+                            </table>
+                            @*<div class="col-md-2">
+                                @Html.LabelFor(model => model.periodesc_funeral)
+                                @Html.EditorFor(model => model.periodesc_funeral, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.socio_ocurrencia)
+                                @Html.DropDownList("socio_ocurrencia", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+
+                            </div>*@
+
+                            <div class="col-md-offset-8 col-md-4">
+                                @Html.LabelFor(model => model.monto_funeral)
+                                @Html.EditorFor(model => model.monto_funeral, new { htmlAttributes = new { @class = "form-control", @readonly = "true" ,@type="number"} })
+
+                            </div>
+                        </div>
+                        <div class="form-group" id="div_fallecido">
+
+                            @*<div class="col-md-6">
+                                @Html.LabelFor(model => model.nombre_fallecido)
+                                @Html.EditorFor(model => model.nombre_fallecido, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+
+                            </div>
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.parentesco)
+                                @Html.DropDownList("PARENTESCO", null, "--Seleccione--", htmlAttributes: new { @class = "form-control", @readonly = "true" })
+
+                            </div>
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.fecha_ocurrencia)
+                                <input type="text" id="fecha_ocurrencia" readonly />
+                                <script>
+                                    var hoy = new Date().toLocaleTimeString();
+                                    $('#fecha_ocurrencia').datepicker({
+                                        uiLibrary: 'bootstrap', format: 'dd/mm/yyyy'
+                                    });
+                                </script>
+
+                            </div>*@
+                        </div>
+                        <div class="form-group divconbordes">
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.monto_dolar)
+                                @Html.EditorFor(model => model.monto_dolar, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.monto_cordoba)
+                                @Html.EditorFor(model => model.monto_cordoba, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+
+
+                    }
+                </div>
+                    </div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="white-box">
+            <div class="details">
+                <div class="row">
+
+                    <div class="white-box">
+                        <div class="details" id="divconvertidor">
+                            <h5>Tipo de Cambio</h5>
+
+                            <form id="cuadro">
+                                <table class="tablalinea">
+                                    <tr>
+                                        <th class="tablalinea">
+                                            @Html.Label("Compra:")
+                                        </th>
+                                        <td class="tablalinea">
+                                            @Html.Editor("TC_COMPRA", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </td>
+                                        <td class="tablalinea">
+                                            @Html.Label("Venta: ")
+                                        </td>
+                                        <td class="tablalinea">
+                                            @Html.Editor("TC_VENTA", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </td>
+                                    </tr>
+                                    <tr></tr>
+                                </table>
+
+                            </form>
+                            <div class="row"></div>
+                            <div class="form-group" id="dato_deposito">
+
+                                <hr />
+                                <h5>Forma de Pago Depósito</h5>
+                                <div class="col-md-6">
+                                    @Html.LabelFor(model => model.minuta)
+                                    @Html.EditorFor(model => model.minuta, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                                <div class="col-md-5">
+                                    @Html.LabelFor(model => model.fecha_minuta)
+                                    <input type="text" id="fecha_minuta" />
+                                    <script>
+                                        var hoy = new Date().toLocaleTimeString();
+                                        $('#fecha_minuta').datepicker({
+                                            uiLibrary: 'bootstrap', format: 'dd/mm/yyyy'
+                                        });
+                                    </script>
+
+                                </div>
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.concepto)
+                                    @Html.EditorFor(model => model.concepto, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                            </div>
+                            <div class="row" id="efectivo">
+                                <hr />
+                                <h5>Detalle de  Efectivo</h5>
+                                <div class="col-md-2">
+
+                                    <h5>Córdobas</h5>
+                                    <hr />
+                                    <table class="space">
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td> <b>Entrega</b></td>
+                                            <td><b>Recibe</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> C$1000</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE1000" placeholder="0" name="cantE1000" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR1000" placeholder="0" name="cantE1000" min="0" step="1" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> C$ 500</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE500" placeholder="0" name="cantE500" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR500" placeholder="0" name="cantE500" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> C$ 200</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE200" placeholder="0" name="cantE200" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR200" placeholder="0" name="cantE200" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> C$ 100</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE100" placeholder="0" name="cantE100" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR100" placeholder="0" name="cantE100" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> C$ 50</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE50" placeholder="0" name="cantE50" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR50" placeholder="0" name="cantE50" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> C$ 20</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE20" placeholder="0" name="cantE20" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR20" placeholder="0" name="cantE20" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> C$ 10</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE10" placeholder="0" name="cantE10" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR10" placeholder="0" name="cantE10" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> C$ 5</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE5" placeholder="0" name="cantE5" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR5" placeholder="0" name="cantE5" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> C$ 1</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE1" placeholder="0" name="cantE1" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR1" placeholder="0" name="cantE1" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> C$ 0.50</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE050" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR050" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> C$ 0.25</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE025" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR025" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <b> C$ 0.10</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE010" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR010" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <b> C$ 0.05</b>
+
+                                            <td>
+                                                <input type="text" id="cantE005" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR005" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <b> C$ 0.01</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE001" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR001" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> EntregaC$</b>
+
+                                            </td>
+                                            <td colspan="2">
+                                                <input type="text" id="cantE" placeholder="0" name="cantE" min="0" style="width : 150px; heigth : 150px;  color:black" readonly="readonly" class="input-box">
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> RecibeC$</b>
+
+                                            </td>
+
+                                            <td colspan="2">
+                                                <input type="text" id="cantR" name="cantR" placeholder="0" min="0" style="width : 150px; heigth : 150px;  color:black" readonly="readonly" class="input-boxR">
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div id="deno_recibida" class="tablecontainer"></div>
+
+
+
+                                </div>
+                                <div class="col-md-offset-4 col-md-2">
+
+
+                                    <h5>Dólares</h5>
+                                    <hr />
+                                    <table class="space">
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td> <b>Entrega</b></td>
+                                            <td><b>Recibe</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> U$ 100</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE100D" placeholder="0" name="cantE100D" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR100D" placeholder="0" name="cantE100D" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> U$ 50</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE50D" placeholder="0" name="cantE50D" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR50D" placeholder="0" name="cantE50D" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> U$ 20</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE20D" placeholder="0" name="cantE20D" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR20D" placeholder="0" name="cantE20D" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> U$ 10</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE10D" placeholder="0" name="cantE10D" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR10D" placeholder="0" name="cantE10D" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> U$ 5</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE5D" placeholder="0" name="cantE5D" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR5D" placeholder="0" name="cantE5D" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> U$ 2</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE2D" placeholder="0" name="cantE2D" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR2D" placeholder="0" name="cantE2D" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> U$ 1</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE1D" placeholder="0" name="cantE1D" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR1D" placeholder="0" name="cantE1D" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <b> U$ 0.50</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE050D" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR050D" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> U$ 0.25</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE025D" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR025D" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <b> U$ 0.10</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE010D" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR010D" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <b> U$ 0.05</b>
+
+                                            <td>
+                                                <input type="text" id="cantE005D" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR005D" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <b> U$ 0.01</b>
+
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantE001D" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="cantR001D" placeholder="0" min="0" style="width : 70px; heigth : 70px">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> EntregaU$</b>
+
+                                            </td>
+                                            <td colspan="2">
+                                                <input type="text" id="cantED" placeholder="0" name="cantED" min="0" style="width : 150px; heigth : 150px;color:black" readonly="readonly" class="input-box">
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b> RecibeU$</b>
+
+                                            </td>
+
+                                            <td colspan="2">
+                                                <input type="text" id="cantRD" placeholder="0" name="cantRD" min="0" style="width : 150px; heigth : 150px;color:black" readonly="readonly" class="input-boxR">
+
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                    <div id="deno_entregada" class="tablecontainer"></div>
+
+
+                                </div>
+                            </div>
+                          
+
+                            @*<hr />
+                            <h5>Convertidor</h5>
+
+                            
+                            <div class="row">
+                                <div class=" col-md-2">
+                                    @Html.Editor("Simbolo", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                </div>
+
+
+                                <div class=" col-md-4">
+                                    @Html.Editor("ConvertidorSimbolo", new { htmlAttributes = new { @class = "form-control" } })
+
+
+
+                                </div>
+                                <div class=" col-md-3">
+                                    <input id="calcular" type="button" value="Calcular" class="btn btn-success btn-lg " style="padding:5px 5px" />
+
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="  col-md-6">
+                                    @Html.Editor("cantidadconvertida", new { htmlAttributes = new { @class = "form-control", @readonly = false } })
+
+                                </div>
+                            </div>*@
+
+                        </div>
+                    </div>
+                
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+<link href="~/Content/DataTables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.bootstrap.min.js"></script>
+@section Scripts{
+    <script src="~/Scripts/jquery-ui.js"></script>
+
+    <script>
+        $('#div_fallecido').hide();
+        $('#div_fallecidomontos').hide();
+       $('#dato_deposito').hide();
+        $('#cuotas').hide();
+        $('#detalle_prestamo').hide();
+        $('#detalle_aportacion').hide();
+        $('#efectivo').hide();
+        $('#dato_socio').hide();
+        $('#dato_socioNOM').hide();
+        var total_cuotas;
+        var total_cuotas_aportacion;
+        var monto_ahorro;
+      
+        $(document).ready(function () {
+            $(function () {
+                $("#chkAll").click(function () {
+                    var chkAll = this;
+                    var chkRows = $("#tblayudafuneral").find(".chkRow");
+
+                    chkRows.each(function () {
+                        $(this)[0].checked = chkAll.checked;
+                    });
+
+                   
+                });
+            });
+
+
+            $(".chkRow").click(function () {
+                let total = 0;
+                //Determine the reference CheckBox in Header row.
+                var chkAll = $("#chkAll");
+
+                //By default set to Checked.
+                chkAll.attr("checked", "checked");
+
+                //Fetch all row CheckBoxes in the Table.
+                var chkRows = $("#tblayudafuneral").find(".chkRow");
+
+                //Execute loop over the CheckBoxes and if even one CheckBox
+                //is unchecked then Uncheck the Header CheckBox.
+                chkRows.each(function () {
+                    if (!$(this).is(":checked")) {
+                        chkAll.removeAttr("checked", "checked");
+                        return;
+                    }
+                });
+
+    
+            });
+
+            $("#tblayudafuneral").on('change', 'tbody input', function () {
+
+                var selected = [];
+                var total = 0;
+              $("#tblayudafuneral input[type=checkbox]:checked").each(function () {
+                    var row = $(this).closest("tr")[0];
+                    selected.push( row.cells[7].innerHTML );
+                });
+
+                //Display the selected CheckBox values.
+                if (selected.length > 0) {
+                    $.each(selected, function (index, value) {
+
+                        total = parseFloat(value) + parseFloat(total);
+
+                    })
+                    $("#monto_funeral").val(total);
+
+                }
+                else { $("#monto_funeral").val(0); }
+
+            });
+
+    
+
+            $("#tblayudafuneral").on('change', 'thead input', function () {
+
+                var selected = [];
+                var total = 0;
+                $("#tblayudafuneral input[type=checkbox]:checked").each(function () {
+                    var row = $(this).closest("tr")[0];
+                    if (row.cells[7].innerHTML != "<b>Monto C$</b>")
+                    selected.push(row.cells[7].innerHTML);
+                });
+
+                
+                //Display the selected CheckBox values.
+                if (selected.length > 0) {
+                    $.each(selected, function (index, value) {
+
+                        total = parseFloat(value) + parseFloat(total);
+
+                    })
+                    $("#monto_funeral").val(total);
+
+                }
+                else { $("#monto_funeral").val(0); }
+
+            });
+
+        });
+
+        
+        $(document).ready(function () {
+
+
+            var valor = $("#TRANSACCION").val();
+           $("#nombres").autocomplete({
+                dataType: 'JSON',
+                source: function (request, response) {
+                    jQuery.ajax({
+                        url: "/Caja/BuscarSocio",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            nombre: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    id: item.Id,
+                                    value: item.Name,
+                                    cedula: item.Cedula,
+                                    empleado: item.Empleado,
+                                    cuota: item.Cuota,
+                                    salario: item.Salario,
+                                    tipo_pago: item.Tipo_Pago,
+                                    aportaciones:item.aportacion
+                                }
+                            }))
+                        }
+                    })
+                },
+                select: function (e, ui) {
+                    $("#socio").val(ui.item.id);
+                    $("#empleado").val(ui.item.empleado);
+                    $("#aportacion").val(ui.item.aportaciones);
+                    $("#prestamo").empty();
+                    $("#tbodytblayudafuneral").empty();
+
+                   
+
+                    if ($("#TRANSACCION").val() == 7) { $("#monto_dolar").val(ui.item.cuota); }
+                    else if ($("#TRANSACCION").val() == 4)//retiro de ayuda funeral
+                    {
+                        $.ajax({
+
+                             type: 'POST',
+                             url: '@Url.Action("GetAyudaFuneral")',
+                             dataType: 'json',
+                         data: { socio: ui.item.id },
+
+                             success: function (states) {
+                                 if (states.status == true) {
+                                     var detayuda = states.ayudas;
+                                    console.log(detayuda);
+                  
+                                     jQuery.each(detayuda, function (i, val) {
+                                         $("#tblayudafuneral").find('tbody')
+                                             .append('<tr> <td valign="middle" align="center" style="width: 2%;"><input class="chkRow"  type = "checkbox"  /></td><td>' + val.Periodo + '</td><td>' + val.Tipo_Pago + ' </td><td>' + val.Descripcion + '</td><td>' + val.Nombre_Fallecido + '</td><td>' + val.Fecha_Ocurrencia + '</td><td>' + val.Parentesco + '</td><td>' + val.Monto_Ayuda + '</td></tr>');
+                                     });
+                                    
+                                     
+                                 }
+                            },
+                            error: function (ex) {
+                                alert('Error al obtener la información de ayuda funeral.' + ex);
+                            }
+                             });        
+                    }
+                 
+
+                }
+            })
+        })//fin funtion
+
+     
+
+        //function checkAll() {
+        //    $('#tblayudafuneral tbody input[type="checkbox"]').prop('checked', this.checked);
+        //}
+
+        $(document).ready(function () {
+
+
+            GetTCALL("1", "C");
+            GetTCALL("2", "V");
+                    var desc_recibido;
+                    var desc_entregado;
+                    var Denominacion = [];
+            var Denominacion_Rec = [];
+            var selected = [];
+            
+                    $('#FormaPago').change(function () {
+                        var text = $(this).find('option:selected').text();
+                             var valor = $("#FormaPago").val();
+
+                        if (valor == 'E') {
+                            $('#dato_deposito').hide();
+                            $('#efectivo').show();
+                        }
+                        //compra de divisas
+                        else if (valor == 'D') {
+                            $('#dato_deposito').show();
+                            $('#efectivo').hide();
+                        }
+                        //venta de divisas
+                        else if (valor == 'AA') {
+                            $('#dato_deposito').hide();
+                            $('#efectivo').hide();
+                        }
+                    });
+
+      
+                    //funcion para cambiar transaccion
+                    $('#TRANSACCION').change(function () {
+                        var text = $(this).find('option:selected').text();
+                        var valor = $("#TRANSACCION").val();
+                        clear();
+                        $("#prestamo").empty();
+                        //fondo ayuda funeral
+                        if (valor == 4) {
+                            GetTC(valor, 'V');
+                            GetTConsecutivo(valor, '');
+                            $('#div_fallecido').show();
+                            $('#div_fallecidomontos').show();
+                            $('#dato_deposito').hide();
+                            $('#dato_socio').show();
+                            $('#dato_socioNOM').show();
+                            $("#monto_cordoba").removeAttr("disabled");
+                            $("#monto_dolar").prop('disabled',true);
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $('#cuotas').hide();
+                            $('#detalle_aportacion').hide();
+                            $("#monto_dolar").val("0");
+                           
+                        }
+                        //compra de divisas
+                        else if (valor == 1) {
+                            GetTC(valor, 'C');
+                            GetTConsecutivo(valor, '');
+                            $("#monto_cordoba").prop('disabled', true);
+                            $('#dato_deposito').hide();
+                            $("#monto_cordoba").val("0");
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $("#monto_dolar").removeAttr("disabled");
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $('#dato_socioNOM').show();
+                            $("#calcular").css('visibility', 'visible');
+                            $('#cuotas').hide();
+                            $('#detalle_aportacion').hide();
+                            $("#Simbolo").val("$");
+                            $("#ConvertidorSimbolo").val("0.0");
+                            //$('#efectivo').show();
+                            $("#cantidadconvertida").val("C$0.0");
+                            
+
+                        }
+                        //venta de divisas
+                        else if (valor == 2) {
+                            GetTC(valor, 'V');
+                            GetTConsecutivo(valor, '');
+                            $("#monto_cordoba").prop('disabled', true);
+                            $("#monto_cordoba").val("0");
+                            $("#monto_dolar").removeAttr("disabled");
+                            $('#dato_deposito').hide();
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $('#dato_socioNOM').show();
+                            $("#calcular").css('visibility', 'visible');
+                            $('#cuotas').hide();
+                            $('#detalle_aportacion').hide();
+                            $("#Simbolo").val("C$");
+                            $("#ConvertidorSimbolo").val("0.0");
+                            $("#cantidadconvertida").val("$0.0");
+                            
+                        }
+                        //reembolso de divisas compras
+                        else if (valor == 3) {
+                            GetTC(valor, 'C');
+                            GetTConsecutivo(valor, '');
+                            $("#monto_dolar").prop('disabled', true);
+                            $('#dato_deposito').hide();
+                            $("#monto_dolar").val("0");
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $("#monto_cordoba").removeAttr("disabled");
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').hide();
+                            $('#dato_socioNOM').hide();
+                            $('#cuotas').hide();
+                            $("#calcular").css('visibility', 'visible');
+                            $('#detalle_aportacion').hide();
+                            $("#Simbolo").val("$");
+                            $("#ConvertidorSimbolo").val("0.0");
+                            //$('#efectivo').show();
+                            $("#cantidadconvertida").val("C$0.0");
+
+                        }
+                        //reembolso de divisas ventas
+                        else if (valor == 5) {
+                            GetTC(valor, 'V');
+                            GetTConsecutivo(valor, '');
+                            $("#monto_cordoba").prop('disabled', true);
+                            $('#dato_deposito').hide();
+                            $("#monto_cordoba").val("0");
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $("#monto_dolar").removeAttr("disabled");
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').hide();
+                            $('#dato_socioNOM').hide();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').hide();
+                            $('#detalle_aportacion').hide();
+                            $("#Simbolo").val("C$");
+                            $("#ConvertidorSimbolo").val("0.0");
+                            $("#cantidadconvertida").val("$0.0");
+
+                        }
+                        else if (valor == 6) {
+                            GetTC(valor, 'V');
+                            GetTConsecutivo(valor, '');
+                            $('#dato_deposito').hide();
+                            $("#monto_cordoba").val("0");
+                            $("#monto_dolar").removeAttr("disabled");
+                            $("#monto_cordoba").prop('disabled', true);
+                            $("#prestamo").removeAttr("disabled");
+                            $('#detalle_prestamo').show();
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $('#dato_socioNOM').show();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').show();
+                            $("#Pago").empty();
+                            $('#detalle_aportacion').hide();
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetTipo_Pago")',
+                                dataType: 'json',
+                                data: { transaccion: $("#TRANSACCION").val() },
+
+                                success: function (states) {
+
+                                    $.each(states, function (i, state) {
+                                        $("#Pago").append('<option value="' + state.Value + '">' +
+                                            state.Text + '</option>');
+
+                                    });
+                                },
+                                error: function (ex) {
+                                    alert('Failed to retrieve states.' + ex);
+                                }
+                            });
+                            return false;
+
+                        }
+                            //Deposito de ahorro
+                        else if (valor == 7)
+                        {
+                            GetTC(valor, 'V');
+                            GetTConsecutivo(valor, '');
+                            $('#dato_deposito').hide();
+                            $("#monto_cordoba").val("0");
+                            $("#monto_dolar").removeAttr("disabled");
+                            $("#monto_cordoba").prop('disabled', true);
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $('#dato_socioNOM').show();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').show();
+                            $('#detalle_aportacion').hide();
+                        }
+                        //Deposito de ahorro extraordinario
+                        else if (valor == 8) {
+                            GetTConsecutivo(valor, '');
+                            GetTC(valor, 'V');
+                            $('#dato_deposito').hide();
+                            $("#monto_cordoba").val("0");
+                            $("#monto_dolar").removeAttr("disabled");
+                            $("#monto_cordoba").prop('disabled', true);
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $('#dato_socioNOM').show();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').show();
+                            $('#detalle_aportacion').hide();
+                        }
+                        //pago de aportacion
+                        else if (valor == 10) {
+                            GetTC(valor, 'V');
+                            GetTConsecutivo(valor, '');
+                            $('#dato_deposito').hide();
+                            $("#monto_dolar").val("0");
+                            $("#monto_cordoba").removeAttr("disabled");
+                            $("#monto_dolar").prop('disabled', true);
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $('#dato_socioNOM').show();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').show();
+                            $("#Pago_aportacion").empty();
+                            $('#detalle_aportacion').show();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetTipo_Pago_Aportacion")',
+                                dataType: 'json',
+                                data: { transaccion: $("#TRANSACCION").val() },
+
+                                success: function (states) {
+
+                                    $.each(states, function (i, state) {
+                                        $("#Pago_aportacion").append('<option value="' + state.Value + '">' +
+                                            state.Text + '</option>');
+
+                                    });
+                                },
+                                error: function (ex) {
+                                    alert('Failed to retrieve states.' + ex);
+                                }
+                            });
+
+                        }
+                        //pago de afiliacion
+                        else if (valor == 11) {
+                            GetTC(valor, 'V');
+                            GetTConsecutivo(valor, '');
+                            $('#dato_deposito').hide();
+                            $("#monto_dolar").val("0");
+                            $("#monto_cordoba").removeAttr("disabled");
+                            $("#monto_dolar").prop('disabled', true);
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').show();
+                            $('#dato_socioNOM').show();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').show();
+                            $('#detalle_aportacion').hide();
+                        }
+
+                        else if (valor == 13) {
+                            GetTC(valor, 'V');
+                            GetTConsecutivo(valor, '');
+                            $("#monto_dolar").prop('disabled', true);
+                            $('#dato_deposito').hide();
+                            $("#monto_dolar").val("0");
+                            $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $("#monto_cordoba").removeAttr("disabled");
+                            $('#div_fallecido').hide();
+                            $('#div_fallecidomontos').hide();
+                            $('#dato_socio').hide();
+                            $('#dato_socioNOM').hide();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').hide();
+                            $('#detalle_aportacion').hide();
+                        }//reembolso de fondo de ayuda funeral
+
+                        else if (valor == 15) {
+                            GetTC(valor, 'V');
+                            GetTConsecutivo(valor, '');
+                            $('#dato_deposito').hide();
+                            $("#monto_cordoba").val("0");
+                            $("#monto_dolar").removeAttr("disabled");
+                            $("#monto_cordoba").prop('disabled', true);
+                           $("#prestamo").prop('disabled', true);
+                            $('#detalle_prestamo').hide();
+                            $('#div_fallecido').hide();
+                            $('#dato_socio').hide();
+                            $('#dato_socioNOM').hide();
+                            $("#calcular").css('visibility', 'hidden');
+                            $('#cuotas').hide();
+                            $('#detalle_aportacion').hide();
+                            $('#div_fallecidomontos').hide();
+                        }//reembolso de caja rapida
+
+                    });//fin funcion select transaccion der caja
+  
+
+                    $('#calcular').click(function () {
+                        //Check validation of order item
+                        var valor = $("#TRANSACCION").val();
+                        var isValidAll = true;
+
+                        if (valor.trim() == '') {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Debe seleccionar la transacción que desea realizar',
+                                footer: ''
+                            })
+                            isValidAll = false;
+                        }
+
+                        else {
+                            if (valor == 1) {//COMPRA DIVISAS
+                                //validamos si monto dolar no esta vacio
+                           
+                                if ($('#ConvertidorSimbolo').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe ingresar un monto a convertir',
+                                        footer: ''
+                                    })
+                                    isValidAll = false;
+                                }
+
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAll = false;
+                                }
+                            }
+                            else if (valor == 2) {//VENTA DIVISAS
+                               
+                                if ($('#ConvertidorSimbolo').val().trim() == '' ) {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe ingresar un monto a convertir',
+                                        footer: ''
+                                    })
+                                    isValidAll = false;
+                                }
+                           
+                            }
+
+                        }
+
+                        if (isValidAll) {
+                            if (valor == 1) {//COMPRA
+                              
+                                var dolar = $('#ConvertidorSimbolo').val().trim();
+                                var tc = $('#tc').val().trim();
+                                var calc = parseFloat(dolar) * parseFloat(tc);
+                                var calc = 'C$' + calc.toFixed(2)
+                                $("#cantidadconvertida").val(calc);
+                            }
+                            else if (valor == 2) {
+                                 
+                                    var tc = $('#tc').val().trim();
+                                                        
+
+                                var cordoba = $('#ConvertidorSimbolo').val().trim();
+                                var calc = parseFloat(cordoba) / parseFloat(tc);
+                                var calc = '$' + calc.toFixed(2)
+                                $("#cantidadconvertida").val(calc);
+                             
+
+
+
+                            }
+
+
+
+                        }
+
+
+                    });//fin boton calcular
+
+                    $('#submit').click(function ()
+                    {
+                        //Check validation of order item
+                        var valor = $("#TRANSACCION").val();
+                        var isValidAlls = true;
+                        var formapago = $("#FormaPago").val();
+                        Denominacion = [];
+                        Denominacion_Rec = [];
+                        if (valor.trim() == '') {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Debe seleccionar la transacción que desea realizar',
+                                footer: ''
+                            })
+                            isValidAlls = false;
+                        }
+                        else if (formapago.trim() == '') {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Debe seleccionar la forma de Pago',
+                                footer: ''
+                            })
+                            isValidAlls = false;
+                        }
+                        else {
+
+                            if (formapago.trim() == 'D') {
+                                if ($('#minuta').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe ingresar el numero de deposito',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else if ($('#fecha_minuta').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe ingresar la fecha del deposito',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                            }
+                            else if (formapago.trim() == 'E')
+                            {
+
+                                var entregada = $('#cantE').val();
+                                var recibida = $('#cantR').val();
+                                var entregadaD = $('#cantED').val();
+                                var recibidaD = $('#cantRD').val();
+                                if (valor == 1 || valor==2)
+                                {
+
+                                    if (entregada.trim() === '' && recibida.trim() === '' && entregadaD.trim() === '' && recibidaD.trim() === '')
+                                    {
+                                        Swal.fire({
+                                            type: 'error',
+                                            title: 'Error!',
+                                            text: 'Debe detallar las denominaciones entregadas y recibidas',
+                                            footer: ''
+                                        })
+                                        isValidAlls = false;
+                                    }
+                                    else if (entregada.trim() === 0 && recibida.trim() === 0 && entregadaD.trim() === 0 && recibidaD.trim() === 0)
+                                    {
+                                        Swal.fire({
+                                            type: 'error',
+                                            title: 'Error!',
+                                            text: 'Debe detallar las denominaciones entregadas y recibidas',
+                                            footer: ''
+                                        })
+                                        isValidAlls = false;
+                                    }
+
+                                }
+                                else if (valor == 3 || valor==5 || valor==6 || valor==7 || valor==11 || valor==10 || valor==13 || valor==15)
+                                {
+                                    //if (Denominacion.length == 0) {
+                                    //    $('#deno_recibida').html('<span style="color:red;">Por favor agregue el detalle de las denominaciones recibidas</span>');
+                                    //    isValidAlls = false;
+                                    //}
+
+
+                                    if (entregada.trim() === '' && recibida.trim() === '' && entregadaD.trim() === '' && recibidaD.trim() === '') {
+                                        Swal.fire({
+                                            type: 'error',
+                                            title: 'Error!',
+                                            text: 'Debe detallar las denominaciones entregadas y recibidas',
+                                            footer: ''
+                                        })
+                                        isValidAlls = false;
+                                    }
+                                    else if (entregada.trim() === 0 && recibida.trim() === 0 && entregadaD.trim() === 0 && recibidaD.trim() === 0) {
+                                        Swal.fire({
+                                            type: 'error',
+                                            title: 'Error!',
+                                            text: 'Debe detallar las denominaciones entregadas y recibidas',
+                                            footer: ''
+                                        })
+                                        isValidAlls = false;
+                                    }
+                                }
+
+
+                            }
+
+                            if (valor == 1) {
+
+                                if ($('#monto_dolar').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de dólar no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#socio').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El socio es requerido',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                               else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                            }
+                            else if (valor == 3) {
+
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#monto_cordoba').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de cordoba no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                            }
+                            else if (valor == 2) {
+                               
+
+                                //validamos si monto dolar no esta vacio
+                                if ($('#monto_cordoba').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de cordoba no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#socio').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El socio es requerido',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                            }
+                            else if (valor == 4) {//ayuda funeral
+
+                               // var selected = [];
+
+                                //Reference the CheckBoxes and insert the checked CheckBox value in Array.
+                                $("#tblayudafuneral input[type=checkbox]:checked").each(function () {
+                                    var row = $(this).closest("tr")[0];
+                                    if (row.cells[1].innerHTML !="<b>Periodo</b>")
+                                    selected.push({ "Periodo": row.cells[1].innerHTML, "Tipo_Pago": row.cells[2].innerHTML });
+                                });
+
+                                console.log(selected);
+                                //Display the selected CheckBox values.
+                                //if (selected.length > 0) {
+                                //    Swal.fire({
+                                //        type: 'error',
+                                //        title: 'Error!',
+                                //        text: 'Seleccione las ayuda funeral a recibir',
+                                //        footer: ''
+                                //    })
+                                //    isValidAlls = false;
+                                //}
+
+                                
+                            
+                               
+
+                                if ($('#monto_funeral').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Seleccione las ayuda funeral a recibir',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#monto_cordoba').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de cordoba no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else
+                                {
+                                    if ($('#monto_funeral').val().trim() != $('#monto_cordoba').val().trim())
+                                    {
+                                        Swal.fire({
+                                            type: 'error',
+                                            title: 'Error!',
+                                            text: 'El monto del retiro no coincide con el total de la ayuda',
+                                            footer: ''
+                                        })
+                                        isValidAlls = false;
+                                    }
+                                }
+
+                                
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de depósito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del depósito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+
+                            }
+                            else if (valor == 5) {
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#monto_dolar').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de dolar no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                            }
+                            else if (valor == 6) {//RECUPERACION DE CREDITO
+
+                                if ($('#prestamo').val().trim() == '0' || $('#prestamo').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar el prestamo',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else if ($('#Pago').val().trim() == '0' || $('#Pago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar el tipo de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+
+                                else if ($('#monto_dolar').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de dolar no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                else if ($('#monto_dolar').val().trim() != $('#total_monto_cuotas').val().trim())
+                                {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto del deposito no coincide con el total de cuotas',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+
+                            }
+                            else  if (valor == 7) {
+
+                                if ($('#monto_dolar').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de dólar no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#socio').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El socio es requerido',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                            }
+                            else if (valor == 8) {
+
+                                if ($('#monto_dolar').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de dólar no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#socio').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El socio es requerido',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                            }
+                            else if (valor == 10) {
+
+                                if ($('#monto_cordoba').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de cordoba no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#socio').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El socio es requerido',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                                if ($('#cant_cuotas_aportacion').val().trim() == '') {
+                                    isValidAlls = false;
+                                    $('#cant_cuotas_aportacion').siblings('span.error').css('visibility', 'visible');
+                                }
+                                else {
+                                    $('#cant_cuotas_aportacion').siblings('span.error').css('visibility', 'hidden');
+                                }
+
+                                if ($('#monto_cuotas_aportacion').val().trim() == '') {
+                                    isValidAlls = false;
+                                    $('#monto_cuotas_aportacion').siblings('span.error').css('visibility', 'visible');
+                                }
+                                else {
+                                    $('#monto_cuotas_aportacion').siblings('span.error').css('visibility', 'hidden');
+                                }
+                            }
+                            else if (valor == 11) {
+
+                                if ($('#monto_cordoba').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de dólar no debe estar Vacio',
+                                        footer: ''
+                                    });
+                                    isValidAlls = false;
+                                }
+                                if ($('#socio').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El socio es requerido',
+                                        footer: ''
+                                    });
+                                    isValidAlls = false;
+                                }
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                            }
+                            else if (valor == 13) {
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#monto_cordoba').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de cordoba no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                            }
+                            else if (valor == 15) {
+                                if ($('#TRANSACCION').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la transacción que desea realizar',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#monto_dolar').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'El monto de dólar no debe estar Vacio',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                if ($('#FormaPago').val().trim() == '') {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Debe seleccionar la forma de pago',
+                                        footer: ''
+                                    })
+                                    isValidAlls = false;
+                                }
+                                else {
+                                    if (valor == 'D') {
+                                        if ($('#minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar el numero de deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                        else if ($('#fecha_minuta').val().trim() == '') {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Debe ingresar la fecha del deposito',
+                                                footer: ''
+                                            })
+                                            isValidAlls = false;
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+
+                        //Guardar si todo esta bien
+                        if (isValidAlls) {
+
+                            Denominacion.push({ DENOMINACION: '1', CANTIDAD: isNaN(parseInt($('#cantE1000').val().trim())) ? 0 : parseInt($('#cantE1000').val().trim()), RECIBIDA: 'N', ENTREGADA:'S' });
+                            Denominacion.push({ DENOMINACION: '2', CANTIDAD: isNaN(parseInt($('#cantE500').val().trim())) ? 0 : parseInt($('#cantE500').val().trim()) , RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '3', CANTIDAD: isNaN(parseInt($('#cantE200').val().trim())) ? 0 : parseInt($('#cantE200').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '4', CANTIDAD: isNaN(parseInt($('#cantE100').val().trim())) ? 0 : parseInt($('#cantE100').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '5', CANTIDAD: isNaN(parseInt($('#cantE50').val().trim())) ? 0 : parseInt($('#cantE50').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '6', CANTIDAD: isNaN(parseInt($('#cantE20').val().trim())) ? 0 : parseInt($('#cantE20').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '7', CANTIDAD: isNaN(parseInt($('#cantE10').val().trim())) ? 0 : parseInt($('#cantE10').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '9', CANTIDAD: isNaN(parseInt($('#cantE5').val().trim())) ? 0 : parseInt($('#cantE5').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '10', CANTIDAD: isNaN(parseInt($('#cantE1').val().trim())) ? 0 : parseInt($('#cantE1').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '11', CANTIDAD: isNaN(parseInt($('#cantE050').val().trim())) ? 0 : parseInt($('#cantE050').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '12', CANTIDAD: isNaN(parseInt($('#cantE025').val().trim())) ? 0 : parseInt($('#cantE025').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S'});
+                            Denominacion.push({ DENOMINACION: '13', CANTIDAD: isNaN(parseInt($('#cantE010').val().trim())) ? 0 : parseInt($('#cantE010').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '14', CANTIDAD: isNaN(parseInt($('#cantE005').val().trim())) ? 0 : parseInt($('#cantE005').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '27', CANTIDAD: isNaN(parseInt($('#cantE001').val().trim())) ? 0 : parseInt($('#cantE001').val().trim()) , RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '15', CANTIDAD: isNaN(parseInt($('#cantE100D').val().trim())) ? 0 : parseInt($('#cantE100D').val().trim()) , RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '16', CANTIDAD: isNaN(parseInt($('#cantE50D').val().trim())) ? 0 : parseInt($('#cantE50D').val().trim()) , RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '17', CANTIDAD: isNaN(parseInt($('#cantE20D').val().trim())) ? 0 : parseInt($('#cantE20D').val().trim()) , RECIBIDA: 'N', ENTREGADA: 'S'});
+                            Denominacion.push({ DENOMINACION: '18', CANTIDAD: isNaN(parseInt($('#cantE10D').val().trim())) ? 0 : parseInt($('#cantE10D').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '19', CANTIDAD: isNaN(parseInt($('#cantE5D').val().trim())) ? 0 : parseInt($('#cantE5D').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S'});
+                            Denominacion.push({ DENOMINACION: '20', CANTIDAD: isNaN(parseInt($('#cantE2D').val().trim())) ? 0 : parseInt($('#cantE2D').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '21', CANTIDAD: isNaN(parseInt($('#cantE1D').val().trim())) ? 0 : parseInt($('#cantE1D').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S'});
+                            Denominacion.push({ DENOMINACION: '22', CANTIDAD: isNaN(parseInt($('#cantE050D').val().trim())) ? 0 : parseInt($('#cantE050D').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '23', CANTIDAD: isNaN(parseInt($('#cantE025D').val().trim())) ? 0 : parseInt($('#cantE025D').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S'});
+                            Denominacion.push({ DENOMINACION: '24', CANTIDAD: isNaN(parseInt($('#cantE010D').val().trim())) ? 0 : parseInt($('#cantE010D').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S'});
+                            Denominacion.push({ DENOMINACION: '25', CANTIDAD: isNaN(parseInt($('#cantE005D').val().trim())) ? 0 : parseInt($('#cantE005D').val().trim()), RECIBIDA: 'N', ENTRGADA: 'S' });
+                            Denominacion.push({ DENOMINACION: '26', CANTIDAD: isNaN(parseInt($('#cantE001D').val().trim())) ? 0 : parseInt($('#cantE001D').val().trim()), RECIBIDA: 'N', ENTREGADA: 'S' });
+
+                            Denominacion_Rec.push({ DENOMINACION: '1', CANTIDAD: isNaN(parseInt($('#cantR1000').val().trim())) ? 0 : parseInt($('#cantR1000').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '2', CANTIDAD: isNaN(parseInt($('#cantR500').val().trim())) ? 0 : parseInt($('#cantR500').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '3', CANTIDAD: isNaN(parseInt($('#cantR200').val().trim())) ? 0 : parseInt($('#cantR200').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '4', CANTIDAD: isNaN(parseInt($('#cantR100').val().trim())) ? 0 : parseInt($('#cantR100').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '5', CANTIDAD: isNaN(parseInt($('#cantR50').val().trim())) ? 0 : parseInt($('#cantR50').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '6', CANTIDAD: isNaN(parseInt($('#cantR20').val().trim())) ? 0 : parseInt($('#cantR20').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '7', CANTIDAD: isNaN(parseInt($('#cantR10').val().trim())) ? 0 : parseInt($('#cantR10').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '9', CANTIDAD: isNaN(parseInt($('#cantR5').val().trim())) ? 0 : parseInt($('#cantR5').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N'});
+                            Denominacion_Rec.push({ DENOMINACION: '10', CANTIDAD: isNaN(parseInt($('#cantR1').val().trim())) ? 0 : parseInt($('#cantR1').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '11', CANTIDAD: isNaN(parseInt($('#cantR050').val().trim())) ? 0 : parseInt($('#cantR050').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '12', CANTIDAD: isNaN(parseInt($('#cantR025').val().trim())) ? 0 : parseInt($('#cantR025').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '13', CANTIDAD: isNaN(parseInt($('#cantR010').val().trim())) ? 0 : parseInt($('#cantR010').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '14', CANTIDAD: isNaN(parseInt($('#cantR005').val().trim())) ? 0 : parseInt($('#cantR005').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '27', CANTIDAD: isNaN(parseInt($('#cantR001').val().trim())) ? 0 : parseInt($('#cantR001').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '15', CANTIDAD: isNaN(parseInt($('#cantR100D').val().trim())) ? 0 : parseInt($('#cantR100D').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '16', CANTIDAD: isNaN(parseInt($('#cantR50D').val().trim())) ? 0 : parseInt($('#cantR50D').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '17', CANTIDAD: isNaN(parseInt($('#cantR20D').val().trim())) ? 0 : parseInt($('#cantR20D').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '18', CANTIDAD: isNaN(parseInt($('#cantR10D').val().trim())) ? 0 : parseInt($('#cantR10D').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '19', CANTIDAD: isNaN(parseInt($('#cantR5D').val().trim())) ? 0 : parseInt($('#cantR5D').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '20', CANTIDAD: isNaN(parseInt($('#cantR2D').val().trim())) ? 0 : parseInt($('#cantR2D').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '21', CANTIDAD: isNaN(parseInt($('#cantR1D').val().trim())) ? 0 : parseInt($('#cantR1D').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '22', CANTIDAD: isNaN(parseInt($('#cantR050D').val().trim())) ? 0 : parseInt($('#cantR050D').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '23', CANTIDAD: isNaN(parseInt($('#cantR025D').val().trim())) ? 0 : parseInt($('#cantR025D').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '24', CANTIDAD: isNaN(parseInt($('#cantR010D').val().trim())) ? 0 : parseInt($('#cantR010D').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '25', CANTIDAD: isNaN(parseInt($('#cantR005D').val().trim())) ? 0 : parseInt($('#cantR005D').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+                            Denominacion_Rec.push({ DENOMINACION: '26', CANTIDAD: isNaN(parseInt($('#cantR001D').val().trim())) ? 0 : parseInt($('#cantR001D').val().trim()), RECIBIDA: 'S', ENTREGADA: 'N' });
+
+                             
+
+                          
+                            var datas = {
+                                id: $('#ID').val().trim(),
+                                consecutivo: $('#consecutivo').val().trim(),
+                                transaccion: $('#TRANSACCION').val().trim(),
+                                tc: $('#tc').val().trim(),
+                                socio: $('#socio').val().trim(),
+                                socio_ocurrencia: $('#socio').val().trim(),
+                                //periodesc_funeral: $('#periodesc_funeral').val().trim(),
+                                monto_dolar: $('#monto_dolar').val().trim(),
+                                monto_cordoba: $('#monto_cordoba').val().trim(),
+                                minuta: $('#minuta').val().trim(),
+                                fecha_minuta: $('#fecha_minuta').val().trim(),
+                                concepto: $('#concepto').val().trim(),
+                               // nombre_fallecido: $('#nombre_fallecido').val().trim(),
+                               // parentesco: $('#PARENTESCO').val().trim(),
+                               // fecha_ocurrencia:$('#fecha_ocurrencia').val().trim(),
+                                prestamo: $('#prestamo').val() || '',
+                                cant_cuotas: $('#cant_cuotas').val().trim(),
+                                FormaPago: $('#FormaPago').val().trim(),
+                                tipo:'D',
+                                aportacion:$('#aportacion').val().trim(),
+                                cant_cuotas_aportacion:$('#cant_cuotas_aportacion').val().trim(),
+                                monto_cuotas_aportacion:$('#monto_cuotas_aportacion').val().trim(),
+                                Denominaciones_Recibidas: Denominacion,
+                                Denominaciones_Entregadas: Denominacion_Rec,
+                                helpfuneral:selected,
+                                cantE: isNaN(parseInt($('#cantE').val().trim())) ? 0 : parseInt($('#cantE').val().trim())    ,
+                                cantED: isNaN(parseInt($('#cantED').val().trim())) ? 0 : parseInt($('#cantED').val().trim())  ,
+                                cantR: isNaN(parseInt($('#cantR').val().trim())) ? 0 : parseInt($('#cantR').val().trim())  ,
+                                cantRD: isNaN(parseInt($('#cantRD').val().trim())) ? 0 : parseInt($('#cantRD').val().trim())  
+
+                            }
+                            $(this).val('Procesando...');
+                      
+                            $.ajax({
+                                url: '/Caja/Retiro',
+                                type: "POST",
+                                data: JSON.stringify(datas),
+                                dataType: "JSON",
+                                contentType: "application/json",
+                                success: function (d) {
+                                    //check is successfully save to database
+                                    if (d.status == true) {
+                                        //will send status from server side
+                                        Swal.fire({
+                                            position: 'center',
+                                            type: 'success',
+                                            title: 'Se guardaron los datos',
+                                            showConfirmButton: true
+
+                                        }).then((result) => {
+                                            if (result.value) {
+                                               
+                                                if ((d.transac == 4)) { window.open('/Caja/FormatoEntregaAyudaFuneral?comprobante=' + d.comprobante + '&consecutivo=' + d.consecutivo, '_blank'); }
+                                                else if ((d.transac == 6)) { window.open('/Caja/ComprobanteRecuperacion?comprobante=' + d.comprobante + '&consecutivo=' + d.consecutivo, '_blank'); }
+                                                else if ((d.transac == 8) || (d.transac == 11) || (d.transac == 10) || (d.transac == 7)) { window.open('/Caja/ComprobanteAhorro?comprobante=' + d.comprobante + '&consecutivo=' + d.consecutivo, '_blank'); }
+                                            }
+
+
+                                        })
+
+                                        //clear form
+                                        Denominacion = [];
+                                        Denominacion_Rec = [];
+                                        $('#TRANSACCION').val('');
+                                        $('#socio').val('');
+                                        $('#empleado').val('');
+                                        $('#nombres').val('');
+                                        $('#tc').val('');
+                                        $('#monto_dolar').val('');
+                                        $('#monto_cordoba').val('');
+                                        $('#minuta').val('');
+                                        $('#concepto').val('');
+                                
+                                        $('#prestamo').val('');
+                                        $('#cant_cuotas').val('');
+                                        $('#monto_cuotas').val('');
+                                        $('#total_monto_cuotas').val('');
+                                        $('#Denominacion').empty();
+                                        $('#Denominacion_Rec').empty();
+                                        $('#deno_entregada').css('visibility', 'visible');
+                                        $('#deno_recibida').css('visibility', 'visible');
+                                        $('#aportacion').val('');
+                                        $('#cant_cuotas_aportacion').val('');
+                                        $('#monto_cuotas_aportacion').val('');
+                                        $("#monto_funeral").val('');
+                                       
+                                        //$("#ID").val('');
+                                        //$("#consecutivo").val('');
+                                        /*limpiamos las denominaciones*/
+
+                                        $('#div_fallecido').hide();
+                                        $('#div_fallecidomontos').hide();
+                                        $('#dato_deposito').hide();
+                                        $('#cuotas').hide();
+                                        $('#detalle_prestamo').hide();
+                                        $('#detalle_aportacion').hide();
+                                        $('#efectivo').hide();
+                                        $('#dato_socio').hide();
+                                        $('#dato_socioNOM').hide();
+
+                                        $('#cantR1000').val('');
+                                        $('#cantR500').val('');
+                                        $('#cantR200').val('');
+                                        $('#cantR100').val('');
+                                        $('#cantR50').val('');
+                                        $('#cantR20').val('');
+                                        $('#cantR10').val('');
+                                        $('#cantR5').val('');
+                                        $('#cantR1').val('');
+                                        $('#cantR050').val('');
+                                        $('#cantR025').val('');
+                                        $('#cantR010').val('');
+                                        $('#cantR005').val('');
+                                        $('#cantR001').val('');
+                                        $('#cantR').val('');
+                                        $('#cantE1000').val('');
+                                        $('#cantE500').val('');
+                                        $('#cantE200').val('');
+                                        $('#cantE100').val('');
+                                        $('#cantE50').val('');
+                                        $('#cantE20').val('');
+                                        $('#cantE10').val('');
+                                        $('#cantE5').val('');
+                                        $('#cantE1').val('');
+                                        $('#cantE050').val('');
+                                        $('#cantE025').val('');
+                                        $('#cantE010').val('');
+                                        $('#cantE005').val('');
+                                        $('#cantE001').val('');
+                                        $('#cantE').val('');
+
+                                        $('#cantR100D').val('');
+                                        $('#cantR50D').val('');
+                                        $('#cantR20D').val('');
+                                        $('#cantR10D').val('');
+                                        $('#cantR5D').val('');
+                                        $('#cantR2D').val('');
+                                        $('#cantR1D').val('');
+                                        $('#cantR050D').val('');
+                                        $('#cantR025D').val('');
+                                        $('#cantR010D').val('');
+                                        $('#cantR005D').val('');
+                                        $('#cantR001D').val('');
+                                        $('#cantRD').val('');
+                                        $('#cantE100D').val('');
+                                        $('#cantE50D').val('');
+                                        $('#cantE20D').val('');
+                                        $('#cantE10D').val('');
+                                        $('#cantE5D').val('');
+                                        $('#cantE2D').val('');
+                                        $('#cantE1D').val('');
+                                        $('#cantE050D').val('');
+                                        $('#cantE025D').val('');
+                                        $('#cantE010D').val('');
+                                        $('#cantE005D').val('');
+                                        $('#cantE001D').val('');
+                                        $('#cantED').val('');
+                          
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            type: 'error',
+                                            title: 'Error!',
+                                            text: d.messageerror,
+                                            footer: ''
+                                        })
+                                        $('#submit').val('Guardar');
+                                    }
+                                    $('#submit').val('Guardar');
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Intente Nuevamente.',
+                                        footer: ''
+                                    })
+                                    //alert('Error. Intente Nuevamente.');
+                                    $('#submit').val('Guardar');
+                                }
+                            });
+
+
+                        }
+                    });
+
+                    function clear() {
+                        $('#socio,#empleado,#nombres,#monto_dolar,#Simbolo,#monto_cordoba,#prestamo,#fecha_ocurrencia,#parentesco,#nombre_fallecido, #fecha_minuta,#minuta,#concepto').val('');
+                    };
+
+                    function GetTC(transaccion, type) {
+                        var data = {
+                            transaccion: transaccion.trim(),
+                            type: type.trim()
+                        }
+
+                        $.ajax({
+                            url: '/Caja/GetTipo_Cambio',
+                            type: "POST",
+                            data: JSON.stringify(data),
+                            dataType: "JSON",
+                            contentType: "application/json",
+                            success: function (d) {
+                                //check is successfully save to database
+                                if (d.status == true) {
+                                    $("#tc").val(d.tc);
+
+                                }
+                                else {
+                                    $("#tc").val(d.tc);
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: d.messageerror,
+                                        footer: ''
+                                    })
+
+                                }
+
+                            },
+                            error: function () {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: 'Error al obtener el tipo de cambio',
+                                    footer: ''
+                                })
+
+                            }
+                        })
+                    };
+
+                    function GetTCALL(transaccion, type) {
+                        var data = {
+                            transaccion: transaccion.trim(),
+                            type: type.trim()
+                        }
+
+                        $.ajax({
+                            url: '/Caja/GetTipo_Cambio',
+                            type: "POST",
+                            data: JSON.stringify(data),
+                            dataType: "JSON",
+                            contentType: "application/json",
+                            success: function (d) {
+                                //check is successfully save to database
+                                if (d.status == true) {
+                                    if (type === 'V') {
+
+                                        $("#TC_VENTA").val(d.tc);
+                                    }
+                                    else if (type === 'C') {
+                                        $("#TC_COMPRA").val(d.tc);
+                                    }
+
+                                    
+
+                                }
+                                else {
+                                    if (type === 'V') {
+
+                                        $("#TC_VENTA").val(d.tc);
+                                    }
+                                    else if (type === 'C') {
+                                        $("#TC_COMPRA").val(d.tc);
+                                    }
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: d.messageerror,
+                                        footer: ''
+                                    })
+
+                                }
+
+                            },
+                            error: function () {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: 'Error al obtener el tipo de cambio de Compra y Ventas',
+                                    footer: ''
+                                })
+
+                            }
+                        })
+            };
+            function GetTConsecutivo(transaccion, type) {
+                var data = {
+                    transaccion: transaccion.trim() }
+
+                $.ajax({
+                    url: '/Caja/GetConsecutivo',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database
+                        if (d.status == true) {
+
+                            $("#consecutivo").val(d.consecutivo);
+                            $("#ID").val(d.id);
+                        }
+                        else {
+                            $("#consecutivo").val('');
+                            $("#ID").val('');
+                           
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: d.messageerror,
+                                footer: ''
+                            })
+
+                        }
+
+                    },
+                    error: function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Error al obtener los consecutivos de la transacción',
+                            footer: ''
+                        })
+
+                    }
+                })
+            };
+
+                });//fin function
+
+
+        var ObtainPrestamos = function () {
+            var soc = $('#socio').val().trim();
+            var valor = $("#TRANSACCION").val();
+            $("#prestamo").empty();
+
+
+            var isValidAlls = true;
+
+
+            if (valor.trim() == '') {
+                Swal.fire({
+                    type: 'error',
+                    title: 'Error!',
+                    text: 'Debe seleccionar la transacción que desea realizar',
+                    footer: ''
+                })
+                isValidAlls = false;
+            }
+            else if ($('#socio').val().trim() == '') {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Debe seleccionar un socio',
+                        footer: ''
+                    })
+                    isValidAlls = false;
+            }
+
+            if (isValidAlls)
+            {
+                    $.ajax({
+
+                             type: 'POST',
+                             url: '@Url.Action("GetPrestamos")', // we are calling json method
+                             dataType: 'json',
+                             data: { socio: soc },
+
+                             success: function (states) {
+                                 $("#prestamo").append('<option value="0">--Seleccione--</option>');
+                                 $.each(states, function (i, state) {
+
+                                $("#prestamo").append('<option value="' + state.Value + '">' +
+                                     state.Text + '</option>');
+                                // here we are adding option for States
+
+                                });
+                            },
+                            error: function (ex) {
+                                alert('Failed to retrieve states.' + ex);
+                            }
+                             });
+                         return false;
+
+            }
+
+
+        }//fin obtener prestamos
+
+
+        $('#Pago').change(function () {
+            var valor = $("#TRANSACCION").val();
+            var tipo = $("#Pago").val();
+            if (valor == 6) {
+                if (tipo == 'AB') {
+                    $("#cant_cuotas").removeAttr("disabled");
+                    $("#monto_cuotas").prop('disabled', true);
+                    $("#total_monto_cuotas").prop('disabled', true);
+                }
+                else {
+                    $("#cant_cuotas").prop('disabled', true);
+                    $("#monto_cuotas").prop('disabled', true);
+                    $("#total_monto_cuotas").prop('disabled', true);
+                }
+
+
+            }
+            var data = {
+                prestamo: $("#prestamo").val().trim(),
+                paga: $("#Pago").val().trim()
+            }
+
+            $.ajax({
+                url: '/Caja/GetDatoPrestamo',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    if (d.status == true) {
+
+                        if (tipo == 'AB') {
+                            $("#monto_cuotas").val(d.cuota);
+                            $("#cant_cuotas").val(0);
+                            total_cuotas = d.cant_cuotas;
+                        }
+                        else {
+                            $("#cant_cuotas").val(d.cant_cuotas);
+                            $("#monto_cuotas").val(d.cuota);
+                        }
+
+
+                        var t = d.cant_cuotas * d.monto_cuota;
+                        $("#total_monto_cuotas").val(d.monto_cuota);
+
+
+                    }
+                    else {
+
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: d.messageerror,
+                            footer: ''
+                        })
+
+                    }
+
+                },
+                error: function () {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Error al obtener los montos del prestamo',
+                        footer: ''
+                    })
+
+                }
+            })
+        })//fin pagos
+
+        $('#Pago_aportacion').change(function () {
+            var valor = $("#TRANSACCION").val();
+            var tipo = $("#Pago_aportacion").val();
+            if (valor == 10) {
+                if (tipo == 'AB') {
+                    $("#cant_cuotas_aportacion").removeAttr("disabled");
+                    $("#monto_cuotas_aportacion").prop('disabled', true);
+
+                }
+                else {
+                    $("#cant_cuotas_aportacion").prop('disabled', true);
+                    $("#monto_cuotas_aportacion").prop('disabled', true);
+
+                }
+
+
+            }
+            var data = {
+                aportacion: $("#aportacion").val().trim(),
+                paga: $("#Pago_aportacion").val().trim()
+            }
+
+            $.ajax({
+                url: '/Caja/GetDatoAportacion',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    if (d.status == true) {
+
+                        if (tipo == 'AB') {
+                            $("#monto_cuotas_aportacion").val(d.monto_cuota);
+                            $("#cant_cuotas_aportacion").val(0);
+                           total_cuotas_aportacion = d.cant_cuotas;
+                        }
+                        else {
+                            $("#monto_cuotas_aportacion").val(d.monto_cuota);
+                            $("#cant_cuotas_aportacion").val(d.cant_cuotas);
+                        }
+                    }
+                    else {
+
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: d.messageerror,
+                            footer: ''
+                        })
+
+                    }
+
+                },
+                error: function () {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Error al obtener los montos de las aportaciones',
+                        footer: ''
+                    })
+
+                }
+            })
+        })//fin pagos aportacion
+
+            $('#prestamo').change(function () {
+                $("#cant_cuotas").val('');
+                $("#monto_cuotas").val('');
+                $("#total_monto_cuotas").val('');
+                $("#Pago").val('0');
+
+            })
+
+            $('#cant_cuotas').change(function () {
+                var cantidad = $("#cant_cuotas").val().trim()
+                var valor_cuota = $("#monto_cuotas").val().trim()
+                if (cantidad > total_cuotas) {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Error las cuotas digitadas no pueden superar el total de cuotas del préstamo',
+                        footer: ''
+                    });
+                    $("#cant_cuotas").val('0');
+                }
+                else
+                {
+                    var t = cantidad * valor_cuota;
+                    $("#total_monto_cuotas").val(t.toFixed(2));
+                }
+
+
+            })
+
+        $('#cant_cuotas_aportacion').change(function () {
+            var cantidad = $("#cant_cuotas_aportacion").val().trim()
+            var valor_cuota = $("#monto_cuotas_aportacion").val().trim()
+                if (cantidad > total_cuotas_aportacion) {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Error las cuotas digitadas no pueden superar el total de cuotas de las aportaciones',
+                        footer: ''
+                    });
+                    $("#cant_cuotas_aportacion").val('0');
+                }
+                else {
+                    var data = {
+                        aportacion: $("#aportacion").val().trim(),
+                        paga: $("#Pago_aportacion").val().trim(),
+                        cuotas: cantidad
+                    }
+
+                    $.ajax({
+                        url: '/Caja/GetMontoAportacion',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            if (d.status == true) {
+
+                             $("#monto_cuotas_aportacion").val(d.monto_cuota);
+
+                            }
+                            else {
+
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Error al obtener los montos de las aportaciones',
+                                footer: ''
+                            })
+
+                        }
+                    })
+                }
+
+
+            })
+
+        $('#socio_ocurrencia').change(function () {
+            var isValidAyuda=true;
+
+
+            if ($('#periodesc_funeral').val().trim() == '') {
+                Swal.fire({
+                    type: 'error',
+                    title: 'Error!',
+                    text: 'Debe digitar el periodo de la ayuda',
+                    footer: ''
+                })
+                isValidAyuda = false;
+            }
+            if (isValidAyuda) {
+                var data = {
+                    periodo: $("#periodesc_funeral").val().trim(),
+                    socio: $("#socio").val().trim(),
+                    socio_ocur: $("#socio_ocurrencia").val().trim()
+
+                }
+                $.ajax({
+                    url: '/Caja/GetMontoAyudaFuneral',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        if (d.status == true) {
+
+                            $("#monto_funeral").val(d.monto_funeral);
+                            $("#nombre_fallecido").val(d.nombre_fallecido);
+                            $("#fecha_ocurrencia").val(d.fecha_ocurrencia);
+                            $("#PARENTESCO").val(d.parentesco).change();
+
+                        }
+                        else {
+
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: d.messageerror,
+                                footer: ''
+                            })
+
+                        }
+
+                    },
+                    error: function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Error al obtener los datos de la ayuda funeral',
+                            footer: ''
+                        })
+
+                    }
+                })
+            }
+
+        })
+
+        /**Seleccion de las monedas***/
+
+        /*CORDOBAS**/
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        };
+
+        function setInputFilter(textbox, inputFilter) {
+            ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
+                textbox.addEventListener(event, function () {
+                    if (inputFilter(this.value)) {
+                        this.oldValue = this.value;
+                        this.oldSelectionStart = this.selectionStart;
+                        this.oldSelectionEnd = this.selectionEnd;
+                    } else if (this.hasOwnProperty("oldValue")) {
+                        this.value = this.oldValue;
+                        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                    } else {
+                        this.value = "";
+                    }
+                });
+            });
+        };
+
+        /*CANTIDADES ENTREGADAS CORDOBAS*/
+        setInputFilter(document.getElementById("cantE1000"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE500"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE200"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE100"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE50"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE20"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE10"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE5"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE1"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE050"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE025"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE010"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE005"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE001"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+
+        /*CANTIDADES RECIBIDAS CORDOBAS*/
+        setInputFilter(document.getElementById("cantR1000"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR500"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR200"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR100"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR50"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR20"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR10"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR5"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR1"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR050"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR025"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR010"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR005"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR001"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+
+        /*CANTIDADES RECIBIDAS DOLARES*/
+        setInputFilter(document.getElementById("cantR100D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR50D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR20D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR10D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR5D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR2D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR1D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR050D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR025D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR010D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR005D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantR001D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+
+        /*CANTIDADES ENTREGADAS DOLARES*/
+        setInputFilter(document.getElementById("cantE100D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE50D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE20D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE10D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE5D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE2D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE1D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE050D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE025D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE010D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE005D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cantE001D"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+
+        function validar(campo) {
+            if (campo === '') {
+
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        /*VALORES ENTREGADOS EN CORDOBAS*/
+        var tot = 0;
+
+        function myFunc(variable, Cantdeno) {
+            var s = document.getElementById(variable);
+            s.value = Cantdeno;
+        }
+
+        function RecalculoTotEntregaC()
+        {
+            var calculo1000 = $('#cantE1000').val();
+            var calculo500 = $('#cantE500').val();
+            var calculo200 = $('#cantE200').val();
+            var calculo100 = $('#cantE100').val();
+            var calculo50 = $('#cantE50').val();
+            var calculo20 = $('#cantE20').val();
+            var calculo10 = $('#cantE10').val();
+            var calculo5 = $('#cantE5').val();
+            var calculo1 = $('#cantE1').val();
+            var calculo050 = $('#cantE050').val();
+            var calculo025 = $('#cantE025').val();
+            var calculo010 = $('#cantE010').val();
+            var calculo005 = $('#cantE005').val();
+            var calculo001 = $('#cantE001').val();
+            if (calculo1000 === '')
+                calculo1000 = 0;
+            else
+                calculo1000 = 1000.0 * calculo1000;
+
+            if (calculo500 === '')
+                calculo500 = 0;
+            else
+                calculo500 = 500.0 * calculo500;
+
+            if (calculo200 === '')
+                calculo200 = 0;
+            else
+                calculo200 = 200.0 * calculo200;
+
+            if (calculo100 === '')
+                calculo100 = 0;
+            else
+                calculo100 = 100.0 * calculo100;
+
+            if (calculo50 === '')
+                calculo50 = 0;
+            else
+                calculo50 = 50.0 * calculo50;
+
+            if (calculo20 === '')
+                calculo20 = 0;
+            else
+                calculo20 = 20.0 * calculo20;
+
+            if (calculo10 === '')
+                calculo10 = 0;
+            else
+                calculo10 = 10.0 * calculo10;
+
+            if (calculo5 === '')
+                calculo5 = 0;
+            else
+                calculo5 = 5 * calculo5;
+
+            if (calculo1 === '')
+                calculo1 = 0;
+            else
+                calculo1 = 1.0 * calculo1;
+
+
+            /*CENTAVOS*/
+            if (calculo050 === '')
+                calculo050 = 0;
+            else
+                calculo050 = 0.50 * calculo050;
+
+            if (calculo025 === '')
+                calculo025 = 0;
+            else
+                calculo025 = 0.25 * calculo025;
+
+            if (calculo010 === '')
+                calculo010 = 0;
+            else
+                calculo010 = 0.10 * calculo010;
+
+            if (calculo005 === '')
+                calculo005 = 0;
+            else
+                calculo005 = 0.05 * calculo005;
+
+            if (calculo001 === '')
+                calculo001 = 0;
+            else
+                calculo001 = 0.01 * calculo001;
+
+
+            var calculo = calculo1000 + calculo500 + calculo200 + calculo100 + calculo50 + calculo20 + calculo10 + calculo5 + calculo1 + calculo050+ calculo025 + calculo010 + calculo005 + calculo001
+
+            myFunc("cantE", calculo.toFixed(2));
+        }
+
+        function RecalculoTotRecibeC() {
+            var calculo1000 = $('#cantR1000').val();
+            var calculo500 = $('#cantR500').val();
+            var calculo200 = $('#cantR200').val();
+            var calculo100 = $('#cantR100').val();
+            var calculo50 = $('#cantR50').val();
+            var calculo20 = $('#cantR20').val();
+            var calculo10 = $('#cantR10').val();
+            var calculo5 = $('#cantR5').val();
+            var calculo1 = $('#cantR1').val();
+            var calculo050 = $('#cantR050').val();
+            var calculo025 = $('#cantR025').val();
+            var calculo010 = $('#cantR010').val();
+            var calculo005 = $('#cantR005').val();
+            var calculo001 = $('#cantR001').val();
+            if (calculo1000 === '')
+                calculo1000 = 0;
+            else
+                calculo1000 = 1000.0 * calculo1000;
+
+            if (calculo500 === '')
+                calculo500 = 0;
+            else
+                calculo500 = 500.0 * calculo500;
+
+            if (calculo200 === '')
+                calculo200 = 0;
+            else
+                calculo200 = 200.0 * calculo200;
+
+            if (calculo100 === '')
+                calculo100 = 0;
+            else
+                calculo100 = 100.0 * calculo100;
+
+            if (calculo50 === '')
+                calculo50 = 0;
+            else
+                calculo50 = 50.0 * calculo50;
+
+            if (calculo20 === '')
+                calculo20 = 0;
+            else
+                calculo20 = 20.0 * calculo20;
+
+            if (calculo10 === '')
+                calculo10 = 0;
+            else
+                calculo10 = 10.0 * calculo10;
+
+            if (calculo5 === '')
+                calculo5 = 0;
+            else
+                calculo5 = 5 * calculo5;
+
+            if (calculo1 === '')
+                calculo1 = 0;
+            else
+                calculo1 = 1.0 * calculo1;
+
+
+            /*CENTAVOS*/
+            if (calculo050 === '')
+                calculo050 = 0;
+            else
+                calculo050 = 0.50 * calculo050;
+
+            if (calculo025 === '')
+                calculo025 = 0;
+            else
+                calculo025 = 0.25 * calculo025;
+
+            if (calculo010 === '')
+                calculo010 = 0;
+            else
+                calculo010 = 0.10 * calculo010;
+
+            if (calculo005 === '')
+                calculo005 = 0;
+            else
+                calculo005 = 0.05 * calculo005;
+
+            if (calculo001 === '')
+                calculo001 = 0;
+            else
+                calculo001 = 0.01 * calculo001;
+
+
+            var calculo = calculo1000 + calculo500 + calculo200 + calculo100 + calculo50 + calculo20 + calculo10 + calculo5 + calculo1 + calculo050 + calculo025 + calculo010 + calculo005 + calculo001
+
+            myFunc("cantR", calculo.toFixed(2));
+        }
+
+        $(document).on('keyup mouseup', '#cantE1000', function () {
+            RecalculoTotEntregaC();
+
+        });
+
+
+        $(document).on('keyup mouseup', '#cantE500', function () {
+            RecalculoTotEntregaC();
+
+        });
+
+        $(document).on('keyup mouseup', '#cantE200', function () {
+            RecalculoTotEntregaC();
+        });
+
+        $(document).on('keyup mouseup', '#cantE100', function () {
+            RecalculoTotEntregaC();
+        });
+
+        $(document).on('keyup mouseup', '#cantE50', function () {
+            RecalculoTotEntregaC();
+        });
+
+        $(document).on('keyup mouseup', '#cantE20', function () {
+            RecalculoTotEntregaC();
+        });
+
+        $(document).on('keyup mouseup', '#cantE10', function () {
+            RecalculoTotEntregaC();
+        });
+
+        $(document).on('keyup mouseup', '#cantE5', function () {
+            RecalculoTotEntregaC();
+        });
+
+        $(document).on('keyup mouseup', '#cantE1', function () {
+            RecalculoTotEntregaC();
+        });
+
+        $(document).on('keyup mouseup', '#cantE050', function () {
+            RecalculoTotEntregaC();
+        });
+
+        $(document).on('keyup mouseup', '#cantE025', function () {
+            RecalculoTotEntregaC();
+        });
+
+        $(document).on('keyup mouseup', '#cantE010', function () {
+            RecalculoTotEntregaC();
+        });
+
+        $(document).on('keyup mouseup', '#cantE005', function () {
+            RecalculoTotEntregaC();
+        });
+
+        $(document).on('keyup mouseup', '#cantE001', function () {
+            RecalculoTotEntregaC();
+        });
+
+
+        /*EVENTOS RECIBIDOS EN CORDOBAS**/
+        $(document).on('keyup mouseup', '#cantR1000', function () {
+            RecalculoTotRecibeC();
+        });
+
+
+        $(document).on('keyup mouseup', '#cantR500', function () {
+            RecalculoTotRecibeC();
+        });
+
+        $(document).on('keyup mouseup', '#cantR200', function () {
+            RecalculoTotRecibeC();
+        });
+
+        $(document).on('keyup mouseup', '#cantR100', function () {
+            RecalculoTotRecibeC();
+        });
+
+        $(document).on('keyup mouseup', '#cantR50', function () {
+            RecalculoTotRecibeC();
+        });
+
+        $(document).on('keyup mouseup', '#cantR20', function () {
+           RecalculoTotRecibeC();
+        });
+
+        $(document).on('keyup mouseup', '#cantR10', function () {
+            RecalculoTotRecibeC();
+        });
+
+        $(document).on('keyup mouseup', '#cantR5', function () {
+            RecalculoTotRecibeC();
+        });
+
+        $(document).on('keyup mouseup', '#cantR1', function () {
+            RecalculoTotRecibeC();
+        });
+
+        $(document).on('keyup mouseup', '#cantR050', function () {
+            RecalculoTotRecibeC();
+        });
+
+        $(document).on('keyup mouseup', '#cantR025', function () {
+            RecalculoTotRecibeC();
+        });
+
+        $(document).on('keyup mouseup', '#cantR010', function () {
+            RecalculoTotRecibeC();
+        });
+
+        $(document).on('keyup mouseup', '#cantR005', function () {
+            RecalculoTotRecibeC();
+        });
+
+        $(document).on('keyup mouseup', '#cantR001', function () {
+            RecalculoTotRecibeC();
+        });
+
+   
+
+        //$(document).on('keyup mouseup', '#monto_dolar', function () {
+        //    var valor = $('#monto_dolar').val();
+        //    var transact = $('#TRANSACCION').val().trim();
+        //    var isValidAll = true;
+
+        //    if (valor === '')
+        //        valor = 0;
+
+            
+
+
+        //});
+        /*VALORES EN DOLARES*/
+        function RecalculoTotEntregaD() {
+            var calculo100 = $('#cantE100D').val();
+            var calculo50 = $('#cantE50D').val();
+            var calculo20 = $('#cantE20D').val();
+            var calculo10 = $('#cantE10D').val();
+            var calculo5 = $('#cantE5D').val();
+            var calculo2 = $('#cantE2D').val();
+            var calculo1 = $('#cantE1D').val();
+            var calculo050 = $('#cantE050D').val();
+            var calculo025 = $('#cantE025D').val();
+            var calculo010 = $('#cantE010D').val();
+            var calculo005 = $('#cantE005D').val();
+            var calculo001 = $('#cantE001D').val();
+
+            if (calculo100 === '')
+                calculo100 = 0;
+            else
+                calculo100 = 100.0 * calculo100;
+
+            if (calculo50 === '')
+                calculo50 = 0;
+            else
+                calculo50 = 50.0 * calculo50;
+
+            if (calculo20 === '')
+                calculo20 = 0;
+            else
+                calculo20 = 20.0 * calculo20;
+
+            if (calculo10 === '')
+                calculo10 = 0;
+            else
+                calculo10 = 10.0 * calculo10;
+
+            if (calculo5 === '')
+                calculo5 = 0;
+            else
+                calculo5 = 5 * calculo5;
+
+
+            if (calculo2 === '')
+                calculo2 = 0;
+            else
+                calculo2 = 2.0 * calculo2;
+
+            if (calculo1 === '')
+                calculo1 = 0;
+            else
+                calculo1 = 1.0 * calculo1;
+
+
+            /*CENTAVOS*/
+            if (calculo050 === '')
+                calculo050 = 0;
+            else
+                calculo050 = 0.50 * calculo050;
+
+            if (calculo025 === '')
+                calculo025 = 0;
+            else
+                calculo025 = 0.25 * calculo025;
+
+            if (calculo010 === '')
+                calculo010 = 0;
+            else
+                calculo010 = 0.10 * calculo010;
+
+            if (calculo005 === '')
+                calculo005 = 0;
+            else
+                calculo005 = 0.05 * calculo005;
+
+            if (calculo001 === '')
+                calculo001 = 0;
+            else
+                calculo001 = 0.01 * calculo001;
+
+
+            var calculo = calculo100 + calculo50 + calculo20 + calculo10 + calculo5 + calculo2+ calculo1 + calculo050 + calculo025 + calculo010 + calculo005 + calculo001
+
+            myFunc("cantED", calculo.toFixed(2));
+        }
+
+        function RecalculoTotRecibeD() {
+            var calculo100 = $('#cantR100D').val();
+            var calculo50 = $('#cantR50D').val();
+            var calculo20 = $('#cantR20D').val();
+            var calculo10 = $('#cantR10D').val();
+            var calculo5 = $('#cantR5D').val();
+            var calculo2 = $('#cantR2D').val();
+            var calculo1 = $('#cantR1D').val();
+            var calculo050 = $('#cantR050D').val();
+            var calculo025 = $('#cantR025D').val();
+            var calculo010 = $('#cantR010D').val();
+            var calculo005 = $('#cantR005D').val();
+            var calculo001 = $('#cantR001D').val();
+
+            if (calculo100 === '')
+                calculo100 = 0;
+            else
+                calculo100 = 100.0 * calculo100;
+
+            if (calculo50 === '')
+                calculo50 = 0;
+            else
+                calculo50 = 50.0 * calculo50;
+
+            if (calculo20 === '')
+                calculo20 = 0;
+            else
+                calculo20 = 20.0 * calculo20;
+
+            if (calculo10 === '')
+                calculo10 = 0;
+            else
+                calculo10 = 10.0 * calculo10;
+
+            if (calculo5 === '')
+                calculo5 = 0;
+            else
+                calculo5 = 5 * calculo5;
+
+
+            if (calculo2 === '')
+                calculo2 = 0;
+            else
+                calculo2 = 2.0 * calculo2;
+
+            if (calculo1 === '')
+                calculo1 = 0;
+            else
+                calculo1 = 1.0 * calculo1;
+
+
+            /*CENTAVOS*/
+            if (calculo050 === '')
+                calculo050 = 0;
+            else
+                calculo050 = 0.50 * calculo050;
+
+            if (calculo025 === '')
+                calculo025 = 0;
+            else
+                calculo025 = 0.25 * calculo025;
+
+            if (calculo010 === '')
+                calculo010 = 0;
+            else
+                calculo010 = 0.10 * calculo010;
+
+            if (calculo005 === '')
+                calculo005 = 0;
+            else
+                calculo005 = 0.05 * calculo005;
+
+            if (calculo001 === '')
+                calculo001 = 0;
+            else
+                calculo001 = 0.01 * calculo001;
+
+
+            var calculo = calculo100 + calculo50 + calculo20 + calculo10 + calculo5 + calculo2 + calculo1 + calculo050 + calculo025 + calculo010 + calculo005 + calculo001
+
+            myFunc("cantRD", calculo.toFixed(2));
+        }
+
+
+        $(document).on('keyup mouseup', '#cantE100D', function () {
+            RecalculoTotEntregaD();
+        });
+
+        $(document).on('keyup mouseup', '#cantE50D', function () {
+            RecalculoTotEntregaD();
+        });
+
+        $(document).on('keyup mouseup', '#cantE20D', function () {
+            RecalculoTotEntregaD();
+        });
+
+        $(document).on('keyup mouseup', '#cantE10D', function () {
+            RecalculoTotEntregaD();
+        });
+
+        $(document).on('keyup mouseup', '#cantE5D', function () {
+            RecalculoTotEntregaD();
+        });
+
+        $(document).on('keyup mouseup', '#cantE1D', function () {
+            RecalculoTotEntregaD();
+        });
+
+        $(document).on('keyup mouseup', '#cantE050D', function () {
+            RecalculoTotEntregaD();
+        });
+
+        $(document).on('keyup mouseup', '#cantE025D', function () {
+            RecalculoTotEntregaD();
+        });
+
+        $(document).on('keyup mouseup', '#cantE010D', function () {
+            RecalculoTotEntregaD();
+        });
+
+        $(document).on('keyup mouseup', '#cantE005D', function () {
+            RecalculoTotEntregaD();
+        });
+
+        $(document).on('keyup mouseup', '#cantE001D', function () {
+            RecalculoTotEntregaD();
+        });
+
+        /*CANTIDAD RECIBE DOLARES**/
+        $(document).on('keyup mouseup', '#cantR100D', function () {
+            RecalculoTotRecibeD();
+        });
+
+        $(document).on('keyup mouseup', '#cantR50D', function () {
+            RecalculoTotRecibeD();
+        });
+
+        $(document).on('keyup mouseup', '#cantR20D', function () {
+            RecalculoTotRecibeD();
+        });
+
+        $(document).on('keyup mouseup', '#cantR10D', function () {
+            RecalculoTotRecibeD();
+        });
+
+        $(document).on('keyup mouseup', '#cantR5D', function () {
+            RecalculoTotRecibeD();
+        });
+
+        $(document).on('keyup mouseup', '#cantR1D', function () {
+            RecalculoTotRecibeD();
+        });
+
+        $(document).on('keyup mouseup', '#cantR050D', function () {
+            RecalculoTotRecibeD();
+        });
+
+        $(document).on('keyup mouseup', '#cantR025D', function () {
+            RecalculoTotRecibeD();
+        });
+
+        $(document).on('keyup mouseup', '#cantR010D', function () {
+            RecalculoTotRecibeD();
+        });
+
+        $(document).on('keyup mouseup', '#cantR005D', function () {
+            RecalculoTotRecibeD();
+        });
+
+        $(document).on('keyup mouseup', '#cantR001D', function () {
+            RecalculoTotRecibeD();
+        });
+
+        $('#monto_dolar').change(function () {
+            var valor = $('#monto_dolar').val();
+            var transact = $('#TRANSACCION').val().trim();
+            var isValidAll = true;
+
+            if (valor === '')
+                valor = 0;
+
+            if (valor === 0) {
+                console.log(valor);
+                //if (transact == '') {
+                //    Swal.fire({
+                //        type: 'error',
+                //        title: 'Error!',
+                //        text: 'Debe seleccionar la transacción que desea realizar',
+                //        footer: ''
+                //    })
+                //    isValidAll = false;
+                //}
+                isValidAll = true;
+            }
+
+            else {
+                if (transact == 1 || transact == 2) {//COMPRA DIVISAS
+                    //validamos si monto dolar no esta vacio
+
+                    if (valor === 0) {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Debe ingresar un monto en dolar',
+                            footer: ''
+                        })
+                        isValidAll = false;
+                    }
+
+
+                }
+                else {
+                    if (transact == '') {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Debe seleccionar la transacción que desea realizar',
+                            footer: ''
+                        })
+                        isValidAll = false;
+                    }
+                }
+
+            }
+
+            console.log(valor);
+            if (isValidAll) {
+                if (transact == 1 || transact == 2) {//COMPRA
+
+                    var dolar = valor;
+                    var tc = $('#tc').val().trim();
+                    var calc = parseFloat(dolar) * parseFloat(tc);
+                    var calc = calc.toFixed(2)
+                    
+                    myFunc("monto_cordoba", calc);
+                 
+                }
+                else {//VENTA
+
+                    myFunc("monto_cordoba", 0);
+
+                }
+
+
+
+            }
+
+        });
+    </script>
+}
+<style>
+    span > i {
+        color: white;
+    }
+
+    span > input {
+        background: none;
+        color: white;
+        padding: 0;
+        border: 0;
+    }
+    input.input-box, textarea {
+        background: cyan;
+    }
+
+    input.input-boxR, textarea {
+        background: green;
+    }
+    /*Adding some css for looks good*/
+    span.error {
+        display: compact;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+
+    table.tablalinea {
+        border: 1px solid gray;
+        width: 100%;
+    }
+
+    textarea {
+        width: 152%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+    }
+
+    th.tablalinea, td.tablalinea {
+        padding: 15px;
+        border-spacing: 0px;
+    }
+
+    div.divconbordes {
+        border: 1px solid gray;
+        width: 100%;
+    }
+</style>

@@ -1,0 +1,217 @@
+﻿@model CoopJFK.Models.ViewModels.RevalorizacionViewModel
+
+@{
+    ViewBag.Title = "Revalorización";
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="~/Views/Home/Index.cshtml">Sistema de Gestión de Crédito</a></li>
+            <li class="active">Revalorización</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            @using (Html.BeginForm())
+            {
+                <div class="form-horizontal">
+
+                    <hr />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DESDE, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            @Html.TextBoxFor(model => model.DESDE, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+                            <span class="error">La fecha desde es obligatorio</span>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.HASTA, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            @Html.TextBoxFor(model => model.HASTA, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+                            <span class="error">La fecha hasta es obligatorio</span>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TIPO, htmlAttributes: new { @class = "control-label col-md-2" })
+                        @{
+                            List<SelectListItem> _tipo = new List<SelectListItem>();
+                            _tipo.Add(new SelectListItem { Text = "Ahorro", Value = "Ahorro" });
+                            _tipo.Add(new SelectListItem { Text = "Aportación", Value = "Aportacion" });
+                            _tipo.Add(new SelectListItem { Text = "Prestamos", Value = "Prestamo" });
+                        }
+                        <div class="col-md-3">
+                            @Html.DropDownListFor(model => model.TIPO, _tipo, "--Seleccione--", new { @class = "form-control" })
+                            <span class="error">La fecha hasta es obligatorio</span>
+                        </div>
+
+
+                        <span class="error">El tipo es obligatorio</span>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-3">
+                            <div style="padding:10px 0px; text-align:right">
+                                <input id="submit" type="button" value="Generar" style="padding:5px 15px" class="btn btn-info" /> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+    {
+        <script>
+             $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+               
+                if ($('#DESDE').val().trim() == '') {
+                    isAllValid = false;
+                    $('#DESDE').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#DESDE').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#HASTA').val().trim() == '') {
+                    isAllValid = false;
+                    $('#HASTA').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#HASTA').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#TIPO').val().trim() == '') {
+                    isAllValid = false;
+                    $('#TIPO').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#TIPO').siblings('span.error').css('visibility', 'hidden');
+                }
+
+               
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        DESDE: $('#DESDE').val().trim(),
+                        HASTA: $('#HASTA').val().trim(),
+                        TIPO: $('#TIPO').val().trim()
+                    }
+
+                    $(this).val('Procesando...');
+
+                    $.ajax({
+                        url: '/Revalorizacion/Create',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Se guardaron los datos',
+                                    showConfirmButton: true
+
+                                })
+                                //alert('Se guardaron los datos.');
+                                window.location.href = '/Personas/FormatoAutorizacion?id_socio=' + d.id_socio;
+                                ////clear form
+                                //SocioItems = [];
+                                //$('#orderNo').val('');
+                                //$('#orderDate').val('');
+                                //$('#orderItems').empty();
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+
+                            }
+                            $('#submit').val('Guardar');
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente.',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#submit').val('Guardar');
+                        }
+                    });
+                }
+
+            });
+        </script>
+    }
+
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>
+
+

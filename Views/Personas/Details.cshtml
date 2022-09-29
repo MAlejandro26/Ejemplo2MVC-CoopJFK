@@ -1,0 +1,251 @@
+﻿@model CoopJFK.Models.PERSONA
+
+    @{
+        ViewBag.Title = "Detalle del Socio";
+    }
+
+
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+            <ol class="breadcrumb">
+                <li><a href="#">Sistema de Gestión de Crédito</a></li>
+                <li>Detalle del Socio</li>
+                <li class="active">Socio</li>
+            </ol>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="white-box">
+                    <div class="master">
+                        <div>
+                            <h4>Persona</h4>
+                            <hr />
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    @Html.DisplayName("No Socio")
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.ID)
+                                </dd>
+                                <dt>
+                                    @Html.DisplayName("Cédula")
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.CEDULA)
+                                </dd>
+                                <dt>
+                                    @Html.DisplayName("No Empleado")
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.NO_EMPLEADO)
+                                </dd>
+
+
+                                <dt>
+                                   Estado
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.ESTADO)
+                                </dd>
+                                <dt>
+                                    @Html.DisplayName("Fecha de Ingreso")
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.FECHA_INGRESO)
+                                </dd>
+
+
+                                <dt>
+                                    Agencia
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.AGENCIA1.NOMBRE)
+                                </dd>
+                                <dt>
+                                    @Html.DisplayName("Nombres y Apellidos")
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.NOMBRES)
+                                </dd>
+
+
+                                <dt>
+                                    Sexo
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.SEXO)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayName("Estado Civil")
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.ESTADO_CIVIL)
+                                </dd>
+                                <dt>
+                                    @Html.DisplayName("Tipo de Pago")
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.TIPO_PAGO1.DESCRIPCION)
+                                </dd>
+                                <dt>
+                                    @Html.DisplayName("Cta Bancaria")
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.CUENTA_BANCARIA)
+                                </dd>
+                                <dt>
+                                    @Html.DisplayName("Cuota de Ahorro")
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.CUOTA_AHORRO)
+                                </dd>
+                                <dt>
+                                    Salario
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.SALARIO)
+                                </dd>
+                                <dt>
+                                    Celular
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.CELULAR)
+                                </dd>
+
+                                <dt>
+                                    Telefono
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.TELEFONO)
+                                </dd>
+                                <dt>
+                                 Ciudad
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.DEPARTAMENTO1.DEPARTAMENTO1)
+                                </dd>
+                               
+                                <dt>
+                                    @Html.DisplayName("Dirección")
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.DIRECCION)
+                                </dd>
+                                <hr />
+                                <dt>
+                                    @Html.DisplayName("Usuario de Creación")
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.USUARIO_CREACION)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayName("Fecha de Creación")
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.FECHA_CREACION)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayName("Usuario de Modificación")
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.USUARIO_MODIFICACION)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayName("Fecha de Modificación")
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.FECHA_MODIFICACION)
+                                </dd>
+
+                            </dl>
+                        </div>
+                        <p>
+                            @Html.ActionLink("Editar", "Edit", new { id = Model.ID }, new { @class = "btn btn-info" }) |
+                            @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-primary" })
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    
+    <style>
+        /*Adding some css for looks good*/
+        span.error {
+            display: block;
+            visibility: hidden;
+            color: red;
+            font-size: 90%;
+        }
+
+
+        /*css for table*/
+        .container td {
+            vertical-align: top;
+        }
+
+        .tablecontainer table {
+            width: 80%;
+            border-collapse: collapse;
+            border-top: 1px solid #BFAEAE;
+            border-right: 1px solid #BFAEAE;
+            margin: auto;
+        }
+
+        .tablecontainer th {
+            border-bottom: 2px solid #BFAEAE !important;
+        }
+
+        .tablecontainer th, .tablecontainer td {
+            text-align: left;
+            border-left: 1px solid #BFAEAE;
+            padding: 5px;
+            border-bottom: 1px solid #BFAEAE;
+        }
+
+        .ui-widget {
+            font-size: 12px !important;
+        }
+
+        table.space {
+            border: 0px solid black;
+            border-spacing: 8px 2px;
+            border-collapse: separate;
+            margin: auto;
+        }
+    </style>

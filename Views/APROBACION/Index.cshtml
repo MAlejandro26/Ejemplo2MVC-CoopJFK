@@ -1,0 +1,158 @@
+﻿@model IEnumerable<CoopJFK.Models.SP_LISTADO_APROBACION_PRESTAMO_SOLICITUD_Result>
+
+@{
+    ViewBag.Title = "Aprobaciones";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Prestamo</li>
+            <li class="active">Aprobaciones</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <table class="table" id="jqueryTable">
+                <thead>
+                    <tr>
+                        @*<th>
+                                ID
+                            </th>*@
+                        <th>
+                            No. Solicitud
+                        </th>
+                        <th>
+                            Fecha de Revisión
+                        </th>
+                        <th>
+                            Fecha de Aprobación
+                        </th>
+                        <th>
+                            Socio
+                        </th>
+                        <th>
+                            Tipo de Préstamo
+                        </th>
+                        <th>
+                            Fecha de Solicitud
+                        </th>
+                                         
+                        <th>
+                            Estado
+                        </th>
+                        <th>
+                            Votos
+                        </th>
+                       
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ID_PRESTAMO_SOLICITUD)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FECHA_REVISION)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FECHA_APROBACION)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SOCIO_NOMBRES)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TIPO_PRESTAMO)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                            </td>
+                            
+                            <td>
+                                @switch (item.ESTADO_APROBACION)
+                                {
+                                    case 1:
+                                        @*<span class="badge badge-info">@Html.DisplayFor(modelItem => item.ESTADO_PRESTAMO.DESCRIPCION)</span>*@
+                                        <p>
+                                            <button type="button" class="btn btn-info">
+                                                <span class="glyphicon glyphicon-send"></span> @Html.DisplayFor(modelItem => item.ESTADO_PRESTAMO_DESCRIPCION)
+                                            </button>
+                                        </p>
+                                        break;
+                                    case 2:
+                                        <p>
+                                            <button type="button" class="btn btn-primary">
+                                                <span class="glyphicon glyphicon-eye-open"></span> @Html.DisplayFor(modelItem => item.ESTADO_PRESTAMO_DESCRIPCION)
+                                            </button>
+                                        </p>
+                                        break;
+                                    case 3:
+                                        <p>
+                                            <button type="button" class="btn btn-danger">
+                                                <span class="glyphicon glyphicon-remove-circle"></span> @Html.DisplayFor(modelItem => item.ESTADO_PRESTAMO_DESCRIPCION)
+                                            </button>
+                                        </p>
+                                        break;
+                                    case 4:
+                                        <p>
+                                            <button type="button" class="btn btn-success">
+                                                <span class="glyphicon glyphicon-ok-circle"></span> @Html.DisplayFor(modelItem => item.ESTADO_PRESTAMO_DESCRIPCION)
+                                            </button>
+                                        </p>
+                                        break;
+                                    case 5:
+                                        <p>
+                                            <button type="button" class="btn btn-secondary">
+                                                <span class="glyphicon glyphicon glyphicon-ban-circle"></span> @Html.DisplayFor(modelItem => item.ESTADO_PRESTAMO_DESCRIPCION)
+                                            </button>
+                                        </p>
+                                        break;
+                                }
+                            </td>
+                            <td>
+                                @if (item.CANTIDAD_VOTO == 0)
+                                {
+                                    <button type="button" class="btn btn-danger">VOTOS <span class="badge">@Html.DisplayFor(modelItem => item.CANTIDAD_VOTO)</span></button>
+                                }
+                                else if (item.CANTIDAD_VOTO > 0 || item.CANTIDAD_VOTO <= 3)
+                                {
+                                    <button type="button" class="btn btn-primary">VOTOS <span class="badge">@Html.DisplayFor(modelItem => item.CANTIDAD_VOTO)</span></button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-success">VOTOS <span class="badge">@Html.DisplayFor(modelItem => item.CANTIDAD_VOTO)</span></button>
+                                }
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.PRESTAMO_SOLICITUD.RAZON)
+                                </td>*@
+                            <td>
+                                @if (item.ESTADO_APROBACION != 3 && item.ESTADO_APROBACION != 4)
+                                {
+                                    @Html.ActionLink("Decidir", "Edit", new { id = item.ID_APROBACION })
+                                }
+                                @*@Html.ActionLink("Details", "Details", new { id = item.ID_APROBACION }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.ID_APROBACION })*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section scripts
+                                {
+    @GridTemplateWB.GridMVCTemplate("")
+}

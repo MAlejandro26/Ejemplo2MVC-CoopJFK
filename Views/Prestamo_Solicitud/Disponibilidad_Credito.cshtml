@@ -1,0 +1,990 @@
+﻿@model CoopJFK.Models.ViewModels.Consulta_CreditoViewModels
+
+@{
+    ViewBag.Title = "Anlisis de Crédito";
+}
+<link href="~/Content/dx.common.css" rel="stylesheet" />
+<link href="~/Content/dx.light.css" rel="stylesheet" />
+@*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title"></h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Préstamo</li>
+            <li class="active">Analisis de Crédito</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <h4>SITUACION FINANCIERA DEL SOCIO</h4>
+
+
+                <hr />
+
+                <div class="form-horizontal">
+                    <h5>DATOS GENERALES DEL SOCIO</h5>
+                    <hr />
+
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            @Html.Label("No. Socio")
+                            @Html.TextBoxFor(model => model.Socio, new { @class = "form-control", placeholder = "Aqui #socio" })
+                            <span class="error">El socio es requerido</span>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.Label("Nombres y Apellidos")
+                            @Html.TextBoxFor(model => model.Nombre_Socio, new { @class = "form-control", @readonly = "true" })
+                        </div>
+
+                        <div class="col-md-3">
+                            @Html.Label("No.Empleado")
+                            @Html.TextBoxFor(model => model.Empleado, new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Agencia")
+                            @Html.TextBoxFor(model => model.DescAgencia, new { @class = "form-control", @readonly = "true" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.Label("Periodo de Ingreso")
+                            @Html.TextBoxFor(model => model.Periodo_Ingreso, new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Fecha de Ingreso")
+                            @Html.TextBoxFor(model => model.Fecha_Ingreso, new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Actualizado al PP")
+                            @Html.TextBoxFor(model => model.DescPeriodo, new { @class = "form-control", @readonly = "true" })
+                            @*@Html.DropDownList("periodo", new SelectList(string.Empty, "Value", "Text"), "--Seleccione--", new { @class = "form-control" })*@
+                            <span class="error">El periodo es obligatorio</span>
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Salario por pago")
+                            @Html.TextBoxFor(model => model.Salario, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.Label("Antiguedad del socio")
+                            @Html.TextBoxFor(model => model.Antiguedad, new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Derecho")
+                            @Html.TextBoxFor(model => model.Derecho, new { @class = "form-control", @readonly = "true" })
+
+                            <span class="error">La equivalencia es requerida</span>
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Ahorro extraordinario")
+                            @Html.TextBoxFor(model => model.Antiguedad, new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                    </div>
+
+                    <h5>DATOS DE AHORRO Y PRESTAMOS</h5>
+                    <hr />
+
+                    <div class="form-group">
+
+                        <div class="col-md-3">
+                            @Html.Label("Cuota de Ahorro por PP")
+                            @Html.TextBoxFor(model => model.Cuota_Ahorro, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Cuota de Aportacion por PP")
+                            @Html.TextBoxFor(model => model.Cuota_Aportacion, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Saldo de ahorro")
+                            @Html.TextBoxFor(model => model.Saldo_Ahorro, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Saldo de Aportacion")
+                            @Html.TextBoxFor(model => model.Saldo_Aportacion, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+
+
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.Label("Saldo en Deuda")
+                            @Html.TextBoxFor(model => model.Saldo_Deuda, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Porcentaje de endeudamiento")
+                            @Html.TextBoxFor(model => model.Porcentaje_Endeudamiento, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Balance de ahorro versus prestamo")
+                            @Html.TextBoxFor(model => model.Balance, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Derecho a Prestamo")
+                            @Html.TextBoxFor(model => model.Derecho_Monto, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+
+                    </div>
+                    <h5>PRESTAMOS ACTIVOS</h5>
+                    <div id="gridPrestamos"></div>
+                    <hr />
+
+                    <h5>OTROS</h5>
+                    <hr />
+                    <div class="form-group">
+                    </div>
+                    <div class="form-group">
+                    </div>
+                    <div class="form-group">
+                    </div>
+                    <div class="form-group">
+                    </div>
+                    <div class="form-group">
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.Label("Capacidad de Pago")
+                            @Html.TextBoxFor(model => model.Capacidad_Pago, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Derecho a Ptamo x Capacidad de Pago")
+                            @Html.TextBoxFor(model => model.Derecho_Montoxcapacidad, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Cuotas x Capacidad de Pago")
+                            @Html.TextBoxFor(model => model.cuotasxCapacidad, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.Label("Tipo de Prestamo")
+                            @Html.DropDownList("TipoPrestamo", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                            <span class="error">El Tipo de prestamo es requerido</span>
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Plazo préstamo")
+                            @Html.TextBoxFor(model => model.Plazo, new { @class = "form-control" })
+                            <span class="error">El plazo del prestamo es requerido</span>
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Monto Solicitado")
+                            @Html.TextBoxFor(model => model.Monto_Solicitado, "{0:n2}", new { @class = "form-control" })
+                            <span class="error">El monto soliictado es requerido</span>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <i class="fa fa-calculator"></i> <input id="calcular" type="button" value="Calcular" class="btn btn-success btn-lg" style="padding:5px 15px" />
+                        </div>
+                    </div>
+
+                    <hr />
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.Label("Principal Préstamo")
+                            @Html.TextBoxFor(model => model.Principal, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Interés préstamo")
+                            @Html.TextBoxFor(model => model.Interes, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.Label("Cuota")
+                            @Html.TextBoxFor(model => model.Cuota, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Principal Cuota")
+                            @Html.TextBoxFor(model => model.Principal_Cuota, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.Label("Interés Cuota")
+                            @Html.TextBoxFor(model => model.Interes_Cuota, "{0:n2}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Plazo inicia en Periodo de pago (Fecha)")
+                            @Html.TextBoxFor(model => model.Fecha_Inicio, "{0:d}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.Label("Plazo finaliza en Periodo de pago (Fecha)")
+                            @Html.TextBoxFor(model => model.Fecha_Fin, "{0:d}", new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        @*<div class="col-md-3">
+                @Html.Label("Derecho")
+
+
+            </div>*@
+                    </div>
+
+                    <hr />
+
+                </div>
+                
+
+                                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/dx.all.js"></script>
+
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script>
+        var pago;
+
+        $(document).ready(function () {
+            var equivalencia;
+
+            $('#Socio').change(function () {
+                var soc = $(this).val();
+                var data = {
+                    Socio: $(this).val()
+                }
+
+
+                $.ajax({
+                    url: '/Prestamo_Solicitud/GetDatoSocio',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        if (d.status == true) {
+
+                            $("#Empleado").val(d.empleado);
+                            $("#Nombre_Socio").val(d.nombre);
+                            $("#DescAgencia").val(d.agencia);
+                            $("#Salario").val(d.salario);
+                            $("#Cuota_Ahorro").val(d.cuota_ahorro);
+                            $("#Cuota_Aportacion").val(d.cuota_aportacion);
+                            $("#Periodo_Ingreso").val(d.Periodo_Ingreso);
+                            $("#Fecha_Ingreso").val(d.fecha_ingreso);
+                            $("#DescPeriodo").val(d.pp);
+                            $("#Saldo_Ahorro").val(d.saldo_ahorro);
+                            $("#Saldo_Aportacion").val(d.saldo_aportacion);
+                            $("#Saldo_Deuda").val(d.saldo_deuda);
+                            $("#Antiguedad").val(d.antiguedad_socio);
+                            $("#Derecho").val(d.derecho);
+                            $("#Derecho_Monto").val(d.derecho_monto);
+                            $("#Capacidad_Pago").val(d.capacidad);
+                            $("#Balance").val(d.balance); 
+                            $("#Porcentaje_Endeudamiento").val(d.porcentaje_endeudamiento);
+
+                            $("#Principal").val('');
+                            $("#Interes").val('');
+                            $("#Cuota").val('');
+                            $("#Principal_Cuota").val('');
+                            $("#Interes_Cuota").val('');
+                            $("#Fecha_Inicio").val('');
+                            $("#Fecha_Fin").val('');
+                            $("#Monto_Solicitado").val('');
+                            $("#Plazo").val('');
+
+                            CargarGrid(soc);
+                    
+                        }
+                        else {
+
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: d.messageerror,
+                                footer: ''
+                            })
+                            $("#Empleado").val('');
+                            $("#Nombre_Socio").val('');
+                            $("#DescAgencia").val('');
+                            $("#Salario").val('');
+                            $("#Cuota_Ahorro").val('');
+                            $("#Cuota_Aportacion").val('');
+                            $("#Periodo_Ingreso").val('');
+                            $("#Fecha_Ingreso").val('');
+                            $("#DescPeriodo").val('');
+                            $("#Saldo_Ahorro").val('');
+                            $("#Saldo_Aportacion").val('');
+                            $("#Saldo_Deuda").val('');
+                            $("#Antiguedad").val('');
+                            $("#Derecho").val('');
+                            $("#Derecho_Monto").val('');
+                            $("#Capacidad_Pago").val('');
+                            $("#Balance").val('');
+                            $("#Porcentaje_Endeudamiento").val('');
+                        }
+
+                    },
+                    error: function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Error al obtener datos del socio',
+                            footer: ''
+                        });
+                        $("#Empleado").val('');
+                        $("#Nombre_Socio").val('');
+                        $("#DescAgencia").val('');
+                        $("#Salario").val('');
+                        $("#Cuota_Ahorro").val('');
+                        $("#Cuota_Aportacion").val('');
+                        $("#Periodo_Ingreso").val('');
+                        $("#Fecha_Ingreso").val('');
+                        $("#DescPeriodo").val('');
+                        $("#Saldo_Ahorro").val('');
+                        $("#Saldo_Aportacion").val('');
+                        $("#Saldo_Deuda").val('');
+                        $("#Antiguedad").val('');
+                        $("#Derecho").val('');
+                        $("#Derecho_Monto").val('');
+                        $("#Capacidad_Pago").val('');
+                        $("#Balance").val('');
+                        $("#Porcentaje_Endeudamiento").val('');
+                    }
+                })
+            });
+
+            
+            function CargarGrid(soc) {
+
+                $.ajax({
+                    url: "/Prestamo_Solicitud/GetPrestamos",
+                    type: "POST",
+                    dataType: "json",
+                    data: { socio: soc },
+                    success: function (data) {
+                        var fillData = data.prestamo;
+                        var dataGrid = $("#gridPrestamos").dxDataGrid({
+                            filterRow: { visible: false },
+                            dataSource: fillData,
+
+                            keyExpr: "ID",
+                            sorting: {
+                                mode: "multiple"
+                            },
+
+                            paging: {
+                                pageSize: 30
+                            },
+                            pager: {
+                                showPageSizeSelector: true,
+                                allowedPageSizes: [10, 20, 50],
+                                showInfo: true
+                            },
+                            filterRow: {
+                                visible: true
+                            },
+                            searchPanel: {
+                                visible: true,
+                                width: 340,
+                                placeholder: "Search..."
+                            },
+                            loadPanel: {
+                                enabled: true
+                            },
+                            showBorders: true,
+                            columns: [
+                                {
+                                    dataField: "ID",
+                                    caption: "No. Prestamo",
+                                    alignment: "center"
+                                },
+                                {
+                                    dataField: "TIPO",
+                                    caption: "Tipo de Ptmo.",
+                                    alignment: "center"
+                                },
+                                {
+                                    dataField: "MONTO",
+                                    caption: "Monto Ptmo.",
+                                    dataType: "number",
+                                    alignment: "center"
+                                },
+                                {
+                                    dataField: "SALDO",
+                                    caption: "Saldo Ptmo.",
+                                    dataType: "number",
+                                    alignment: "center"
+                                },
+                                {
+                                    dataField: "CUOTA",
+                                    caption: "Cuota Por PP",
+                                    alignment: "center"
+                                },
+                                {
+                                    dataField: "PLAZO",
+                                    caption: "Plazo Ptmo.",
+                                    alignment: "center"
+                                },
+                                {
+                                    dataField: "CUOTAS_PAGADAS",
+                                    caption: "Cuotas Pagadas",
+                                    alignment: "center"
+                                },
+                                {
+                                    dataField: "CUOTAS_PENDIENTES",
+                                    caption: "CuotaS P.",
+                                    alignment: "center"
+                                },
+                                {
+                                    dataField: "PPFIN",
+                                    caption: "P. de fin",
+                                    alignment: "center"
+                                },
+                                {
+                                    dataField: "FECHA",
+                                    caption: "Fecha Fin",
+                                    dataType: "date",
+                                    alignment: "center"
+                                }
+
+                            ],
+
+                        }).dxDataGrid("instance");
+                    }, error: function (xhr, status, error) {
+                        alert(status);
+                    }
+                });
+
+            };
+
+            $('#calcular').click(function ()
+            {
+
+             var isAllValid = true;
+            
+
+                if ($('#Monto_Solicitado').val().trim() == '') {
+                                            isAllValid = false;
+                    $('#Monto_Solicitado').siblings('span.error').css('visibility', 'visible');
+                                        }
+                else {
+                    $('#Monto_Solicitado').siblings('span.error').css('visibility', 'hidden');
+                     }
+                
+                if ($('#TipoPrestamo').val().trim() == '') {
+                                            isAllValid = false;
+                    $('#TipoPrestamo').siblings('span.error').css('visibility', 'visible');
+                                        }
+                else {
+                    $('#TipoPrestamo').siblings('span.error').css('visibility', 'hidden');
+                    }
+                      
+                if ($('#Plazo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#Plazo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#Plazo').siblings('span.error').css('visibility', 'hidden');
+                }                    
+                if ( $('#Capacidad_Pago').val().trim() <= 0)
+                {
+                    isAllValid = false;
+                    Swal.fire({
+                        position: 'center',
+                        type: 'success',
+                        title: 'El socio no tiene Capacidad de Pago suficiente',
+                        showConfirmButton: true
+
+                    })
+                }
+
+
+
+
+                       if (isAllValid) {
+                         var data = {
+                        Socio: $('#Socio').val().trim(),
+                        TipoPrestamo: $('#TipoPrestamo').val().trim(),
+                        Derecho: $('#Derecho').val().trim(),
+                        Salario: $('#Salario').val().trim(),
+                        Cuota_Ahorro: $('#Cuota_Ahorro').val().trim(),
+                        Monto_Solicitado:$('#Monto_Solicitado').val().trim(),
+                        Plazo: $('#Plazo').val().trim(),
+                        DescPeriodo: $('#DescPeriodo').val().trim(),
+                        Capacidad_Pago: $('#Capacidad_Pago').val().trim(),
+                        Saldo_Ahorro: $("#Saldo_Ahorro").val().trim(),
+                        Saldo_Aportacion:$("#Saldo_Aportacion").val().trim(),
+                        Saldo_Deuda:$("#Saldo_Deuda").val().trim()
+                       
+
+
+                    }
+
+                     
+                        $(this).val('Calculando...');
+
+                        $.ajax({
+                            url: '/Prestamo_Solicitud/Disponibilidad_Credito',
+                            type: "POST",
+                            data: JSON.stringify(data),
+                            dataType: "JSON",
+                            contentType: "application/json",
+                            success: function (d) {
+                                                    //check is successfully save to database
+                                                    if (d.status == true) {
+
+                                                        if (d.sobre_giro > 0)
+                                                        {
+                                                            if ($('#Monto_Solicitado').val() == '0')
+                                                            {
+                                                                Swal.fire({
+                                                                    position: 'center',
+                                                                    type: 'success',
+                                                                    title: 'Se analizó la información,la capacidad de pago tiene un  sobre giro de: ' + Math.round(d.sobre_giro),
+                                                                    showConfirmButton: true
+
+                                                                })
+                                                            }
+                                                            else
+                                                            {
+                                                                Swal.fire({
+                                                                    position: 'center',
+                                                                    type: 'success',
+                                                                    title: 'Se analizó la información,la cuota del préstamo tendrá un sobre giro de: ' + Math.round(d.sobre_giro),
+                                                                    showConfirmButton: true
+
+                                                                })
+                                                            }
+
+                                                        }
+                                                        else
+                                                        {
+                                                            Swal.fire({
+                                                                position: 'center',
+                                                                type: 'success',
+                                                                title: 'Se analizó la información.',
+                                                                showConfirmButton: true
+
+                                                            })
+                                                        }
+
+
+                                                        $("#Principal").val(d.monto_prestar);
+                                                        $("#Interes").val(d.interes_total);
+                                                        $("#Cuota").val(d.cuota_total);
+                                                        $("#Principal_Cuota").val(d.principal_cuota);
+                                                        $("#Interes_Cuota").val(d.interes_cuota);
+                                                        $("#Fecha_Inicio").val(d.FechaInicio);
+                                                        $("#Fecha_Fin").val(d.FechaFin);
+                                                       
+                                    //$("#intereses").val(formatter_money.format(d.interes));
+                                    //$("#total_solicitado").val(formatter_money.format(d.saldo_principal));
+                                    //$("#cant_cuota").val(d.cant_cuota);
+                                    //$("#cuota").val(formatter_money.format(d.cuota));
+                                    //$("#Aportaciones").val(formatter_money.format(d.apor));
+
+                                      if (d.saldo_principal > 0) {
+                                       window.open('/Prestamo_Solicitud/FormatoAmortizacionSimular?NoPrestamo=' + d.NoPrestamo, '_blank'); }
+
+                                        }
+                                                    else {
+                                                        Swal.fire({
+                                                            type: 'error',
+                                        title: 'Error!',
+                                        text: d.messageerror,
+                                        footer: ''
+                                                        })
+                                   
+                                                    }
+                                $('#calcular').val('Calcular');
+
+                                                },
+                            error: function () {
+                                                    Swal.fire({
+                                                        type: 'error',
+                                    title: 'Error!',
+                                    text: 'Intente Nuevamente.',
+                                    footer: ''
+                                                    })
+                                //alert('Error. Intente Nuevamente.');
+                                $('#calcular').val('Calcular');
+                               
+                                                }
+                                            });
+                                     
+
+
+                      }
+
+            });
+        })
+        
+        function Getperiodo(tipo_pagos) {
+            $("#periodo").empty();
+           $.ajax({
+                            type: 'POST',
+                             url: '@Url.Action("GetPeriodos")', // we are calling json method
+                             dataType: 'json',
+                            data: { tipo_pago: tipo_pagos},
+
+                             success: function (states) {
+                                 $("#periodo").append('<option value="0">--Seleccione--</option>');
+                                 $.each(states, function (i, state) {
+
+                                $("#periodo").append('<option value="' + state.Value + '">' +
+                                     state.Text + '</option>');
+                                // here we are adding option for States
+
+                                });
+                            },
+                            error: function (ex) {
+                                alert('Failed to retrieve states.' + ex);
+                            }
+                             });
+        };
+
+
+        //$(document).ready(function () {
+        //    /* Autocomplete , jquery UI */
+
+        //    $("#nombre_fiador").autocomplete({
+        //                                dataType: 'JSON',
+        //        source: function (request, response) {
+        //                                    jQuery.ajax({
+        //                                        url: "/Prestamo_Solicitud/BuscarFiador",
+        //                type: "post",
+        //                dataType: "json",
+        //                data: {
+        //                                            nombre: request.term
+        //                },
+        //                success: function (data) {
+        //                                            response($.map(data, function (item) {
+        //                                                return {
+        //                                                    id: item.Id,
+        //                            value: item.Name,
+        //                            cedula: item.Cedula,
+        //                            //empleado: item.Empleado
+        //                        }
+        //                                            }))
+        //                }
+        //                                    })
+        //        },
+        //        select: function (e, ui) {
+        //            $("#cedula_fiador").val(ui.item.cedula);
+        //            $("#fiador").val(ui.item.id);
+
+        //                                }
+        //                            })
+        //})
+
+        //$(document).ready(function () {
+
+        //    const formatter = new Intl.NumberFormat('en-US', {
+        //        style: 'decimal',
+        //        currency: 'USD',
+        //        minimumFractionDigits: 2
+        //    })
+        //    const formatter_money = new Intl.NumberFormat('en-US', {
+        //        style: 'decimal',
+        //        currency: 'USD',
+        //        minimumFractionDigits: 2
+        //    })
+        //    $('#Monto_solicitado').blur(function () {
+
+        //        var monto = $('#Monto_solicitado').val();
+        //       // $('#Monto_solicitado').val(formatter.format(monto)).replace(/\D00$/, '');
+        //    });
+
+        //    $('#submit').click(function ()
+        //    {
+
+        //     var isAllValid = true;
+        //     var isFiadorValid = true;
+
+        //                                if ($('#NOMBRE_SOCIO').val().trim() == '') {
+        //                                    isAllValid = false;
+        //            $('#NOMBRE_SOCIO').siblings('span.error').css('visibility', 'visible');
+        //                                }
+        //        else {
+        //            $('#NOMBRE_SOCIO').siblings('span.error').css('visibility', 'hidden');
+        //                                }
+        //        if ($('#periodo').val().trim() == '' || $('#periodo').val().trim() == '0') {
+        //            isAllValid = false;
+        //            $('#periodo').siblings('span.error').css('visibility', 'visible');
+        //        }
+        //        else {
+        //            $('#periodo').siblings('span.error').css('visibility', 'hidden');
+        //        }
+        //                                if ($('#TipoPrestamo').val().trim() == '') {
+        //                                    isAllValid = false;
+        //            $('#TipoPrestamo').siblings('span.error').css('visibility', 'visible');
+        //                                }
+        //        else {
+        //            $('#TipoPrestamo').siblings('span.error').css('visibility', 'hidden');
+        //                                }
+
+        //                                if ($('#derecho').val().trim() == '') {
+        //                                    isAllValid = false;
+        //            $('#derecho').siblings('span.error').css('visibility', 'visible');
+        //                                }
+        //        else {
+        //            $('#derecho').siblings('span.error').css('visibility', 'hidden');
+        //                                }
+        //        if ($('#Monto_solicitado').val().trim() == '') {
+        //            $("#Monto_solicitado").val(0);
+        //        }
+        //        if ($('#plazo').val().trim() == '') {
+        //            $("#plazo").val(1);
+        //        }
+
+
+        //               if (isAllValid) {
+        //                 var data = {
+        //                Socio: $('#Socio').val().trim(),
+        //                TipoPrestamo: $('#TipoPrestamo').val().trim(),
+        //                derecho: $('#derecho').val().trim(),
+        //                Salario: $('#Salario').val().trim(),
+        //                Cuota_Ahorro: $('#Cuota_Ahorro').val().trim(),
+        //                fiador: $('#fiador').val().trim(),
+        //                Monto_solicitado: $('#Monto_solicitado').val().trim(),
+        //               plazo: $('#plazo').val().trim(),
+        //               periodo: $('#periodo').val().trim(),
+        //               TipoPago:pago
+
+
+        //            }
+
+        //            // if ($('#Socio').val().trim() == $('#fiador').val().trim()) {
+        //            //                        isFiadorValid = false;
+        //            //    $('#nombre_fiador').siblings('span.error').css('visibility', 'visible');
+        //            //                    }
+        //            //else {
+        //            //    $('#nombre_fiador').siblings('span.error').css('visibility', 'hidden');
+        //            //                    }
+
+        //            //                    if (isFiadorValid) {
+        //                $(this).val('Procesando...');
+
+        //                $.ajax({
+        //                    url: '/Prestamo_Solicitud/Disponibilidad_Credito',
+        //                    type: "POST",
+        //                    data: JSON.stringify(data),
+        //                    dataType: "JSON",
+        //                    contentType: "application/json",
+        //                    success: function (d) {
+        //                                            //check is successfully save to database
+        //                                            if (d.status == true) {
+
+        //                                                if (d.sobre_giro > 0)
+        //                                                {
+        //                                                    if ($('#Monto_solicitado').val() == '0')
+        //                                                    {
+        //                                                        Swal.fire({
+        //                                                            position: 'center',
+        //                                                            type: 'success',
+        //                                                            title: 'Se analizó la información,la capacidad de pago tiene un  sobre giro de: ' + formatter_money.format(Math.round(d.sobre_giro)),
+        //                                                            showConfirmButton: true
+
+        //                                                        })
+        //                                                    }
+        //                                                    else
+        //                                                    {
+        //                                                        Swal.fire({
+        //                                                            position: 'center',
+        //                                                            type: 'success',
+        //                                                            title: 'Se analizó la información,la cuota del préstamo tendrá un sobre giro de: ' + formatter_money.format(Math.round(d.sobre_giro)),
+        //                                                            showConfirmButton: true
+
+        //                                                        })
+        //                                                    }
+                                                            
+        //                                                }
+        //                                                else
+        //                                                {
+        //                                                    Swal.fire({
+        //                                                        position: 'center',
+        //                                                        type: 'success',
+        //                                                        title: 'Se analizó la información.',
+        //                                                        showConfirmButton: true
+
+        //                                                    })
+        //                                                }
+
+
+        //                            $("#Ahorros").val(formatter_money.format(d.ahorro_s));
+        //                            $("#CantPrestamos").val(d.cant_prest);
+        //                            $("#MontoPrestamo").val(formatter_money.format(d.monto_prest));
+        //                            $("#CantPrestamosRes").val(d.cant_prest_rees);
+        //                            $("#MontoPrestamoRest").val(formatter_money.format(d.monto_prest_rees));
+        //                            $("#MontoaPrestar").val(formatter_money.format(d.monto_prestar));
+        //                            $("#capacidad_pago").val(formatter_money.format(d.total40));
+        //                            $("#intereses").val(formatter_money.format(d.interes));
+        //                            $("#total_solicitado").val(formatter_money.format(d.saldo_principal));
+        //                            $("#cant_cuota").val(d.cant_cuota);
+        //                            $("#cuota").val(formatter_money.format(d.cuota));
+        //                            $("#Aportaciones").val(formatter_money.format(d.apor));
+
+        //                              if (d.saldo_principal > 0) {
+        //                               window.open('/Prestamo_Solicitud/FormatoAmortizacionSimular?NoPrestamo=' + d.NoPrestamo, '_blank'); }
+
+        //                                }
+        //                                            else {
+        //                                                Swal.fire({
+        //                                                    type: 'error',
+        //                                title: 'Error!',
+        //                                text: d.messageerror,
+        //                                footer: ''
+        //                                                })
+        //                            $("#Ahorros").val('0');
+        //                            $("#Aportaciones").val('0');
+        //                            $("#CantPrestamos").val('0');
+        //                            $("#MontoPrestamo").val('0');
+        //                            $("#CantPrestamosRes").val('0');
+        //                            $("#MontoPrestamoRest").val('0');
+        //                            $("#MontoaPrestar").val('0');
+        //                            $("#disponibilidad40").val(formatter_money.format(d.total40));
+        //                                            }
+        //                        $('#submit').val('Evaluar');
+
+        //                                        },
+        //                    error: function () {
+        //                                            Swal.fire({
+        //                                                type: 'error',
+        //                            title: 'Error!',
+        //                            text: 'Intente Nuevamente.',
+        //                            footer: ''
+        //                                            })
+        //                        //alert('Error. Intente Nuevamente.');
+        //                        $('#submit').val('Evaluar');
+        //                        $("#Ahorros").val('0');
+        //                        $("#Aportaciones").val('0');
+        //                        $("#CantPrestamos").val('0');
+        //                        $("#MontoPrestamo").val('0');
+        //                        $("#CantPrestamosRes").val('0');
+        //                        $("#MontoPrestamoRest").val('0');
+        //                        $("#MontoaPrestar").val('0');
+        //                        $("#disponibilidad40").val(formatter_money.format(d.total40));
+        //                                        }
+        //                                    });
+        //                              //  }
+
+
+        //                            }
+
+        //    });
+
+        //    $('#rptRestructurar').click(function () {
+
+        //        var isAllValid = true;
+        //        var isFiadorValid = true;
+
+        //        if ($('#NOMBRE_SOCIO').val().trim() == '') {
+        //            isAllValid = false;
+        //            $('#NOMBRE_SOCIO').siblings('span.error').css('visibility', 'visible');
+        //        }
+        //        else {
+        //            $('#NOMBRE_SOCIO').siblings('span.error').css('visibility', 'hidden');
+        //        }
+
+        //        if (isAllValid) {
+        //            var data = {
+        //                socio: $('#Socio').val().trim()
+        //            }
+
+        //            window.open('/Prestamo_Solicitud/Prestamos_Reest?socio=' + $('#Socio').val().trim(), '_blank');
+
+        //        }
+
+        //    });
+
+        //});
+
+
+
+    </script>
+}
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>
+@*  *@
+
+

@@ -1,0 +1,130 @@
+﻿@model CoopJFK.Models.BENEFICIARIOS
+
+@{
+    ViewBag.Title = "Borrar Beneficiario";
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Afiliación</li>
+            <li class="active">Socios-Beneficiarios</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+@*<div class="container">
+    <div class="row">*@
+@*<div class="col-md-12">*@
+<div class="white-box">
+    <h3>Esta seguro de borrar este beneficiario?</h3>
+    <div>
+        <h4>Beneficiarios</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayName("Parentesco")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PARENTESCO1.DESCRIPCION)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Tipo de Beneficiario")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TIPO_BENEFICIARIO1.DESCRIPCION)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Nombre")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NOMBRE)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Cédula")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CEDULA)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Fecha de Nacimiento")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.FECHA_NACIMIENTO)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Dirección")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DIRECCION)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("% Porcentaje")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PORCENTAJE)
+            </dd>
+            <hr />
+            <dt>
+                @Html.DisplayName("Usuario de Creación")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.USUARIO_CREACION)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Fecha de Creación")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.FECHA_CREACION)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Usuario de Modificación")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.USUARIO_MODIFICACION)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Fecha de Modificación")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.FECHA_MODIFICACION)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+           
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-info" /> |
+            @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-primary" })
+        </div>
+        }
+    </div>
+</div>
+
+    

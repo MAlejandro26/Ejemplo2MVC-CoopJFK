@@ -1,0 +1,168 @@
+﻿
+
+@{
+    ViewBag.Title = "Reporte de planilla por Agencia";
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Planilla</li>
+            <li class="active">Planilla Por Agencia</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+           
+            <hr />
+            @using (Html.BeginForm())
+            {
+
+            <div class="form-horizontal">
+
+                <div class="form-group">
+                    @Html.Label("Pp Inicio", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.Editor("periodoInicio", new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="error">El periodo es obligatorio</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Pp Fin", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.Editor("periodoFin", new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="error">El periodo es obligatorio</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Tipo Pago", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.DropDownList("pago", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                        <span class="error">El Tipo de Pago es obligatorio</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Agencia", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.DropDownList("agencia", null, "--Seleccione--", htmlAttributes: new { @class = "form-control" })
+                        <span class="error">La agencia  es obligatorio</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input id="Reporte" type="button" value="Reporte" class="btn btn-info" />
+                    </div>
+
+                </div>
+               
+                
+            </div>
+            }
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+        
+            $('#Reporte').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if ($('#periodoInicio').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodoInicio').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodoInicio').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#pago').val().trim() == '') {
+                    isAllValid = false;
+                    $('#pago').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#pago').siblings('span.error').css('visibility', 'hidden');
+                }
+                if ($('#agencia').val().trim() == '') {
+                    isAllValid = false;
+                    $('#agencia').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#agencia').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#periodoFin').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodoFin').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodoFin').siblings('span.error').css('visibility', 'hidden');
+                }
+                //Save if valid
+                if (isAllValid) {
+                    
+                    window.open('/Planilla/rptPlanilla_Por_Agencia?periodoInicio=' + $('#periodoInicio').val().trim() + '&periodoFin=' + $('#periodoFin').val().trim() + '&tipopago=' + $('#pago').val().trim() + '&agencia=' + $('#agencia').val().trim(), '_blank');
+
+                }
+
+            });
+
+                 
+        });
+    </script>
+}
+
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>

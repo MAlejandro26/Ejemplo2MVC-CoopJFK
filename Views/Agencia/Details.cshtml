@@ -1,0 +1,95 @@
+﻿@model CoopJFK.Models.AGENCIA
+
+    @{
+        ViewBag.Title = "Detalle";
+    }
+
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+            <ol class="breadcrumb">
+                <li><a href="#">Sistema de Gestión de Crédito</a></li>
+                <li>Agencia</li>
+                <li class="active">Crear</li>
+            </ol>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="white-box">
+                    <div>
+                        <h4>Agencia</h4>
+                        <hr />
+                        <dl class="dl-horizontal">
+                            <dt>
+                                Nombre
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.NOMBRE)
+                            </dd>
+
+                            <dt>
+                                Telefono
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.TELEFONO)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayName("Dirección")
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.DIRECCION)
+                            </dd>
+                            <dt>
+                                @Html.DisplayName("Usuario de Creación")
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.USUARIO_CREACION)
+                            </dd>
+                            <dt>
+                                @Html.DisplayName("Fecha de Creación")
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.FECHA_CREACION)
+                            </dd>
+
+
+                            <dt>
+                                @Html.DisplayName("Usuario de Modificación")
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.USUARIO_MODIFICACION)
+                            </dd>
+                            <dt>
+                                @Html.DisplayName("Fecha de Modificación")
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.FECHA_MODIFICACION)
+                            </dd>
+
+
+                        </dl>
+                    </div>
+                    <p>
+                        @Html.ActionLink("Editar", "Edit", new { id = Model.ID }) |
+                        @Html.ActionLink("Atrás", "Index")
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+                    

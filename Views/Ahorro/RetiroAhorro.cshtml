@@ -1,0 +1,439 @@
+﻿@model CoopJFK.Models.ViewModels.AhorroConsultaViewModels
+@{
+    ViewBag.Title = "Retiro de Ahorro via Cheque";
+}
+
+@*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title"></h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Ahorro</li>
+            <li class="active">Consulta de Ahorro ExtraOrdinario</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <div class="form-horizontal">
+                    <h4>SOLICITUD DE APLICACION DE RETIRO DE AHORRO MEDIANTE CHEQUE</h4>
+                    <hr />
+
+                    <div class="form-group">
+                        <div class="col-md-1">
+                            @Html.Label("No. Socio")
+                            @Html.TextBoxFor(model => model.socio, new { @class = "form-control", placeholder = "Digitar", id = "SOCIO_ID" })
+                            <span class="error">El id del socio es requerido</span>
+                        </div>
+                        <div class="col-md-5">
+                            @Html.Label("Nombres y apellidos")
+                            @Html.TextBoxFor(model => model.nombres, new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-2">
+                            @Html.Label("No.Empleado")
+                            @Html.TextBoxFor(model => model.no_empleado, new { @class = "form-control", @readonly = "true" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Agencia")
+                            @Html.TextBoxFor(model => model.agencia, new { @class = "form-control", @readonly = "true" })
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.Label("Aplicar de mi Ahorro U$")
+                            @Html.TextBoxFor(model => model.monto_aplicar, new { @class = "form-control", placeholder = "Digitar" })
+                            <span class="error">El monto es requerido</span>
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("No/cheque")
+                            @Html.Editor("cheque", new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="error">El no. cheque  es requerido</span>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.Label("Para el P/Pago")
+                            @Html.TextBoxFor(model => model.periodo, new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-2">
+                            @Html.Label("Fecha de Pago")
+                            @Html.TextBoxFor(model => model.fecha_pago, new { @class = "form-control", @readonly = "true" })
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <form id="cuadro">
+                            <table>
+                                <tr>
+                                    <th colspan="2">
+                                        @Html.Label("Aplicar de mi ahorro:")
+                                    </th>
+                              
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.Label("Retiro de ahorro con Cheque: ")
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="retiro" checked></input>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            @Html.Label("Motivo de la aplicacion del retiro de Ahorro:")
+                            <br />
+                            <textarea name="message">Escriba los motivos.</textarea>
+                           
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <form id="cuadro">
+                            <table>
+                                <tr>
+                                    <th colspan="4">
+                                        @Html.Label("DATOS DE AHORRO Y PRESTAMOS")
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.Label("Ahorro acumulado + aportaciones")
+                                    </td>
+                                    <td>
+                                        @Html.Label("Deuda actual")
+                                    </td>
+                                    <td>
+                                        @Html.Label("Balance ahorro/deuda")
+                                    </td>
+                                    <td>
+                                        @Html.Label("Rebaja interés proyectadas")
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.Editor("disponible", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+
+                                    </td>
+                                    <td>
+                                        @Html.Editor("deuda", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+
+                                    </td>
+                                    <td>
+                                        @Html.Editor("balance", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+
+                                    </td>
+                                    <td>
+                                        @Html.Editor("rebaja", new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-9 col-md-6"><i class="glyphicon glyphicon-save"></i> <input id="submit" type="button" value="Guardar" class="btn btn-success btn-lg glyphicon glyphicon-search" style="padding:5px 15px" /> | <i class="glyphicon glyphicon-print"></i> <input id="Imprimir" type="button" value="Imprimir" class="btn btn-info btn-lg glyphicon glyphicon-search" style="padding:5px 15px" /> </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+@section Scripts{
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+            var total_cuotas = 0;
+            $('#SOCIO_ID').change(function () {
+                var soc = $(this).val();
+                var data = {
+                    Socio: $(this).val()
+                }
+
+
+                $.ajax({
+                    url: '/Ahorro/GetDatoSocio',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        if (d.status == true) {
+
+                            $("#no_empleado").val(d.empleado);
+                            $("#nombres").val(d.nombre);
+                            $("#agencia").val(d.agencia);
+
+
+                            $("#disponible").val(d.disponible);
+                            $("#deuda").val(d.saldo_deuda);
+                            $("#balance").val(d.balance);
+                            $("#rebaja").val(0.00);
+                            $("#periodo").val(d.pp);
+                            $("#fecha_pago").val(d.fecha_pp);
+
+
+                        }
+                        else {
+
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: d.messageerror,
+                                footer: ''
+                            })
+
+                        }
+
+                    },
+                    error: function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Error al obtener datos del socio',
+                            footer: ''
+                        });
+
+                    }
+                })
+            });
+
+            $('#submit').click(function () {
+
+
+                var isAllValid = true;
+
+                if ($('#SOCIO_ID').val().trim() == '') {
+                    isAllValid = false;
+                    $('#SOCIO_ID').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#SOCIO_ID').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#cheque').val().trim() == '') {
+                    isAllValid = false;
+                    $('#cheque').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#cheque').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#monto_aplicar').val().trim() == '') {
+                    isAllValid = false;
+                    $('#monto_aplicar').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    if ($('#monto_aplicar').val().trim() <= 0) {
+                        isAllValid = false;
+                        $('#monto_aplicar').siblings('span.error').css('visibility', 'visible');
+                    }
+                    else { $('#monto_aplicar').siblings('span.error').css('visibility', 'hidden'); }
+                }
+
+
+                if ($('#periodo').val().trim() == '') {
+                    isAllValid = false;
+                    $('#periodo').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#periodo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (isAllValid) {
+
+                    var datas = {
+                        socio: $("#SOCIO_ID").val().trim(),
+                        periodo: $("#periodo").val().trim(),
+                        tot_aplicar: $("#monto_aplicar").val().trim(),
+                        motivo: $("#message").val(),
+                        cheque: $("#cheque").val().trim()
+                    };
+
+                    $(this).val('Aplicando...');
+                    //  ACA ME QUEDE
+                    $.ajax({
+                        url: '/Ahorro/RetiroAhorroChk',
+                        type: "POST",
+                        data: JSON.stringify(datas),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'Se aplicaron los ahorros',
+                                    showConfirmButton: true
+
+                                }).then((result) => {
+                                    if (result.value) {
+                                        document.getElementById('submit').disabled = true;
+                                        //    if ((d.transac == 1) || (d.transac == 2)) { window.open('/Caja/ComprobanteDivisas?comprobante=' + d.comprobante + '&consecutivo=' + d.consecutivo, '_blank'); }
+                                        window.open('/Caja/ComprobanteAhorro?comprobante=' + d.comprobante + '&consecutivo=' + d.consecutivo, '_blank');
+                                        //    else if ((d.transac == 8) || (d.transac == 11) || (d.transac == 10) || (d.transac == 7)) { window.open('/Caja/ComprobanteAhorro?comprobante=' + d.comprobante + '&consecutivo=' + d.consecutivo, '_blank'); }
+                                    }
+
+
+                                })
+
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Error!',
+                                    text: d.messageerror,
+                                    footer: ''
+                                })
+                                $('#submit').val('Guardar');
+                            }
+                            $('#submit').val('Aplicado');
+                        },
+                        error: function () {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: 'Intente Nuevamente, Error al aplicar los ahorros por cheque',
+                                footer: ''
+                            })
+                            //alert('Error. Intente Nuevamente.');
+                            $('#submit').val('Guardar');
+                        }
+                    });
+
+
+
+
+                }
+
+
+            });
+
+        });
+
+
+                        
+                        
+                            //boton del reporte
+                            //$('#Reporte').click(function () {
+                            //    //validation of order
+                            //    var isAllValid = true;
+                            //    var isFiadorValid = true;
+
+                            //    if ($('#NOMBRE_SOCIO').val().trim() == '') {
+                            //        isAllValid = false;
+                            //        $('#NOMBRE_SOCIO').siblings('span.error').css('visibility', 'visible');
+                            //    }
+                            //    else {
+                            //        $('#NOMBRE_SOCIO').siblings('span.error').css('visibility', 'hidden');
+                            //    }
+                            //    if ($('#id_ahorro').val().trim() == '') {
+                            //        isAllValid = false;
+                            //        $('#id_ahorro').siblings('span.error').css('visibility', 'visible');
+                            //    }
+                            //    else {
+                            //        $('#id_ahorro').siblings('span.error').css('visibility', 'hidden');
+                            //    }
+
+
+                            //    //Save if valid
+                            //    if (isAllValid) {
+                            //        window.open('/Ahorro/rptAhorroDetalle?ahorro=' + $('#id_ahorro').val().trim(), '_blank');
+                            //    }
+
+                            //});
+
+             
+
+
+
+    </script>
+}
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+
+    table {
+        border: 1px solid gray;
+        width: 100%;
+    }
+
+    textarea {
+        width: 152%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+    }
+
+    th, td {
+        padding: 15px;
+        border-spacing: 0px;
+    }
+</style>
+@*  *@
+

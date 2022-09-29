@@ -1,0 +1,19 @@
+﻿@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+@{
+	ViewBag.Title = "SolicitudesAprobadasDenenegadas";
+}
+
+<h2>Reporte de Solicitudes Aprobadas y Denegadas</h2>
+
+<p>
+	<a class="btn btn-success" href="@Url.Action("Reporte","Prestamos")">Atrás</a>
+
+</p>
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+	settings.Name = "Viewer_SolicitudAprobadas";
+}).Bind(Model).GetHtml()
+

@@ -1,0 +1,104 @@
+﻿@model CoopJFK.Models.AYUDA_FUNERAL
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>AYUDA_FUNERAL</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PARENTESCO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PARENTESCO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_OCURRENCIA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_OCURRENCIA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NOMBRE_FALLECIDO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NOMBRE_FALLECIDO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TIPO_CAMBIO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TIPO_CAMBIO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_CREACION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_CREACION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USUARIO_CREACION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USUARIO_CREACION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.APLICADO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.APLICADO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_APLICACION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_APLICACION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USUARIO_APLICO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USUARIO_APLICO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PERIODO1.NUMERO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PERIODO1.NUMERO)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

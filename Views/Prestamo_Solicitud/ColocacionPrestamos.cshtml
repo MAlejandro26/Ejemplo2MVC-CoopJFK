@@ -1,0 +1,16 @@
+﻿@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+@{
+	ViewBag.Title = "ColocacionPrestamos";
+}
+<h2>Reporte de Colocacion por tipos de Prestamos</h2>
+<p>
+	<a class="btn btn-success" href="@Url.Action("Reporte","Prestamos")">Atrás</a>
+
+</p>
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+	settings.Name = "Viewer_Cartera";
+}).Bind(Model).GetHtml()

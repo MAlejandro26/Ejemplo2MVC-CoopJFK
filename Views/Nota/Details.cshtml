@@ -1,0 +1,178 @@
+﻿@model CoopJFK.Models.NOTAS
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>NOTAS</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.TIPO)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.TIPO)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.SUBTIPO)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.SUBTIPO)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.SOCIO)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.SOCIO)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.MONTO)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.MONTO)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.MONEDA)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.MONEDA)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.PERIODO)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PERIODO)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.TIPO_CAMBIO)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.TIPO_CAMBIO)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.PLANILLA)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PLANILLA)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.REFERENCIA)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.REFERENCIA)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.USUARIO_CREACION)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.USUARIO_CREACION)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.FECHA_CREACION)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.FECHA_CREACION)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.USUARIO_MODIFICACION)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.USUARIO_MODIFICACION)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.FECHA_MODIFICACION)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.FECHA_MODIFICACION)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.APLICACION)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.APLICACION)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.USUARIO_APLICACION)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.USUARIO_APLICACION)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.FECHA_APLICACION)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.FECHA_APLICACION)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ANULACION)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ANULACION)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.USUARIO_ANULACION)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.USUARIO_ANULACION)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.FECHA_ANULACION)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.FECHA_ANULACION)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID_NOTA }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

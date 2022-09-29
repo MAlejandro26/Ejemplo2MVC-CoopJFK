@@ -1,0 +1,245 @@
+﻿@model IEnumerable<CoopJFK.Models.AHORRO>
+
+@{
+    ViewBag.Title = "Ahorros";
+}
+
+
+<link href="~/Content/dx.common.css" rel="stylesheet" />
+<link href="~/Content/dx.light.css" rel="stylesheet" />
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Ahorro</li>
+            <li class="active">Ahorros</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <p>
+                <a class="btn btn-success" href="@Url.Action("Consulta_Ahorro","Ahorro")">Consultar</a>
+
+            </p>
+            <hr />
+
+            <div id="gridAhorro"></div>
+        </div>
+    </div>
+</div>
+
+
+@*<script src="~/Scripts/dx.all.js"></script>*@
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            CargarGrid();
+
+        });
+        var Estado = [{ ID: 'A', DISPLAY:'Abierto' },
+            { ID: 'C', DISPLAY:'Cerrado' }
+
+        ];
+        var Proyect = [
+            "No",
+            "Si"
+        ];
+        function CargarGrid() {
+
+            $.ajax({
+                url: "/Ahorro/GetAhorros",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    var fillData = data.ahorro;
+                    var dataGrid = $("#gridAhorro").dxDataGrid({
+                        filterRow: { visible: false },
+                        dataSource: fillData,
+
+                        keyExpr: "ID",
+                        sorting: {
+                            mode: "multiple"
+                        },
+                        
+                        paging: {
+                            pageSize: 30
+                        },
+                        pager: {
+                            showPageSizeSelector: true,
+                            allowedPageSizes: [10, 20, 50],
+                            showInfo: true
+                        },
+                        filterRow: {
+                            visible: true
+                        },
+                        searchPanel: {
+                            visible: true,
+                            width: 340,
+                            placeholder: "Search..."
+                        },
+                        loadPanel: {
+                            enabled: true
+                        },
+                        showBorders: true,
+                        columns: [
+                            {
+                                dataField: "ID",
+                                caption: "Id",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "SOCIO",
+                                caption: "No de Socio",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "NO_EMPLEADO",
+                                caption: "No de Empleado",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "NOMBRE",
+                                caption: "Nombres y Apellidos",
+
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "SALDO",
+                                caption: "Saldo",
+                                dataType: "number",
+                                type: "fixedPoint",
+                                precision:"2",
+                                alignment: "center"
+                            },
+                            
+                            {
+                                alignment: "center",
+                                cellTemplate: function (container, cellInfo) {
+                                    $("<a>", { "class": "btn btn-info", "href": "Historial_Ahorros?socio=" + cellInfo.data.ID, "text": "Historial" }).appendTo(container);
+
+                                }
+                            }
+                        ],
+
+                        onRowRemoved: function (e) {
+                            console.log(e);
+                            var data = {
+                                id: e.data.ID
+
+                                //PERIODO: e.data.PERIODO,
+                                //ESTADO: e.data.ESTADO,
+                                //PROYECTADA:e.data.PROYECTADA
+                            };
+
+                            $.ajax({
+                                url: '/Periodo/UpdatePeriodo',
+                                type: "POST",
+                                data: JSON.stringify(data),
+                                dataType: "JSON",
+                                contentType: "application/json",
+                                success: function (d) {
+                                    //check is successfully save to database
+                                    if (d.status == true) {
+                                        //will send status from server side
+                                        Swal.fire({
+                                            position: 'center',
+                                            type: 'success',
+                                            title: 'Se elimino el Periodo',
+                                            showConfirmButton: true
+
+                                        })
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            type: 'error',
+                                            title: 'Error!',
+                                            text: d.messageerror,
+                                            footer: ''
+                                        })
+
+                                    }
+
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Intente Nuevamente.',
+                                        footer: ''
+                                    })
+
+                                }
+                            });
+
+                        },
+                        onRowInserting: function (e) {
+                            console.log(e);
+                            var data = {
+                                ID: e.data.ID,
+                                FECHA_DESDE: e.data.FECHA_DESDE,
+                                FECHA_HASTA:e.data.FECHA_HASTA,
+                                NUMERO:e.data.NUMERO,
+                                YEAR:e.data.YEAR,
+                                TIPO_PAGO:e.data.TIPO_PAGO,
+                                //PERIODO: e.data.PERIODO,
+                                ESTADO:e.data.ESTADO,
+                                //PROYECTADA:e.data.PROYECTADA
+                            };
+
+                            $.ajax({
+                                url: '/Periodo/CreatePeriodo',
+                                type: "POST",
+                                data: JSON.stringify(data),
+                                dataType: "JSON",
+                                contentType: "application/json",
+                                success: function (d) {
+                                    //check is successfully save to database
+                                    if (d.status == true) {
+                                        //will send status from server side
+                                        Swal.fire({
+                                            position: 'center',
+                                            type: 'success',
+                                            title: 'Se creo el periodo',
+                                            showConfirmButton: true
+
+                                        })
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            type: 'error',
+                                            title: 'Error!',
+                                            text: d.messageerror,
+                                            footer: ''
+                                        })
+
+                                    }
+
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        text: 'Intente Nuevamente.',
+                                        footer: ''
+                                    })
+
+                                }
+                            });
+                        }
+                    }).dxDataGrid("instance");
+                }, error: function (xhr, status, error) {
+                    alert(status);
+                }
+            });
+
+        }
+    </script>
+}

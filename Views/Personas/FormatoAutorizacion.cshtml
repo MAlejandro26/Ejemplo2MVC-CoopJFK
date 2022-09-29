@@ -1,0 +1,20 @@
+﻿@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+@{
+    ViewBag.Title = "FormatoAutorizacion";
+}
+
+<h2>Formato de Autorización</h2>
+
+
+@Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-primary" })
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "documentViewer1";
+}).Bind(Model).GetHtml()
+
+@*@Html.DevExpress().WebDocumentViewer(settings => {
+        settings.Name = "WebDocumentViewer3";
+    }).Bind(new CoopJFK.Reports.AfiliacionSocio.rptFormatAutorizacion()).GetHtml()*@

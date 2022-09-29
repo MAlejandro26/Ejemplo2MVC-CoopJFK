@@ -1,0 +1,14 @@
+﻿@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+@{
+    ViewBag.Title = "Formato de Ayuda Voluntaria";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "ViewerFormatAyudaVoluntaria";
+}).Bind(Model).GetHtml()

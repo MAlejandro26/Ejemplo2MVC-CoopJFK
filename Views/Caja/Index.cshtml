@@ -1,0 +1,249 @@
+﻿@model IEnumerable<CoopJFK.Models.CAJA>
+
+@{
+    ViewBag.Title = "Caja";
+}
+@*<link href="~/Content/dx.common.css" rel="stylesheet" />
+<link href="~/Content/dx.light.css" rel="stylesheet" />*@
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Caja</li>
+            <li class="active">Caja</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <p>
+                <a class="btn btn-success" href="@Url.Action("Create","Caja")">Depósito</a> <a class="btn btn-success" href="@Url.Action("Retiro","Caja")">Retiro</a>
+
+            </p>
+            <hr />
+
+            <div id="gridCaja"></div>
+
+            @*<table class="table" id="jqueryTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FECHA_CREACION)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TRANSACCION)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SOCIO)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PERSONA.NOMBRES)
+                        </th>
+
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CONCEPTO)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ANULADA)
+                        </th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FECHA_CREACION)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TRANSACCION_CAJA.DESCRIPCION)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SOCIO)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PERSONA.NOMBRES)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CONCEPTO)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ANULADA)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FECHA_CREACION)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SOCIO)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PERSONA.NOMBRES)
+                        </th>
+
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CONCEPTO)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ANULADA)
+                        </th>
+
+
+                    </tr>
+                </tfoot>
+
+
+
+
+
+            </table>*@
+
+
+        </div>
+    </div>
+</div>
+
+
+@*<script src="~/Scripts/dx.all.js"></script>*@
+@section Scripts{
+    @*@GridTemplate.GridMVCTemplate("Caja")*@
+    <script>
+        $(document).ready(function () {
+            CargarGrid();
+
+        });
+        
+        function CargarGrid() {
+
+            $.ajax({
+                url: "/Caja/GetCajas",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    var fillData = data.caja;
+                    var dataGrid = $("#gridCaja").dxDataGrid({
+                        filterRow: { visible: false },
+                        dataSource: fillData,
+
+                        keyExpr: ["ID","CONSECUTIVO"],
+                        sorting: {
+                            mode: "multiple"
+                        },
+                        editing: {
+                            mode: "popup",
+                            allowUpdating: false,
+                            allowDeleting: false,
+                            allowAdding: false,
+                           },
+                        paging: {
+                            pageSize: 30
+                        },
+                        pager: {
+                            showPageSizeSelector: true,
+                            allowedPageSizes: [10, 20, 50],
+                            showInfo: true
+                        },
+                        filterRow: {
+                            visible: true
+                        },
+                        searchPanel: {
+                            visible: true,
+                            width: 340,
+                            placeholder: "Search..."
+                        },
+                        loadPanel: {
+                            enabled: true
+                        },
+                        showBorders: true,
+                        columns: [
+                            {
+                                dataField: "ID",
+                                caption: "No. Recibo",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "CONSECUTIVO",
+                                caption: "Consecutivo",
+                                alignment: "center",
+                                visible:false
+                            },
+                            {
+                                dataField: "FECHA_TRANSACCION",
+                                caption: "Fecha",
+                                dataType: "date",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "TRANSACCION",
+                                caption: "Transacción",
+                                alignment: "center"
+                            },
+                                                        
+                            {  dataField: "SOCIO",
+                                caption: "No. Socio",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "NOMBRE",
+                                caption: "Nombres y Apellidos",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "CONCEPTO",
+                                caption: "Concepto",
+                                alignment: "center"
+                            },
+                            {
+                                dataField: "ANULADA",
+                                caption: "Anulada",
+                                alignment: "center"
+                            },
+                            {
+                                alignment: "center",
+                                cellTemplate: function (container, cellInfo) {
+                                    $("<a>", { "class": "btn btn-danger", "href": "Delete/" + cellInfo.data.ID + "?consecutivo=" + cellInfo.data.CONSECUTIVO, "text": "Anular" }).appendTo(container);
+                                   
+                                }
+                            },
+                             {
+                                alignment: "center",
+                                cellTemplate: function (container, cellInfo) {
+                                    $("<a>", { "class": "btn btn-info", "href": "Comprobante?comprobante=" + cellInfo.data.ID + "&consecutivo=" + cellInfo.data.CONSECUTIVO, "text": "Comprobante" }).appendTo(container);
+                                }
+                            }
+                        ]
+                     
+                    }).dxDataGrid("instance");
+                }, error: function (xhr, status, error) {
+                    alert(status);
+                }
+            });
+
+        }
+    </script>
+}

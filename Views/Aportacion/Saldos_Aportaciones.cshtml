@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Reporte de asociados con saldos de aportaciones";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+
+@Html.DevExpress().WebDocumentViewer(settings => {
+    settings.Name = "ViewAsociadosSaldosAportaciones";
+}).Bind(new rptAsociacionSaldosAportaciones()).GetHtml()
+

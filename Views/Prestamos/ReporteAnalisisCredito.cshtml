@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "Reporte de Tabla de Analisis";
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Prestamo</a></li>
+            <li>Tabla de Analisis</li>
+            <li class="active">Reporte de Tabla de Analisis</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            @*<p>
+                    <a class="btn btn-success" href="@Url.Action("Ayuda_Voluntaria","Planilla")">Ayuda Voluntaria</a>
+
+                </p>*@
+            <hr />
+            @using (Html.BeginForm())
+            {
+
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.Label("No. Socio:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-5">
+                            @Html.TextBox("SOCIO", "", new { @class = "form-control", placeholder = "Escriba el numero de socio" })
+                            <span class="error">El socio es requerido</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input id="Reporte" type="button" value="Reporte" class="btn btn-primary" /> | @Html.ActionLink("Atrás", "GenerarEstadoCuenta", null, new { @class = "btn btn-warning" })
+                        </div>
+
+                    </div>
+
+
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $('#Reporte').click(function () {
+            //validation of order
+            var isAllValid = true;
+            if ($('#SOCIO').val().trim() == '' || $('#SOCIO').val().trim() == 0) {
+                isAllValid = false;
+                $('#SOCIO').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#SOCIO').siblings('span.error').css('visibility', 'hidden');
+            }
+            //Save if valid
+            if (isAllValid) {
+                window.open('/Prestamos/rptAnalisisCredito?SOCIO='+$('#SOCIO').val().trim(), '_blank');
+            }
+        });
+    </script>
+}
+
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>

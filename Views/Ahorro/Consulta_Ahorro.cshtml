@@ -1,0 +1,318 @@
+﻿@model CoopJFK.Models.ViewModels.AhorroConsultaViewModels
+@{
+    ViewBag.Title = "Consulta de Ahorro";
+}
+
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title"></h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Ahorro</li>
+            <li class="active">Consulta de Ahorro ExtraOrdinario</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <div class="form-horizontal">
+                    <h4>Consulta de Ahorro</h4>
+                    <hr />
+
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            @Html.Label("No.Ahorro")
+                            @Html.TextBoxFor(model => model.id_ahorro, new { @class = "form-control", @readonly = "true" })
+                            <span class="error">El id de ahorro es requerido</span>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.Label("No.Socio")
+                            @Html.TextBoxFor(model => model.socio, new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-5">
+                            @Html.Label("Socio")
+                            @Html.TextBoxFor(model => model.nombres, new { @class = "form-control", placeholder = "Escriba el nombre de un socio", id = "NOMBRE_SOCIO" })
+                            <span class="error">El socio es requerido</span>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.Label("No.Empleado")
+                            @Html.TextBoxFor(model => model.no_empleado, new { @class = "form-control", @readonly = "true" })
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-offset-9 col-md-6"><i class="glyphicon glyphicon-search"></i> <input id="submit" type="button" value="Consultar" class="btn btn-success btn-lg glyphicon glyphicon-search" style="padding:5px 15px" /> | <i class="glyphicon glyphicon-search"></i> <input id="Reporte" type="button" value="Reporte" class="btn btn-info btn-lg glyphicon glyphicon-search" style="padding:5px 15px" /> </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            @Html.Label("Saldo préstamos activos")
+                            @Html.TextBoxFor(model => model.prestamos, new { @class = "form-control", @readonly = "true" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.Label("Saldo de ahorro acumulado")
+                            @Html.TextBoxFor(model => model.ahorro, new { @class = "form-control", @readonly = "true" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.Label("Derecho ahorro extraordinario en el periodo fiscal")
+                            @Html.TextBoxFor(model => model.monto_extra, new { @class = "form-control", @readonly = "true" })
+                        </div>
+                        
+
+                    </div>
+                    <div class="form-group">
+                        
+                        <div class="col-md-4">
+                            @Html.Label("Ahorro extraordinario en el periodo fiscal")
+                            @Html.TextBoxFor(model => model.extra_aplicado, new { @class = "form-control", @readonly = "true" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.Label("Cuota de Ahorro")
+                            @Html.TextBoxFor(model => model.cuota_Ahorro, new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                        <div class="col-md-4">
+                            @Html.Label("Retiro/Aplicación")
+                            @Html.TextBoxFor(model => model.Retiro, new { @class = "form-control", @readonly = "true" })
+                        </div>
+
+                    </div>
+                </div>
+                </div>
+                </div>
+    </div>
+</div>
+
+                <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+                @section Scripts{
+                    <script src="~/Scripts/jquery-ui.js"></script>
+                    <script>
+                        $(document).ready(function () {
+                            /* Autocomplete , jquery UI */
+
+                            $("#NOMBRE_SOCIO").autocomplete({
+                                dataType: 'JSON',
+                                source: function (request, response) {
+                                    jQuery.ajax({
+                                        url: "/Ahorro/BuscarSocio",
+                                        type: "post",
+                                        dataType: "json",
+                                        data: {
+                                            nombre: request.term
+                                        },
+                                        success: function (data) {
+                                            response($.map(data, function (item) {
+                                                return {
+                                                    id: item.Id,
+                                                    value: item.Name,
+                                                    cedula: item.Cedula,
+                                                    empleado: item.Empleado,
+                                                    cuota: item.Cuota,
+                                                    salario: item.Salario,
+                                                    ahorro:item.ahorro,
+                                                }
+                                            }))
+                                        }
+                                    })
+                                },
+                                select: function (e, ui) {
+                                    $("#socio").val(ui.item.id);
+                                    $("#no_empleado").val(ui.item.empleado);
+                                    $("#cuota_Ahorro").val(ui.item.cuota);
+                                    $("#id_ahorro").val(ui.item.ahorro);
+
+                                }
+                            })
+                        })
+                    
+
+                        $(document).ready(function () {
+                            $('#submit').click(function () {
+                                //validation of order
+                                var isAllValid = true;
+                                var isFiadorValid = true;
+
+                                if ($('#NOMBRE_SOCIO').val().trim() == '') {
+                                    isAllValid = false;
+                                    $('#NOMBRE_SOCIO').siblings('span.error').css('visibility', 'visible');
+                                }
+                                else {
+                                    $('#NOMBRE_SOCIO').siblings('span.error').css('visibility', 'hidden');
+                                }
+
+                                //if ($('#tipo').val().trim() == '') {
+                                //    isAllValid = false;
+                                //    $('#tipo').siblings('span.error').css('visibility', 'visible');
+                                //}
+                                //else {
+                                //    $('#tipo').siblings('span.error').css('visibility', 'hidden');
+                                //}
+
+
+
+
+                                //Save if valid
+                                if (isAllValid) {
+                                    var data = {
+                                        socio: $('#socio').val().trim()
+                                        //tipo: $('#tipo').val().trim()
+                                    }
+
+
+                                    $.ajax({
+                                        url: '/Ahorro/Consulta_Ahorro',
+                                        type: "POST",
+                                        data: JSON.stringify(data),
+                                        dataType: "JSON",
+                                        contentType: "application/json",
+                                        success: function (d) {
+                                            //check is successfully save to database
+                                            if (d.status == true) {
+                                                //will send status from server side
+                                                Swal.fire({
+                                                    position: 'center',
+                                                    type: 'success',
+                                                    title: 'Se analizo la información.' +'\n' + d.messageerror,
+                                                    showConfirmButton: true
+
+                                                })
+
+                                                internationalNumberFormat = new Intl.NumberFormat('en-US')
+
+                                                $("#ahorro").val(internationalNumberFormat.format(d.ahorros));
+                                                $("#monto_extra").val(internationalNumberFormat.format(d.extra));
+                                                $("#Retiro").val(internationalNumberFormat.format(d.retiro));
+                                                $("#prestamos").val(internationalNumberFormat.format(d.total_prestamos));
+                                                $("#extra_aplicado").val(internationalNumberFormat.format(d.extra_aplicado));
+
+                                            }
+                                            else {
+                                                Swal.fire({
+                                                    type: 'error',
+                                                    title: 'Error!',
+                                                    text: d.messageerror,
+                                                    footer: ''
+                                                })
+                                            }
+
+
+                                        },
+                                        error: function () {
+                                            Swal.fire({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                text: 'Intente Nuevamente.',
+                                                footer: ''
+                                            })
+                                           
+                                           
+                                        }
+                                    });
+
+
+
+                                }
+
+                            });
+
+                            //boton del reporte
+                            $('#Reporte').click(function () {
+                                //validation of order
+                                var isAllValid = true;
+                                var isFiadorValid = true;
+
+                                if ($('#NOMBRE_SOCIO').val().trim() == '') {
+                                    isAllValid = false;
+                                    $('#NOMBRE_SOCIO').siblings('span.error').css('visibility', 'visible');
+                                }
+                                else {
+                                    $('#NOMBRE_SOCIO').siblings('span.error').css('visibility', 'hidden');
+                                }
+                                if ($('#id_ahorro').val().trim() == '') {
+                                    isAllValid = false;
+                                    $('#id_ahorro').siblings('span.error').css('visibility', 'visible');
+                                }
+                                else {
+                                    $('#id_ahorro').siblings('span.error').css('visibility', 'hidden');
+                                }
+                                                                                             
+
+                                //Save if valid
+                                if (isAllValid) {
+                                    window.open('/Ahorro/rptAhorroDetalle?ahorro=' + $('#id_ahorro').val().trim(), '_blank');
+                                }
+
+                            });
+
+                        });
+
+                        function separator(numb) {
+                            var str = numb.toString().split(".");
+                            str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            return str.join(".");
+                        }
+
+
+                    </script>
+                }
+                <style>
+                    /*Adding some css for looks good*/
+                    span.error {
+                        display: block;
+                        visibility: hidden;
+                        color: red;
+                        font-size: 90%;
+                    }
+
+
+                    /*css for table*/
+                    .container td {
+                        vertical-align: top;
+                    }
+
+                    .tablecontainer table {
+                        width: 80%;
+                        border-collapse: collapse;
+                        border-top: 1px solid #BFAEAE;
+                        border-right: 1px solid #BFAEAE;
+                        margin: auto;
+                    }
+
+                    .tablecontainer th {
+                        border-bottom: 2px solid #BFAEAE !important;
+                    }
+
+                    .tablecontainer th, .tablecontainer td {
+                        text-align: left;
+                        border-left: 1px solid #BFAEAE;
+                        padding: 5px;
+                        border-bottom: 1px solid #BFAEAE;
+                    }
+
+                    .ui-widget {
+                        font-size: 12px !important;
+                    }
+
+                    table.space {
+                        border: 0px solid black;
+                        border-spacing: 8px 2px;
+                        border-collapse: separate;
+                        margin: auto;
+                    }
+                </style>
+                @*  *@
+
+

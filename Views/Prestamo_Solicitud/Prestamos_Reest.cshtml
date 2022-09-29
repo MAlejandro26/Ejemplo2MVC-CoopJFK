@@ -1,0 +1,15 @@
+﻿@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+@{
+    ViewBag.Title = "Reporte Prestamos a Reestructurar";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "viewerrptPrestamoReest";
+}).Bind(Model).GetHtml()

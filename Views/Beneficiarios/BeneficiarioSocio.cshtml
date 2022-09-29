@@ -1,0 +1,213 @@
+﻿@model IEnumerable<CoopJFK.Models.BENEFICIARIOS>
+
+@{
+    ViewBag.Title = "Beneficiarios";
+}
+
+<h2></h2>
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">Socio: @ViewBag.DatoSocio </h4>
+        <h5 class="page-title">@ViewBag.Title| @Html.ActionLink("Atrás", "Index", new { id = Request.Params["id"] })</h5>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Catálogos</li>
+            <li class="active">Socios => Beneficiarios</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="white-box">
+
+                        <table class="table" id="jqueryTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CEDULA)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.NOMBRE)
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.TIPO_BENEFICIARIO)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.PARENTESCO)
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ID)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CEDULA)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NOMBRE)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TIPO_BENEFICIARIO1.DESCRIPCION)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PARENTESCO1.DESCRIPCION)
+                                    </td>
+
+
+                                </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>
+@Html.DisplayNameFor(model => model.ID)
+                                    </th>
+                                    <th>
+@Html.DisplayNameFor(model => model.CEDULA)
+                                    </th>
+                                    <th>
+ @Html.DisplayNameFor(model => model.NOMBRE)
+                                    </th>
+
+                                    <th>
+@Html.DisplayNameFor(model => model.TIPO_BENEFICIARIO)
+                                    </th>
+                                    <th>
+@Html.DisplayNameFor(model => model.PARENTESCO)
+                                    </th>
+
+                                </tr>
+                            </tfoot>
+
+
+
+                        </table>
+
+
+                        @section scripts
+{
+
+                            <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+                            <link href="~/Content/DataTables/css/buttons.dataTables.min.css" rel="stylesheet" />
+                            <link href="~/Content/DataTableSearch.css" rel="stylesheet" />
+                            <script src="~/Scripts/jquery-3.4.1.js"></script>
+                            <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+                            <script src="~/Scripts/DataTables/dataTables.buttons.min.js"></script>
+                            <script src="~/Scripts/DataTables/buttons.flash.js"></script>
+                            <script src="~/Scripts/DataTables/dataTables.select.min.js"></script>
+                            <script src="~/Scripts/jszip.min.js"></script>
+                            <script src="~/Scripts/buttons.html5.min.js"></script>
+                            <script src="~/Scripts/pdfmake.min.js"></script>
+                            <script src="~/Scripts/vfs_fonts.js"></script>
+
+                            <script type="text/javascript">
+
+                                /* Table initialisation */
+                                $(document).ready(function () {
+                                    $('#jqueryTable tfoot th').each(function () {
+                                        var title = $(this).text();
+                                        $(this).html('<input type="text" placeholder="Buscar ' + title + '" />');
+                                    });
+
+                                    var events = $('#events');
+
+                                    var table = $('#jqueryTable').DataTable({
+                                        dom: 'Bfrtip',
+                                        select: true,
+                                        buttons: [{
+                                            text: 'Nuevo',
+                                            action: function (e, dt, node, config) {
+                                                var id = getParameterByName('id');
+                                                window.location.href = '/Beneficiarios/Create?id=' + id;
+                                            },
+                                            init: function (api, node, config) {
+                                                $(node).removeClass('btn-default')
+                                            }
+                                        },
+                                        {
+                                            text: 'Editar',
+                                            action: function (e, dt, node, config) {
+                                                var rowSelected = table.rows({ selected: true }).data();
+                                                console.log(rowSelected[0][0]);
+                                                var id = getParameterByName('id');
+                                                window.location.href = '/Beneficiarios/Edit/' + rowSelected[0][0] + '?id=' + id;
+                                            },
+                                            init: function (api, node, config) {
+                                                $(node).removeClass('btn-default')
+                                            }
+                                        },
+
+                                        {
+                                            text: 'Detalle',
+                                            action: function (e, dt, node, config) {
+                                                var rowSelected = table.rows({ selected: true }).data();
+                                                console.log(rowSelected[0][0]);
+                                                var id = getParameterByName('id');
+                                                window.location.href = '/Beneficiarios/Details/' + rowSelected[0][0] + '?id=' + id;
+                                            },
+                                            init: function (api, node, config) {
+                                                $(node).removeClass('btn-default')
+                                            }
+                                        },
+                                        {
+                                            text: 'Borrar',
+                                            action: function (e, dt, node, config) {
+                                                var rowSelected = table.rows({ selected: true }).data();
+                                                console.log(rowSelected[0][0]);
+                                                var id = getParameterByName('id');
+                                                window.location.href = '/Beneficiarios/Delete/' + rowSelected[0][0] + '?id=' + id;
+                                            },
+                                            init: function (api, node, config) {
+                                                $(node).removeClass('btn-default')
+                                            }
+                                        },
+                                            'csv', 'excel'
+                                        ]
+                                    });
+                                    // Apply the search
+                                    table.columns().every(function () {
+                                        var that = this;
+
+                                        $('input', this.footer()).on('keyup change', function () {
+                                            if (that.search() !== this.value) {
+                                                that
+                                                    .search(this.value)
+                                                    .draw();
+                                            }
+                                        });
+                                    });
+                                    $('#jqueryTable tfoot tr').appendTo('#jqueryTable thead');
+                                });
+
+                                function getParameterByName(name) {
+                                    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                                    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                                        results = regex.exec(location.search);
+                                    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+                                }
+                            </script>
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+
+
+

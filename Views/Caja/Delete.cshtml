@@ -1,0 +1,179 @@
+﻿@model CoopJFK.Models.CAJA
+
+@{
+    ViewBag.Title = "Anular Recibo de Caja";
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title"></h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Caja</li>
+            <li class="active">Anulación</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <h2>Anulación</h2>
+
+                <h3>Esta seguro de anular este recibo?</h3>
+
+                @if (ViewBag.Message != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        <span>@ViewBag.Message</span>
+                    </div>
+                    
+                }
+                <div>
+
+                    <hr />
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayName("No Recibo")
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.ID)
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("No. Consecutivo")
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.CONSECUTIVO)
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("Código de Transacción")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.TRANSACCION_CAJA.DESCRIPCION)
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("No Socio")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.PERSONA.ID)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("Nombre y Apellidos")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.PERSONA.NOMBRES)
+                        </dd>
+                        <dt>
+                            @Html.DisplayName("Tipo de Cambio")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.TIPO_CAMBIO)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("Monto C$")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.CORDOBA)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("Monto U$")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.DOLAR)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("No de Deposito")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.NUMERO_DEPOSITO)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("Fecha del Deposito")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.FECHA_DEPOSITO)
+                        </dd>
+
+                        <dt>
+                           @Html.DisplayName("Fecha de Recepción")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.FECHA_RECEPCION)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("Concepto ")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.CONCEPTO)
+                        </dd>
+
+
+                        <dt>
+                            @Html.DisplayName("Usuario de Creación")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.USUARIO_CREACION)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("Fecha de Creación")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.FECHA_CREACION)
+                        </dd>
+
+
+
+                 
+
+
+
+
+                    </dl>
+
+                    @using (Html.BeginForm())
+                    {
+
+
+                        <div class="form-actions no-color">
+                            <input type="submit" value="Anular" class="btn btn-danger" /> |
+                            @Html.ActionLink("Atrás", "Index")
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                

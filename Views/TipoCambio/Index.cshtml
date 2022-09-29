@@ -1,0 +1,91 @@
+﻿@model IEnumerable<CoopJFK.Models.TIPO_CAMBIO>
+
+@{
+    ViewBag.Title = "Tipo de Cambio";
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Administración</li>
+            <li class="active">Tipo de Cambio</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <table class="table" id="jqueryTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FECHA)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.COMPRA)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.VENTA)
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <th>
+                            @Html.DisplayFor(modelItem => item.ID)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FECHA)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.COMPRA)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.VENTA)
+                        </td>
+
+                    </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FECHA)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.COMPRA)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.VENTA)
+                        </th>
+
+                    </tr>
+                </tfoot>
+
+
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    @GridTemplate.GridMVCTemplate("TipoCambio")
+}

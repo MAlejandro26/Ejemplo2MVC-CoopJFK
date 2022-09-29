@@ -1,0 +1,17 @@
+﻿@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@model DevExpress.XtraReports.UI.XtraReport
+@{
+    ViewBag.Title = "Formato de Pagare";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h2>@ViewBag.DatosPrestamo</h2>
+
+@Html.ActionLink("Atrás", "Desembolso", null, new { @class = "btn btn-primary" })
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "viewerrptPagare";
+}).Bind(Model).GetHtml()

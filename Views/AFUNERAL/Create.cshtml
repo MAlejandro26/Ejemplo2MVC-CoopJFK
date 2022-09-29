@@ -1,0 +1,491 @@
+﻿@model CoopJFK.Models.ViewModels.FuneralViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+<script src="~/Scripts/jquery.inputmask.js"></script>
+<script src="~/Scripts/sweetalert2.all.min.js"></script>
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Sistema de Gestión de Crédito</a></li>
+            <li>Ayuda Funeraria</li>
+            <li class="active">Generar</li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Monto Ayuda</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("Index", "AFUNERAL", null, FormMethod.Post, null))
+            {
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <input type="number" id="MONTO" name="MONTO" value="@ViewBag.MONTO" class="form-control" required="required" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-info" onclick="TEST();">Guardar Monto</button>
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    <!-- Finis Modal -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="white-box">
+                    <h4>Generar Ayuda Funeral</h4>
+                    <div class="form-horizontal">
+                        <div class="col-md-offset-11 col-md-10">
+                            <input type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" value="MONTO">
+                        </div>
+                        <h5>Datos del Socio de la ocurrencia</h5>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                @Html.Label("No. Socio de ocurrencia")
+                                @Html.TextBoxFor(model => model.SOCIO, new { @class = "form-control", placeholder = "Aqui #socio", required = "required" })
+                                @Html.ValidationMessageFor(model => model.SOCIO, "", new { @class = "text-danger" })
+
+                            </div>
+                            <div class="col-md-4">
+                                @Html.Label("Nombres y Apellidos")
+                                @Html.TextBoxFor(model => model.NOMBRES, new { @class = "form-control", @readonly = "true", required = "required" })
+                                @Html.ValidationMessageFor(model => model.NOMBRES, "", new { @class = "text-danger" })
+                            </div>
+
+
+
+
+
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.Label("No.Empleado")
+                                @Html.TextBoxFor(model => model.NO_EMPLEADO, new { @class = "form-control", @readonly = "true", required = "required" })
+                                @Html.ValidationMessageFor(model => model.NO_EMPLEADO, "", new { @class = "text-danger" })
+
+                            </div>
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.AGENCIA, "Agencia")
+                                @Html.TextBoxFor(model => model.AGENCIA, new { @class = "form-control", @readonly = "true", required = "required" })
+                                @Html.ValidationMessageFor(model => model.AGENCIA, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.TIPO_PAGO_SOCIO, "Tipo Pago del  Socio")
+                                @Html.TextBoxFor(model => model.TIPO_PAGO_SOCIO, new { @class = "form-control", @readonly = "true", required = "required" })
+
+                                @Html.ValidationMessageFor(model => model.TIPO_PAGO_SOCIO, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.TIPO_PAGODESC, "Descripción")
+                                @Html.TextBoxFor(model => model.TIPO_PAGODESC, new { @class = "form-control", @readonly = "true", required = "required" })
+                                @Html.ValidationMessageFor(model => model.TIPO_PAGO, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <h5>Información de la ayuda funeral</h5>
+                        <hr />
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.TIPO_PAGO, "Periodo de Pago")
+                                @Html.DropDownList("TIPO_PAGO", null, htmlAttributes: new { @class = "form-control", required = "required" })
+                                @Html.ValidationMessageFor(model => model.TIPO_PAGO, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.PERIODO, "Periodo")
+                                @Html.EditorFor(model => model.PERIODO, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                                @Html.ValidationMessageFor(model => model.PERIODO, "", new { @class = "text-danger" })
+                            </div>
+
+                           
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.FECHA_OCURRENCIA, "Fecha Ocurrencia")
+                                @Html.EditorFor(model => model.FECHA_OCURRENCIA, new { htmlAttributes = new { @class = "form-control", @type = "date", required = "required" } })
+                                @Html.ValidationMessageFor(model => model.FECHA_OCURRENCIA, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                @Html.Label("Beneficiarios")
+                                @Html.DropDownList("BENEFICIARIOS", new SelectList(string.Empty, "Value", "Text"), new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.PARENTESCO, "Parentesco")
+                                @Html.DropDownList("PARENTESCO", null, htmlAttributes: new { @class = "form-control", required = "required" })
+                                @Html.ValidationMessageFor(model => model.PARENTESCO, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.HiddenFor(model => model.NOMBRE_FALLECIDO)
+                            @*<div class="col-md-3">
+            @Html.LabelFor(model => model.NOMBRE_FALLECIDO, "Nombre Fallecido")
+            @Html.EditorFor(model => model.NOMBRE_FALLECIDO, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            @Html.ValidationMessageFor(model => model.NOMBRE_FALLECIDO, "", new { @class = "text-danger" })
+        </div>*@
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-10">
+                                <input type="submit" value="Generar" class="btn btn-info" onclick="Ayuda()" />| @Html.ActionLink("Atrás", "Index", null, new { @class = "btn btn-warning" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+<script>
+    $(document).ready(function () {
+
+        $('#SOCIO').change(function () {
+            var soc = $(this).val();
+            var data = {
+                Socio: $(this).val()
+            }
+
+
+            $.ajax({
+                url: '/AFUNERAL/GetDatoSocio',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    if (d.status == true) {
+
+                        $("#NO_EMPLEADO").val(d.empleado);
+                        $("#NOMBRES").val(d.nombre);
+                        $("#AGENCIA").val(d.agencia);
+                        $("#TIPO_PAGO_SOCIO").val(d.tipopago);
+                        $("#TIPO_PAGODESC").val(d.tipopago_desc);
+
+                    }
+                    else {
+
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: d.messageerror,
+                            footer: ''
+                        })
+                        $("#NO_EMPLEADO").val('');
+                        $("#NOMBRES").val('');
+                        $("#AGENCIA").val('');
+                        $("#TIPO_PAGO_SOCIO").val('');
+                        $("#TIPO_PAGODESC").val('');
+                    }
+
+                },
+                error: function () {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Error!',
+                        text: 'Error al obtener datos del socio',
+                        footer: ''
+                    });
+                    $("#NO_EMPLEADO").val('');
+                    $("#NOMBRES").val('');
+                    $("#AGENCIA").val('');
+                    $("#TIPO_PAGO_SOCIO").val('');
+                    $("#TIPO_PAGODESC").val('');
+                }
+            });
+
+            //LLENAMOS EL DRONWPLIST DE LOS BENEFICIARIOS DE FUNERAL
+              $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetBeneFuneral")',
+                dataType: 'json',
+                data: { Socio:soc },
+                success: function (states) {
+                 $("#BENEFICIARIOS").append('<option value="0">--Seleccione--</option>');
+                 $.each(states, function (i, state) {
+                     $("#BENEFICIARIOS").append('<option value="' + state.Value + '">' +
+                 state.Text + '</option>');
+                });
+                },
+                 error: function (ex) {
+                 alert('Error al obtener los datos de los beneficiarios de la ayuda funeral.' + ex);
+                 }
+               });
+        });
+
+        $('#BENEFICIARIOS').change(function () {
+            var ben = $(this).val();
+          
+
+            if (ben === '') { $("#NOMBRE_FALLECIDO").val(''); }
+
+            else {
+
+                $("#NOMBRE_FALLECIDO").val($("#BENEFICIARIOS :selected").text()) ;
+                var data = {
+                    beneficiario: ben
+                };
+
+
+                $.ajax({
+                    url: '/AFUNERAL/GetDatoBeneFuneral',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        if (d.status == true) {
+
+                            $("#PARENTESCO").val(d.parentesco);
+
+                        }
+                        else {
+
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: "Error al obtener datos del beneficiario de ayuda funeral",
+                                footer: ''
+                            })
+
+
+                        }
+
+                    },
+                    error: function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Error ',
+                            footer: ''
+                        });
+
+
+                    }
+                })
+
+
+            }
+
+
+        });
+      
+    });
+
+  
+        $('#PERIODO').change(function () {
+            var per = $(this).val();
+
+            if (per === '') { }
+
+            else {
+
+                var data = {
+                    tipo_pago: $('#TIPO_PAGO').val(),
+                    periodo: per,
+                };
+
+                console.log(data);
+                $.ajax({
+                    url: '/AFUNERAL/ValidarPeriodo',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        if (d.status == true) {
+
+
+                        }
+                        else {
+
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!',
+                                text: d.messageerror,
+                                footer: ''
+                            })
+                            $("#PERIODO").val('');
+
+                        }
+
+                    },
+                    error: function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error!',
+                            text: 'Error al validar el periodo',
+                            footer: ''
+                        });
+                        $("#PERIODO").val('');
+
+                    }
+                })
+
+
+            }
+
+
+        });
+
+
+
+
+
+
+
+
+
+
+		function TEST() {
+			Swal.fire({
+				title: "Monto Actualizado",
+				text: "Correctamente",
+				type: "success",
+				// buttons: true,
+				//dangerMode: true,
+			})
+				.then((willDelete) => {
+					if (willDelete) {
+						location.href = "Create";
+					}
+				});
+		}
+		@ViewBag.Mensaje;
+		function DisparaAlert() {
+			Swal.fire({
+				title: "Ups",
+				text: "Revise el formulario",
+				type: "warning",
+				showCancelButton: false,
+				confirmButtonClass: "btn-danger",
+				confirmButtonText: "OK",
+				closeOnConfirm: false
+			})
+		}
+		function Funeraria() {
+			Swal.fire({
+				title: "Ayuda Generada",
+				text: "Correctamente",
+				type: "success",
+				// buttons: true,
+				//dangerMode: true,
+			})
+			.then((willDelete) => {
+				if (willDelete) {
+					location.href = "Create";
+				}
+			});
+		}
+		function inicial() {
+		}
+		function PeriodoPago() {
+			Swal.fire({
+				title: "Ups",
+				text: "Ayuda Funeral ya esta Aprobada",
+				type: "warning",
+				showCancelButton: false,
+				confirmButtonClass: "btn-danger",
+				confirmButtonText: "OK",
+				closeOnConfirm: false
+			})
+		}
+		function Duplicados() {
+			Swal.fire({
+				title: "Ups",
+				text: "Periodo Duplicado",
+				type: "warning",
+				showCancelButton: false,
+				confirmButtonClass: "btn-danger",
+				confirmButtonText: "OK",
+				closeOnConfirm: false
+			})
+		}
+</script>
+
+<style>
+    span > i {
+        color: white;
+    }
+
+    span > input {
+        background: none;
+        color: white;
+        padding: 0;
+        border: 0;
+    }
+
+    input.input-box, textarea {
+        background: cyan;
+    }
+
+    input.input-boxR, textarea {
+        background: green;
+    }
+    /*Adding some css for looks good*/
+    span.error {
+        display: compact;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 80%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+        margin: auto;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+
+    table.space {
+        border: 0px solid black;
+        border-spacing: 8px 2px;
+        border-collapse: separate;
+        margin: auto;
+    }
+</style>
